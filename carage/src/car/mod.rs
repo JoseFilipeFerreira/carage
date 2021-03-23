@@ -2,23 +2,31 @@ pub mod fuel;
 pub mod maintenance;
 pub mod model;
 pub mod post;
-use crate::user::User;
-use chrono::{Date, DateTime, Utc};
-use diesel::Queryable;
-use model::Model;
-use post::Post;
+use crate::schema::cars;
+use chrono::{NaiveDate, NaiveDateTime};
+use diesel::{AsExpression, Identifiable, Insertable, Queryable};
+use diesel_derive_enum::DbEnum;
 
 //TODO: Figure Out how to store car costs
-#[derive(Queryable)]
+#[derive(Insertable, Queryable, Identifiable, AsExpression, PartialEq, Debug, Eq)]
+#[table_name = "cars"]
+#[primary_key(vin)]
 pub struct Car {
     name: Option<String>,
-    kms: u64,
+    kms: i32,
     number_plate: String,
+    gearbox: Gearbox,
     vin: String,
-    model: Model,
-    car_date: Date<Utc>,
-    add_date: DateTime<Utc>,
-    feed: Vec<Post>,
-    shared_with: Option<Vec<User>>,
-    owner: User,
+    model: String,
+    car_date: NaiveDate,
+    add_date: NaiveDateTime,
+    owner: String,
+}
+
+#[derive(Clone, Copy, DbEnum, Debug, PartialEq, Eq, SqlType, AsExpression)]
+#[sql_type = "Gearbox"]
+#[postgres(type_name = "gearbox")]
+pub enum Gearbox {
+    Manual,
+    Automatic,
 }

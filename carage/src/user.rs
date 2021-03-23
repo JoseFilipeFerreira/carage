@@ -1,14 +1,16 @@
-use crate::{ad::Ad, car::Car};
-use chrono::{DateTime, Utc};
+use crate::{car::Car, schema::users};
+use chrono::NaiveDateTime;
 use diesel::Queryable;
 
-#[derive(Queryable)]
+#[derive(Insertable, Queryable, Identifiable, AsExpression, PartialEq, Debug, Eq)]
+#[table_name = "users"]
+#[primary_key(email)]
 pub struct User {
     email: String,
     passwd: String,
-    my_cars: Vec<Car>,
-    shared_cars: Vec<Car>,
-    ads: Vec<Ad>,
-    create_date: DateTime<Utc>,
-    update_date: DateTime<Utc>,
+    //my_cars: Vec<Car>,
+    //shared_cars: Vec<Car>,
+    //ads: Vec<Ad>,
+    create_date: NaiveDateTime,
+    update_date: NaiveDateTime,
 }
