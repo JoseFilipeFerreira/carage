@@ -6,6 +6,7 @@ use crate::schema::cars;
 use chrono::{NaiveDate, NaiveDateTime};
 use diesel::{AsExpression, Identifiable, Insertable, Queryable};
 use diesel_derive_enum::DbEnum;
+use uuid::Uuid;
 
 //TODO: Figure Out how to store car costs
 #[derive(Insertable, Queryable, Identifiable, AsExpression, PartialEq, Debug, Eq)]
@@ -17,7 +18,7 @@ pub struct Car {
     number_plate: String,
     gearbox: Gearbox,
     vin: String,
-    model: String,
+    model: Uuid,
     car_date: NaiveDate,
     add_date: NaiveDateTime,
     owner: String,

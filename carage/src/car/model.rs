@@ -1,14 +1,12 @@
 use crate::schema::models;
-use diesel::deserialize::{self, FromSql};
-use diesel::serialize::{self, IsNull, Output, ToSql};
 use diesel::{AsExpression, Identifiable, Insertable, Queryable};
 use diesel_derive_enum::DbEnum;
-use std::io::Write;
+use uuid::Uuid;
 
 #[derive(AsExpression, Queryable, Insertable, Identifiable, PartialEq, Debug, Eq)]
 #[table_name = "models"]
 pub struct Model {
-    id: String,
+    id: Uuid,
     make: String,
     model: String,
     power: i32,

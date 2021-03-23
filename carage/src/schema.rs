@@ -2,12 +2,27 @@ table! {
     use diesel::sql_types::*;
     use crate::car::{Gearbox, model::*};
 
+    ads (id) {
+        id -> Uuid,
+        car -> Nullable<Varchar>,
+        owner -> Nullable<Varchar>,
+        price -> Float4,
+        promo_price -> Nullable<Float4>,
+        create_date -> Timestamp,
+        update_date -> Timestamp,
+    }
+}
+
+table! {
+    use diesel::sql_types::*;
+    use crate::car::{Gearbox, model::*};
+
     cars (vin) {
         vin -> Varchar,
         name -> Nullable<Varchar>,
         number_plate -> Nullable<Varchar>,
         kms -> Int4,
-        model -> Nullable<Varchar>,
+        model -> Uuid,
         gearbox -> Gearbox,
         car_date -> Date,
         add_date -> Timestamp,
@@ -20,7 +35,7 @@ table! {
     use crate::car::{Gearbox, model::*};
 
     models (id) {
-        id -> Varchar,
+        id -> Uuid,
         make -> Varchar,
         model -> Varchar,
         power -> Nullable<Int4>,
@@ -42,10 +57,13 @@ table! {
     }
 }
 
+joinable!(ads -> cars (car));
+joinable!(ads -> users (owner));
 joinable!(cars -> models (model));
 joinable!(cars -> users (owner));
 
 allow_tables_to_appear_in_same_query!(
+    ads,
     cars,
     models,
     users,

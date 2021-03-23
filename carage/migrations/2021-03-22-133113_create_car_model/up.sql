@@ -3,7 +3,7 @@ CREATE TYPE fuel AS ENUM ('Diesel', 'Petrol', 'Eletric', 'HybridDiesel', 'Hybrid
 CREATE TYPE Bodytype AS ENUM ('Sedan', 'Wagon', 'Convertible', 'Coupe', 'Hatchback', 'SUV', 'Minivan');
 
 create table models (
-    id varchar primary key,
+    id uuid primary key,
     make varchar not null,
     model varchar not null,
     power integer,

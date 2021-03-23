@@ -5,7 +5,7 @@ create table cars (
     name varchar,
     number_plate varchar unique,
     kms integer not null,
-    model varchar references models,
+    model uuid not null references models,
     gearbox gearbox not null,
     car_date date not null,
     add_date timestamp not null,

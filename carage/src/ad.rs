@@ -1,11 +1,16 @@
-use crate::car::Car;
-use chrono::{DateTime, Utc};
+use crate::schema::ads;
+use chrono::NaiveDateTime;
 use diesel::Queryable;
+use uuid::Uuid;
 
-#[derive(Queryable)]
+#[derive(Insertable, Queryable, Identifiable, AsExpression, PartialEq, Debug)]
+#[table_name = "ads"]
 pub struct Ad {
-    car: Car,
+    id: Uuid,
+    car: String,
+    owner: String,
     price: f32,
-    create_date: DateTime<Utc>,
-    update_date: DateTime<Utc>,
+    promo_price: Option<f32>,
+    create_date: NaiveDateTime,
+    update_date: NaiveDateTime,
 }
