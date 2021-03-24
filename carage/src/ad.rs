@@ -9,8 +9,8 @@ pub struct Ad {
     id: Uuid,
     car: String,
     owner: String,
-    price: f32,
-    promo_price: Option<f32>,
+    price: i32,
+    promo_price: Option<i32>,
     create_date: NaiveDateTime,
     update_date: NaiveDateTime,
 }
