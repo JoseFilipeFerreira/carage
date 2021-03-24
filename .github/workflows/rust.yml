@@ -29,5 +29,5 @@ jobs:
       run: cargo fmt -- --check
       working-directory: ./carage     
     - name: Run clippy
-      run: cargo clippy -- -Dwarnings
+      run: cargo clippy -- -Dwarnings -A unused-imports
       working-directory: ./carage     
