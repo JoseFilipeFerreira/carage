@@ -3,9 +3,11 @@ name: Rust
 on:
   push:
     paths:
-      - carage
+      - carage/**
   pull_request:
     branches: [ master ]
+    paths:
+      - carage/**
 
 env:
   CARGO_TERM_COLOR: always
@@ -23,9 +25,9 @@ jobs:
     - name: Run tests
       run: cargo test --verbose
       working-directory: ./carage     
-    - name: Run tests
+    - name: Run fmt
       run: cargo fmt -- --check
       working-directory: ./carage     
-    - name: Run tests
-      run: cargo clippy -- --Dwarnings
+    - name: Run clippy
+      run: cargo clippy -- -Dwarnings
       working-directory: ./carage     
