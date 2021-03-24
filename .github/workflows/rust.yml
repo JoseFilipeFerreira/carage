@@ -1,0 +1,29 @@
+name: Rust
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - carage
+  pull_request:
+    branches: [ master ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build
+      run: cargo build --verbose
+      working-directory: ./carage
+    - name: Run tests
+      run: cargo test --verbose
+      working-directory: ./carage     
+    - uses: icepuma/rust-action@master
+      with:
+        args: cd carage && cargo fmt -- --check && cargo clippy -- -Dwarnings && cargo test
