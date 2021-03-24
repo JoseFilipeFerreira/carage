@@ -1,4 +1,4 @@
-use crate::{car::Car, schema::users};
+use crate::schema::users;
 use chrono::NaiveDateTime;
 use diesel::Queryable;
 
