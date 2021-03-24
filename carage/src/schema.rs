@@ -74,10 +74,4 @@ joinable!(car_shares -> users (share_user));
 joinable!(cars -> models (model));
 joinable!(cars -> users (owner));
 
-allow_tables_to_appear_in_same_query!(
-    ads,
-    car_shares,
-    cars,
-    models,
-    users,
-);
+allow_tables_to_appear_in_same_query!(ads, car_shares, cars, models, users,);
