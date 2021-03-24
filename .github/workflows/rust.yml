@@ -2,7 +2,6 @@ name: Rust
 
 on:
   push:
-    branches: [ master ]
     paths:
       - carage
   pull_request:
