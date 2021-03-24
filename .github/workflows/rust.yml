@@ -7,6 +7,8 @@ on:
       - carage
   pull_request:
     branches: [ master ]
+    paths:
+      - carage
 
 env:
   CARGO_TERM_COLOR: always
@@ -24,6 +26,9 @@ jobs:
     - name: Run tests
       run: cargo test --verbose
       working-directory: ./carage     
-    - uses: icepuma/rust-action@master
-      with:
-        args: cd carage && cargo fmt -- --check && cargo clippy -- -Dwarnings && cargo test
+    - name: Run tests
+      run: cargo fmt -- --check
+      working-directory: ./carage     
+    - name: Run tests
+      run: cargo clippy -- --Dwarnings
+      working-directory: ./carage     
