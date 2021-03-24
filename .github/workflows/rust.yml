@@ -6,8 +6,6 @@ on:
       - carage
   pull_request:
     branches: [ master ]
-    paths:
-      - ./carage
 
 env:
   CARGO_TERM_COLOR: always
