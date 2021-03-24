@@ -44,6 +44,16 @@ table! {
     use diesel::sql_types::*;
     use crate::car::{Gearbox, model::*};
 
+    favorite_ads (ad_id, user_id) {
+        ad_id -> Uuid,
+        user_id -> Varchar,
+    }
+}
+
+table! {
+    use diesel::sql_types::*;
+    use crate::car::{Gearbox, model::*};
+
     models (id) {
         id -> Uuid,
         make -> Varchar,
@@ -73,5 +83,14 @@ joinable!(car_shares -> cars (car));
 joinable!(car_shares -> users (share_user));
 joinable!(cars -> models (model));
 joinable!(cars -> users (owner));
+joinable!(favorite_ads -> ads (ad_id));
+joinable!(favorite_ads -> users (user_id));
 
-allow_tables_to_appear_in_same_query!(ads, car_shares, cars, models, users,);
+allow_tables_to_appear_in_same_query!(
+    ads,
+    car_shares,
+    cars,
+    favorite_ads,
+    models,
+    users,
+);

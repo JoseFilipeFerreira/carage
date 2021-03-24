@@ -1,3 +1,4 @@
+pub mod fav_ad;
 use crate::schema::ads;
 use chrono::NaiveDateTime;
 use diesel::Queryable;
