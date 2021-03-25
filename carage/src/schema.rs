@@ -1,6 +1,6 @@
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearbox, model::*};
+    use crate::car::{Gearbox, model::*, maintenance::Type};
 
     ads (id) {
         id -> Uuid,
@@ -15,7 +15,7 @@ table! {
 
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearbox, model::*};
+    use crate::car::{Gearbox, model::*, maintenance::Type};
 
     car_shares (car, share_user) {
         car -> Varchar,
@@ -25,7 +25,7 @@ table! {
 
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearbox, model::*};
+    use crate::car::{Gearbox, model::*, maintenance::Type};
 
     cars (vin) {
         vin -> Varchar,
@@ -42,7 +42,7 @@ table! {
 
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearbox, model::*};
+    use crate::car::{Gearbox, model::*, maintenance::Type};
 
     favorite_ads (ad_id, user_id) {
         ad_id -> Uuid,
@@ -52,7 +52,25 @@ table! {
 
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearbox, model::*};
+    use crate::car::{Gearbox, model::*, maintenance::Type};
+
+    maintenance (id) {
+        id -> Uuid,
+        kms -> Int4,
+        price -> Int4,
+        #[sql_name = "type"]
+        type_ -> Type,
+        description -> Nullable<Text>,
+        car -> Varchar,
+        owner -> Varchar,
+        date -> Date,
+        created_date -> Timestamp,
+    }
+}
+
+table! {
+    use diesel::sql_types::*;
+    use crate::car::{Gearbox, model::*, maintenance::Type};
 
     models (id) {
         id -> Uuid,
@@ -67,7 +85,7 @@ table! {
 
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearbox, model::*};
+    use crate::car::{Gearbox, model::*, maintenance::Type};
 
     users (email) {
         email -> Varchar,
@@ -85,12 +103,15 @@ joinable!(cars -> models (model));
 joinable!(cars -> users (owner));
 joinable!(favorite_ads -> ads (ad_id));
 joinable!(favorite_ads -> users (user_id));
+joinable!(maintenance -> cars (car));
+joinable!(maintenance -> users (owner));
 
 allow_tables_to_appear_in_same_query!(
     ads,
     car_shares,
     cars,
     favorite_ads,
+    maintenance,
     models,
     users,
 );

@@ -1,11 +1,26 @@
-use chrono::{DateTime, Utc};
+use crate::schema::maintenance;
+use chrono::{NaiveDate, NaiveDateTime};
 use diesel::Queryable;
+use diesel_derive_enum::DbEnum;
+use uuid::Uuid;
 
-#[derive(Queryable)]
+#[derive(Insertable, Queryable, Identifiable, AsExpression, PartialEq, Debug, Eq)]
+#[table_name = "maintenance"]
 pub struct Maintenance {
-    cost: f32,
-    date: DateTime<Utc>,
-    kms: u64,
-    inserted_date: DateTime<Utc>,
-    files: Option<String>, //TODO: Study better aproach
+    id: Uuid,
+    price: i32,
+    date: NaiveDate,
+    kms: i32,
+    created_date: NaiveDateTime,
+    type_: Type, //files: Option<String>, //TODO: Study better aproach
+    car: String,
+    owner: String,
+}
+
+#[derive(Clone, Copy, DbEnum, Debug, PartialEq, Eq, SqlType, AsExpression)]
+#[sql_type = "Type"]
+#[postgres(type_name = "type")]
+pub enum Type {
+    Manual,
+    Automatic,
 }
