@@ -1,7 +1,5 @@
-pub mod fuel;
 pub mod maintenance;
 pub mod model;
-pub mod post;
 use crate::schema::cars;
 use chrono::{NaiveDate, NaiveDateTime};
 use diesel::{AsExpression, Identifiable, Insertable, Queryable};
