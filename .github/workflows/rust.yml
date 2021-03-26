@@ -1,0 +1,33 @@
+name: Rust
+
+on:
+  push:
+    paths:
+      - carage/**
+  pull_request:
+    branches: [ master ]
+    paths:
+      - carage/**
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build
+      run: cargo build --verbose
+      working-directory: ./carage
+    - name: Run tests
+      run: cargo test --verbose
+      working-directory: ./carage     
+    - name: Run fmt
+      run: cargo fmt -- --check
+      working-directory: ./carage     
+    - name: Run clippy
+      run: cargo clippy -- -Dwarnings -A unused-imports
+      working-directory: ./carage     
