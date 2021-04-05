@@ -1,82 +1,26 @@
 import Head from "next/head";
 
+import GlobalStyle from '../styles/globals';
+import { Navbar } from "../components/homepage/navbar"; 
+import { Container } from "../components/homepage/container"; 
+import { Main } from "../components/homepage/main"; 
+import { Footer } from "../components/homepage/footer";
+
 export default function Home() {
   return (
-    <div className="container">
+    <Container>
+      <GlobalStyle/>
       <Head>
         <title>Carage</title>
         <link rel="icon" href="/favicon.ico" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        ></meta>
       </Head>
-
-      <navbar>
-        <div className="text-title logo">CARAGE</div>
-        <div className="navbar-options">
-          <div>
-            <a href="#" className="text-subhead navbar-option-hover">
-              Home
-            </a>
-          </div>
-          <div>
-            <a href="#" className="text-subhead navbar-option-hover">
-              About
-            </a>
-          </div>
-          <div>
-            <a href="#" className="text-subhead navbar-option-hover">
-              Contact
-            </a>
-          </div>
-        </div>
-        <div className="sign">
-          <div className="signin">
-            <a href="#" className="text-button navbar-option-hover">
-              Sign In
-            </a>
-          </div>
-          <a href="#">
-            <div className="signup text-button">Sign Up</div>
-          </a>
-        </div>
-      </navbar>
-
-      <main>
-        <img src="assets/homepage_image.svg" height="50%"></img>
-        <div className="homepage-text">
-          <div className="text-title">LoremWhat is Lorem Ipsum?</div>
-          <div className="text-body homepage-body">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
-          </div>
-        </div>
-      </main>
-
-      <footer>
-        <div className="text-footnote direitos">
-          2021 © Todos os direitos reservados
-        </div>
-        <div className="social">
-          <a href="#">
-            <svg>
-              <use href="#facebook" />
-            </svg>
-          </a>
-          <a href="#">
-          <svg>
-              <use href="#instagram" />
-            </svg>
-          </a>
-          <a href="#">
-          <svg>
-              <use href="#twitter" />
-            </svg>
-          </a>
-        </div>
-        <div className="text-footnote made-with">
-          Made with <span>❤️</span> by Group 7
-        </div>
-      </footer>
+      <Navbar/>
+      <Main/>
+      <Footer/>
 
       <svg display="none">
         <symbol width="25" height="25" viewBox="0 0 25 25" id="facebook">
@@ -88,219 +32,9 @@ export default function Home() {
           <path d="M20.7219 5.82637C20.7219 6.65432 20.0506 7.32565 19.2224 7.32565C18.3945 7.32565 17.7231 6.65432 17.7231 5.82637C17.7231 4.99823 18.3945 4.32709 19.2224 4.32709C20.0506 4.32709 20.7219 4.99823 20.7219 5.82637Z" />
         </symbol>
         <symbol width="25" height="25" viewBox="0 0 25 25" id="twitter">
-        <path d="M25 4.74844C24.0703 5.15625 23.0797 5.42656 22.0469 5.55781C23.1094 4.92344 23.9203 3.92656 24.3016 2.725C23.3109 3.31562 22.2172 3.73281 21.0516 3.96563C20.1109 2.96406 18.7703 2.34375 17.3078 2.34375C14.4703 2.34375 12.1859 4.64688 12.1859 7.47031C12.1859 7.87656 12.2203 8.26719 12.3047 8.63906C8.04375 8.43125 4.27344 6.38906 1.74062 3.27813C1.29844 4.04531 1.03906 4.92344 1.03906 5.86875C1.03906 7.64375 1.95312 9.21719 3.31562 10.1281C2.49219 10.1125 1.68437 9.87344 1 9.49688C1 9.5125 1 9.53281 1 9.55312C1 12.0437 2.77656 14.1125 5.10625 14.5891C4.68906 14.7031 4.23438 14.7578 3.7625 14.7578C3.43438 14.7578 3.10312 14.7391 2.79219 14.6703C3.45625 16.7 5.34063 18.1922 7.58125 18.2406C5.8375 19.6047 3.62344 20.4266 1.22656 20.4266C0.80625 20.4266 0.403125 20.4078 0 20.3563C2.27031 21.8203 4.96094 22.6562 7.8625 22.6562C17.2937 22.6562 22.45 14.8438 22.45 8.07187C22.45 7.84531 22.4422 7.62656 22.4312 7.40938C23.4484 6.6875 24.3031 5.78594 25 4.74844Z"/>
+          <path d="M25 4.74844C24.0703 5.15625 23.0797 5.42656 22.0469 5.55781C23.1094 4.92344 23.9203 3.92656 24.3016 2.725C23.3109 3.31562 22.2172 3.73281 21.0516 3.96563C20.1109 2.96406 18.7703 2.34375 17.3078 2.34375C14.4703 2.34375 12.1859 4.64688 12.1859 7.47031C12.1859 7.87656 12.2203 8.26719 12.3047 8.63906C8.04375 8.43125 4.27344 6.38906 1.74062 3.27813C1.29844 4.04531 1.03906 4.92344 1.03906 5.86875C1.03906 7.64375 1.95312 9.21719 3.31562 10.1281C2.49219 10.1125 1.68437 9.87344 1 9.49688C1 9.5125 1 9.53281 1 9.55312C1 12.0437 2.77656 14.1125 5.10625 14.5891C4.68906 14.7031 4.23438 14.7578 3.7625 14.7578C3.43438 14.7578 3.10312 14.7391 2.79219 14.6703C3.45625 16.7 5.34063 18.1922 7.58125 18.2406C5.8375 19.6047 3.62344 20.4266 1.22656 20.4266C0.80625 20.4266 0.403125 20.4078 0 20.3563C2.27031 21.8203 4.96094 22.6562 7.8625 22.6562C17.2937 22.6562 22.45 14.8438 22.45 8.07187C22.45 7.84531 22.4422 7.62656 22.4312 7.40938C23.4484 6.6875 24.3031 5.78594 25 4.74844Z" />
         </symbol>
       </svg>
-
-      <style jsx>{`
-        .container {
-          display: grid;
-          grid-template-rows: 88px auto 100px;
-          justify-items: center;
-          align-content: stretch;
-          height: 100vh;
-        }
-
-        navbar {
-          justify-self: stretch;
-          left: 0px;
-          right: 0px;
-          top: 0px;
-          bottom: 0px;
-          background: #151417;
-          border: 1px solid #151417;
-          color: #f0f0f1;
-          display: grid;
-          grid-template-columns: 20% 12% auto 12% 20%;
-          justify-items: center;
-          align-items: center;
-        }
-
-        main {
-          display: flex;
-          flex-direction: row;
-          justify-items: center;
-          align-items: center;
-          padding-right: 20%;
-          padding-left: 20%;
-        }
-
-        footer {
-          justify-self: stretch;
-          left: 0px;
-          right: 0px;
-          top: 0px;
-          bottom: 0px;
-          background: #151417;
-          border: 1px solid #151417;
-          color: #f0f0f1;
-          display: grid;
-          grid-template-columns: 20% 15% auto 15% 20%;
-          justify-items: center;
-          align-items: center;
-        }
-
-        .navbar-options {
-          display: flex;
-          flex-direction: row;
-        }
-
-        .navbar-options div {
-          padding: 16px;
-          align-self: center;
-          flex-grow: 2;
-        }
-
-        .navbar-option-hover {
-          transition: 0.2s ease;
-        }
-
-        .navbar-option-hover:hover {
-          color: var(--LEI3);
-          transition: 0.2s ease;
-        }
-
-        .logo {
-          grid-column-start: 2;
-          grid-column-end: 3;
-          justify-self: start;
-          color: #ff5023;
-        }
-
-        .sign {
-          justify-self: end;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-        }
-
-        .signup {
-          display: flex;
-          background-color: var(--LEI3);
-          height: 46px;
-          width: 94px;
-          justify-content: center;
-          align-items: center;
-          margin-left: 32px;
-          transition: 0.2s ease;
-        }
-
-        .signup:hover {
-          background-color: var(--LEI3-1);
-          transition: 0.2s ease;
-        }
-
-        .homepage-text {
-          margin-left: 5%;
-          text-align: center;
-        }
-
-        .homepage-body {
-          margin-top: 5%;
-        }
-
-        .direitos {
-          justify-self: start;
-          grid-column-start: 2;
-          grid-column-end: 3;
-        }
-
-        .made-with {
-          justify-self: end;
-        }
-
-        .social svg {
-          width: 25px;
-          height: 25px;
-          fill: var(--LEI5);
-          transition: 0.2s ease;
-        }
-
-        .social a + a {
-          margin-left: 25px;
-        }
-
-        .social svg:hover {
-          fill: var(--LEI3);
-          transition: 0.2s ease;
-        }
-      `}</style>
-
-      <style jsx global>{`
-        :root {
-          --LEI1: #151417;
-          --LEI2: #1f1e21;
-          --LEI3: #ff5023;
-          --LEI3-1: #ff7f5e;
-          --LEI4: #4f73cf;
-          --LEI5: #f0f0f1;
-        }
-
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: Gotham, "Inter", -apple-system, BlinkMacSystemFont,
-            "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-            "Droid Sans", "Helvetica Neue", sans-serif;
-          background-color: var(--LEI1);
-          color: var(--LEI5);
-        }
-        a:hover,
-        a:visited,
-        a:link,
-        a:active {
-          text-decoration: none;
-        }
-
-        .text-title {
-          font-family: Gotham;
-          font-style: normal;
-          font-weight: 500;
-          font-size: 24px;
-          line-height: 26px;
-          color: #f0f0f1;
-        }
-
-        .text-button {
-          font-family: Gotham;
-          font-style: normal;
-          font-weight: 500;
-          font-size: 14px;
-          line-height: 22px;
-
-          color: #f0f0f1;
-        }
-
-        .text-subhead {
-          font-family: Gotham;
-          font-style: normal;
-          font-weight: bold;
-          font-size: 15px;
-          line-height: 18px;
-          color: #f0f0f1;
-        }
-
-        .text-body {
-          font-family: Gotham;
-          font-style: normal;
-          font-weight: 500;
-          font-size: 14px;
-          line-height: 24px;
-        }
-
-        .text-footnote {
-          font-family: Gotham;
-          font-style: normal;
-          font-weight: 500;
-          font-size: 13px;
-          line-height: 18px;
-        }
-
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
-    </div>
+    </Container>
   );
 }
