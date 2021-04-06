@@ -2,7 +2,7 @@ use crate::{car::Car, user::User};
 use chrono::{DateTime, Utc};
 use diesel::Queryable;
 
-#[derive(Queryable)]
+#[derive(Identifiable, Queryable)]
 pub struct Post {
     description: String,
     files: Option<String>,

@@ -1,10 +1,24 @@
 pub mod fav_ad;
-use crate::schema::ads;
+use crate::{car::Car, schema::ads, user::DbUser};
 use chrono::NaiveDateTime;
-use diesel::Queryable;
+use diesel::{Associations, Queryable};
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-#[derive(Insertable, Queryable, Identifiable, AsExpression, PartialEq, Debug)]
+#[derive(
+    Associations,
+    Insertable,
+    Serialize,
+    Deserialize,
+    Queryable,
+    Identifiable,
+    AsExpression,
+    PartialEq,
+    Debug,
+    Eq,
+)]
+#[belongs_to(DbUser, foreign_key = "owner")]
+#[belongs_to(Car, foreign_key = "car")]
 #[table_name = "ads"]
 pub struct Ad {
     id: Uuid,

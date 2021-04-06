@@ -25,7 +25,7 @@ table! {
 
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearbox, model::*, maintenance::Type};
+    use crate::car::{Gearboxenum, model::*, maintenance::Type};
 
     cars (vin) {
         vin -> Varchar,
@@ -33,7 +33,7 @@ table! {
         number_plate -> Nullable<Varchar>,
         kms -> Int4,
         model -> Uuid,
-        gearbox -> Gearbox,
+        gearbox -> Gearboxenum,
         car_date -> Date,
         add_date -> Timestamp,
         owner -> Varchar,
@@ -89,6 +89,7 @@ table! {
 
     users (email) {
         email -> Varchar,
+        name -> Varchar,
         passwd -> Varchar,
         create_date -> Timestamp,
         update_date -> Timestamp,
