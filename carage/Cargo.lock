@@ -90,6 +90,7 @@ dependencies = [
  "diesel",
  "diesel-derive-enum",
  "dotenv",
+ "lazy_static",
  "rocket",
  "rocket_contrib",
  "serde",
@@ -197,6 +198,7 @@ dependencies = [
  "chrono",
  "diesel_derives",
  "pq-sys",
+ "r2d2",
  "uuid",
 ]
 
@@ -818,6 +820,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "r2d2"
+version = "0.8.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "545c5bc2b880973c9c10e4067418407a0ccaa3091781d1671d46eb35107cb26f"
+dependencies = [
+ "log",
+ "parking_lot",
+ "scheduled-thread-pool",
+]
+
+[[package]]
 name = "rand"
 version = "0.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -963,11 +976,23 @@ name = "rocket_contrib"
 version = "0.5.0-dev"
 source = "git+https://github.com/SergioBenitez/Rocket#8749d7293a685b2f35534bfc7ba84c48c3a220e9"
 dependencies = [
+ "diesel",
  "log",
+ "r2d2",
  "rocket",
+ "rocket_contrib_codegen",
  "serde",
  "serde_json",
  "tokio",
+]
+
+[[package]]
+name = "rocket_contrib_codegen"
+version = "0.5.0-dev"
+source = "git+https://github.com/SergioBenitez/Rocket#8749d7293a685b2f35534bfc7ba84c48c3a220e9"
+dependencies = [
+ "devise",
+ "quote",
 ]
 
 [[package]]
@@ -1017,6 +1042,15 @@ name = "ryu"
 version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "71d301d4193d031abdd79ff7e3dd721168a9572ef3fe51a1517aba235bd8f86e"
+
+[[package]]
+name = "scheduled-thread-pool"
+version = "0.2.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dc6f74fd1204073fa02d5d5d68bec8021be4c38690b61264b2fdb48083d0e7d7"
+dependencies = [
+ "parking_lot",
+]
 
 [[package]]
 name = "scoped-tls"

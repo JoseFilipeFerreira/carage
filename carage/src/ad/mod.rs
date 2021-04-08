@@ -7,7 +7,6 @@ use uuid::Uuid;
 
 #[derive(
     Associations,
-    Insertable,
     Serialize,
     Deserialize,
     Queryable,
