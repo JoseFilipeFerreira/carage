@@ -54,6 +54,6 @@ pub enum Bodytype {
     Convertible,
     Coupe,
     Hatchback,
-    SUV,
+    Suv,
     Minivan,
 }

@@ -1,5 +1,5 @@
 use super::{ApiCar, Car};
-use crate::DB;
+use crate::Db;
 use lazy_static::lazy_static;
 use rocket_contrib::json::Json;
 
@@ -8,7 +8,7 @@ lazy_static! {
 }
 
 #[put("/create", format = "json", data = "<car>")]
-pub async fn create(conn: DB, car: Json<ApiCar>) -> Option<Json<Car>> {
+pub async fn create(conn: Db, car: Json<ApiCar>) -> Option<Json<Car>> {
     match conn.run(move |c| Car::from_api(car.clone(), c)).await {
         Ok(u) => Some(Json(u)),
         _ => None,
@@ -19,7 +19,7 @@ pub async fn create(conn: DB, car: Json<ApiCar>) -> Option<Json<Car>> {
 #[post("/", data = "<car>")]
 pub async fn get(
     //_wakey: ApiKey,
-    conn: DB,
+    conn: Db,
     car: String,
 ) -> Option<Json<Car>> {
     match conn.run(|c| Car::get(car, c)).await {
@@ -29,7 +29,7 @@ pub async fn get(
 }
 
 #[delete("/remove", data = "<car>")]
-pub async fn remove(conn: DB, car: String) -> Option<Json<Car>> {
+pub async fn remove(conn: Db, car: String) -> Option<Json<Car>> {
     match conn.run(move |c| Car::delete(car, c)).await {
         Ok(u) => Some(Json(u)),
         _ => None,

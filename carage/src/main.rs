@@ -20,10 +20,10 @@ pub async fn cors(idk: std::path::PathBuf) -> Option<()> {
     Some(())
 }
 
-pub struct CORS();
+pub struct Cors();
 
 #[rocket::async_trait]
-impl Fairing for CORS {
+impl Fairing for Cors {
     fn info(&self) -> Info {
         Info {
             name: "Add CORS headers to requests",
@@ -43,7 +43,7 @@ impl Fairing for CORS {
 }
 
 #[database("carage")]
-pub struct DB(pub diesel::PgConnection);
+pub struct Db(pub diesel::PgConnection);
 
 #[launch]
 pub fn rocket() -> rocket::Rocket {
@@ -51,6 +51,6 @@ pub fn rocket() -> rocket::Rocket {
         .mount("/", routes![cors])
         .mount("/user", USER_ROUTES.to_vec())
         .mount("/car", CAR_ROUTES.to_vec())
-        .attach(CORS())
-        .attach(DB::fairing())
+        .attach(Cors())
+        .attach(Db::fairing())
 }
