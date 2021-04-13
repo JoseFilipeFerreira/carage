@@ -10,7 +10,9 @@ edition = "2018"
 diesel = { version = "1.4.4", features = ["postgres", "chrono", "uuidv07"] }
 dotenv = "0.15.0"
 rocket = { git = "https://github.com/SergioBenitez/Rocket" }
-rocket_contrib = { git = "https://github.com/SergioBenitez/Rocket" }
-chrono = "*"
+rocket_contrib = { git = "https://github.com/SergioBenitez/Rocket", features = ["diesel_postgres_pool"] }
+chrono = { version = "*", features = ["serde"] }
 diesel-derive-enum = { version = "1", features = ["postgres"] }
-uuid = { version = "0.8", features = ["v4"] } 
+uuid = { version = "0.8", features = ["v4", "serde"] } 
+serde = "*"
+lazy_static = "*"

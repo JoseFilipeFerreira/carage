@@ -1,10 +1,12 @@
 use crate::schema::maintenance;
 use chrono::{NaiveDate, NaiveDateTime};
-use diesel::Queryable;
+use diesel::{Associations, Queryable};
 use diesel_derive_enum::DbEnum;
 use uuid::Uuid;
 
-#[derive(Insertable, Queryable, Identifiable, AsExpression, PartialEq, Debug, Eq)]
+#[derive(Associations, Insertable, Queryable, Identifiable, AsExpression, PartialEq, Debug, Eq)]
+#[belongs_to(DbUser, foreign_key = owner)]
+#[belongs_to(Car, foreign_key = car)]
 #[table_name = "maintenance"]
 pub struct Maintenance {
     id: Uuid,
