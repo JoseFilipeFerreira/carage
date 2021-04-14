@@ -60,6 +60,7 @@ impl DbUser {
         };
         diesel::insert_into(users).values(&u).get_result(conn)
     }
+
     pub fn from_api(user: ApiUser, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
         diesel::insert_into(users)
             .values(Self::from(user))
