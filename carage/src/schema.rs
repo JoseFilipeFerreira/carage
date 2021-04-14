@@ -1,6 +1,6 @@
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearbox, model::*, maintenance::Type};
+    use crate::car::{Gearboxenum, model::*, maintenance::Type};
 
     ads (id) {
         id -> Uuid,
@@ -15,7 +15,7 @@ table! {
 
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearbox, model::*, maintenance::Type};
+    use crate::car::{Gearboxenum, model::*, maintenance::Type};
 
     car_shares (car, share_user) {
         car -> Varchar,
@@ -42,7 +42,7 @@ table! {
 
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearbox, model::*, maintenance::Type};
+    use crate::car::{Gearboxenum, model::*, maintenance::Type};
 
     favorite_ads (ad_id, user_id) {
         ad_id -> Uuid,
@@ -52,7 +52,7 @@ table! {
 
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearbox, model::*, maintenance::Type};
+    use crate::car::{Gearboxenum, model::*, maintenance::Type};
 
     maintenance (id) {
         id -> Uuid,
@@ -70,7 +70,7 @@ table! {
 
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearbox, model::*, maintenance::Type};
+    use crate::car::{Gearboxenum, model::*, maintenance::Type};
 
     models (id) {
         id -> Uuid,
@@ -78,14 +78,14 @@ table! {
         model -> Varchar,
         power -> Nullable<Int4>,
         engine_size -> Nullable<Int4>,
-        fuel -> Fuel,
-        body_type -> Bodytype,
+        fuel -> Fuelenum,
+        body_type -> Bodytypeenum,
     }
 }
 
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearbox, model::*, maintenance::Type};
+    use crate::car::{Gearboxenum, model::*, maintenance::Type};
 
     users (email) {
         email -> Varchar,

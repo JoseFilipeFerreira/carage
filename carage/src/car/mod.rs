@@ -45,56 +45,6 @@ pub struct Car {
 }
 
 impl Car {
-    pub fn new(
-        other_vin: String,
-        other_name: Option<String>,
-        other_number_plate: Option<String>,
-        other_kms: i32,
-        other_model: Uuid,
-        other_gearbox: Gearbox,
-        other_car_date: NaiveDate,
-        other_owner: String,
-    ) -> Self {
-        Car {
-            vin: other_vin,
-            name: other_name,
-            number_plate: other_number_plate,
-            kms: other_kms,
-            model: other_model,
-            gearbox: other_gearbox,
-            car_date: other_car_date,
-            add_date: chrono::Utc::now().naive_utc(),
-            owner: other_owner,
-        }
-    }
-
-    pub fn new_and_insert(
-        other_vin: String,
-        other_name: Option<String>,
-        other_number_plate: Option<String>,
-        other_kms: i32,
-        other_model: Uuid,
-        other_gearbox: Gearbox,
-        other_car_date: NaiveDate,
-        other_owner: String,
-        conn: &PgConnection,
-    ) -> Result<Self, diesel::result::Error> {
-        let car = Car {
-            vin: other_vin,
-            name: other_name,
-            number_plate: other_number_plate,
-            kms: other_kms,
-            model: other_model,
-            gearbox: other_gearbox,
-            car_date: other_car_date,
-            add_date: chrono::Utc::now().naive_utc(),
-            owner: other_owner,
-        };
-        diesel::insert_into(Self::table())
-            .values(&car)
-            .get_result(conn)
-    }
-
     pub fn from_api(car: ApiCar, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
         diesel::insert_into(Self::table())
             .values(Self::from(car))

@@ -1,3 +1,4 @@
+pub mod api;
 use crate::schema::models;
 use diesel::{AsExpression, Identifiable, Insertable, Queryable};
 use diesel_derive_enum::DbEnum;
@@ -22,8 +23,8 @@ pub struct Model {
     id: Uuid,
     make: String,
     model: String,
-    power: i32,
-    engine_size: i32,
+    power: Option<i32>,
+    engine_size: Option<i32>,
     fuel: Fuel,
     body_type: Bodytype,
 }
@@ -31,7 +32,7 @@ pub struct Model {
 #[derive(
     Clone, Copy, DbEnum, Debug, PartialEq, Eq, Serialize, Deserialize, SqlType, AsExpression,
 )]
-#[sql_type = "Fuel"]
+#[DieselType = "Fuelenum"]
 #[postgres(type_name = "fuel")]
 pub enum Fuel {
     Diesel,
@@ -47,6 +48,7 @@ pub enum Fuel {
     Clone, Copy, DbEnum, Debug, PartialEq, Eq, SqlType, Serialize, Deserialize, AsExpression,
 )]
 #[postgres(type_name = "BodyType")]
+#[DieselType = "Bodytypeenum"]
 #[sql_type = "Bodytype"]
 pub enum Bodytype {
     Sedan,
