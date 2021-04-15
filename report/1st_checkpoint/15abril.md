@@ -23,12 +23,12 @@ Proporcionar uma plataforma que facilita a gestão, compra e venda de automóvei
 
 
 # Mockups
-![](landing_page.png)
+<img src="landing_page.png" height="500px"/>
 
 ##
-![](landing_page_devices.png)
+<img src="landing_page_devices.png" height="650px"/>
 
 ##
-![](dashboard.png)
+<img src="dashboard.png" height="650px"/>
 
 #
