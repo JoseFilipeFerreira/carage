@@ -1,6 +1,6 @@
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearboxenum, model::*, maintenance::Type};
+    use crate::car::{Gearboxenum, model::*, maintenance::Typeenum};
 
     ads (id) {
         id -> Uuid,
@@ -15,7 +15,7 @@ table! {
 
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearboxenum, model::*, maintenance::Type};
+    use crate::car::{Gearboxenum, model::*, maintenance::Typeenum};
 
     car_shares (car, share_user) {
         car -> Varchar,
@@ -25,7 +25,7 @@ table! {
 
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearboxenum, model::*, maintenance::Type};
+    use crate::car::{Gearboxenum, model::*, maintenance::Typeenum};
 
     cars (vin) {
         vin -> Varchar,
@@ -42,7 +42,7 @@ table! {
 
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearboxenum, model::*, maintenance::Type};
+    use crate::car::{Gearboxenum, model::*, maintenance::Typeenum};
 
     favorite_ads (ad_id, user_id) {
         ad_id -> Uuid,
@@ -52,14 +52,14 @@ table! {
 
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearboxenum, model::*, maintenance::Type};
+    use crate::car::{Gearboxenum, model::*, maintenance::Typeenum};
 
     maintenance (id) {
         id -> Uuid,
         kms -> Int4,
         price -> Int4,
         #[sql_name = "type"]
-        type_ -> Type,
+        type_ -> Typeenum,
         description -> Nullable<Text>,
         car -> Varchar,
         owner -> Varchar,
@@ -70,7 +70,7 @@ table! {
 
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearboxenum, model::*, maintenance::Type};
+    use crate::car::{Gearboxenum, model::*, maintenance::Typeenum};
 
     models (id) {
         id -> Uuid,
@@ -85,7 +85,7 @@ table! {
 
 table! {
     use diesel::sql_types::*;
-    use crate::car::{Gearboxenum, model::*, maintenance::Type};
+    use crate::car::{Gearboxenum, model::*, maintenance::Typeenum};
 
     users (email) {
         email -> Varchar,

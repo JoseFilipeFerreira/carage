@@ -20,8 +20,8 @@ pub struct Maintenance {
 }
 
 #[derive(Clone, Copy, DbEnum, Debug, PartialEq, Eq, SqlType, AsExpression)]
-#[sql_type = "Type"]
 #[postgres(type_name = "type")]
+#[DieselType = "Typeenum"]
 pub enum Type {
     Manual,
     Automatic,
