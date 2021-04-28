@@ -8,7 +8,10 @@ pub mod ad;
 pub mod car;
 pub mod schema;
 pub mod user;
-use crate::car::{api::ROUTES as CAR_ROUTES, model::api::ROUTES as MODEL_ROUTES};
+use crate::car::{
+    api::ROUTES as CAR_ROUTES, maintenance::api::ROUTES as MAINT_ROUTES,
+    model::api::ROUTES as MODEL_ROUTES,
+};
 use crate::user::api::ROUTES as USER_ROUTES;
 use rocket::fairing::{Fairing, Info, Kind};
 use rocket::http::Header;
@@ -52,6 +55,7 @@ pub fn rocket() -> rocket::Rocket {
         .mount("/user", USER_ROUTES.to_vec())
         .mount("/car", CAR_ROUTES.to_vec())
         .mount("/car/model", MODEL_ROUTES.to_vec())
+        .mount("/car/maintenance", MAINT_ROUTES.to_vec())
         .attach(Cors())
         .attach(Db::fairing())
 }
