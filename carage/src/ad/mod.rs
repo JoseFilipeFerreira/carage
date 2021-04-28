@@ -1,3 +1,4 @@
+pub mod api;
 pub mod fav_ad;
 use crate::{car::Car, schema::ads, user::DbUser};
 use chrono::NaiveDateTime;
