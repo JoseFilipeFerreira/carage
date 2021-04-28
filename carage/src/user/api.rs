@@ -7,7 +7,7 @@ lazy_static! {
     pub static ref ROUTES: Vec<rocket::Route> = routes![get, create, remove];
 }
 
-#[put("/create", format = "json", data = "<user>")]
+#[post("/create", format = "json", data = "<user>")]
 pub async fn create(conn: Db, user: Json<ApiUser>) -> Option<Json<DbUser>> {
     match conn.run(move |c| DbUser::from_api(user.clone(), c)).await {
         Ok(u) => Some(Json(u)),
