@@ -8,6 +8,7 @@ pub mod ad;
 pub mod car;
 pub mod schema;
 pub mod user;
+use crate::ad::api::ROUTES as AD_ROUTES;
 use crate::car::{
     api::ROUTES as CAR_ROUTES, maintenance::api::ROUTES as MAINT_ROUTES,
     model::api::ROUTES as MODEL_ROUTES,
@@ -54,6 +55,7 @@ pub fn rocket() -> rocket::Rocket {
         .mount("/", routes![cors])
         .mount("/user", USER_ROUTES.to_vec())
         .mount("/car", CAR_ROUTES.to_vec())
+        .mount("/ad", AD_ROUTES.to_vec())
         .mount("/car/model", MODEL_ROUTES.to_vec())
         .mount("/car/maintenance", MAINT_ROUTES.to_vec())
         .attach(Cors())
