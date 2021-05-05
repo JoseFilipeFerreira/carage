@@ -16,3 +16,4 @@ diesel-derive-enum = { version = "1", features = ["postgres"] }
 uuid = { version = "0.8", features = ["v4", "serde"] } 
 serde = "*"
 lazy_static = "*"
+swagger-ui = { git = "https://github.com/jtexeira/swagger-ui", features = ["rocket"] }
