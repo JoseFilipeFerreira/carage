@@ -3,7 +3,9 @@ import { createGlobalStyle } from "styled-components";
 export default createGlobalStyle`
   :root {
           --LEI1: #151417;
+          --LEI1-1: rgba(21, 20, 23, 0.7);
           --LEI2: #1f1e21;
+          --LEI2-1: #3e3c42;
           --LEI3: #ff5023;
           --LEI3-1: #ff7f5e;
           --LEI4: #4f73cf;
