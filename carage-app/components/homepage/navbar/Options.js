@@ -32,12 +32,13 @@ const NavOptions = styled.div`
     flex-grow: 2;
   }
 
-  .navbar-option-hover {
-    transition: 0.2s ease;
-  }
+  @media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 568px)
+  and (-webkit-min-device-pixel-ratio: 2) {
 
-  .navbar-option-hover:hover {
-    color: var(--LEI3);
-    transition: 0.2s ease;
+    display: none;
+
+
   }
 `;

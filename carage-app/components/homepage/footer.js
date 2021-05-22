@@ -1,17 +1,21 @@
 import styled from "styled-components";
 
-import { Social } from "./footer/social"; 
+import { Social } from "./footer/social";
 
 export const Footer = () => {
   return (
     <HomepageFooter>
-      <div className="text-footnote direitos">
-          2021 © Todos os direitos reservados
-        </div>
-        <Social/>
-        <div className="text-footnote made-with">
-          Made with <span>❤️</span> by Group 7
-        </div>
+      <div className="text-footnote direitos desktop">
+        2021 © Todos os direitos reservados
+      </div>
+      <Social />
+      <div className="text-title logo mobile">CARAGE</div>
+      <div className="text-footnote made-with">
+        Made with <span>❤️</span> by Group 7
+      </div>
+      <div className="text-footnote direitos mobile">
+        2021 © Todos os direitos reservados
+      </div>
     </HomepageFooter>
   );
 };
@@ -36,23 +40,34 @@ export const HomepageFooter = styled.div`
     grid-column-end: 3;
   }
 
+  .mobile {
+    display: none;
+  }
+
   .made-with {
     justify-self: end;
   }
 
-  .social svg {
-    width: 25px;
-    height: 25px;
-    fill: var(--LEI5);
-    transition: 0.2s ease;
+  .logo {
+    color: var(--LEI3);
   }
 
-  .social a + a {
-    margin-left: 25px;
-  }
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
 
-  .social svg:hover {
-    fill: var(--LEI3);
-    transition: 0.2s ease;
+    .mobile {
+      display: initial;
+    }
+
+    .desktop {
+      display: none;
+    }
+
+    div + div {
+      margin-top: 28px;
+    }
   }
 `;

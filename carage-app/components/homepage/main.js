@@ -3,9 +3,10 @@ import styled from "styled-components";
 export const Main = () => {
   return (
     <MainContent>
-      <img src="assets/homepage_image.svg" height="50%"></img>
+      <div className="text-title mobile-title">LoremWhat is Lorem Ipsum?</div>
+      <img src="assets/homepage_image.svg" className="content-img"></img>
       <div className="homepage-text">
-        <div className="text-title">LoremWhat is Lorem Ipsum?</div>
+        <div className="text-title desktop-title">LoremWhat is Lorem Ipsum?</div>
         <div className="text-body homepage-body">
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
@@ -32,5 +33,37 @@ const MainContent = styled.div`
 
   .homepage-body {
     margin-top: 5%;
+  }
+
+  .mobile-title {
+    display: none;
+    text-align: center;
+  }
+
+  @media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 568px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+    flex-direction: column;
+    padding-left: 0%;
+    padding-right: 0%;
+    padding-top: 20%;
+    padding-bottom: 20%;
+    gap: 35px;
+
+    .mobile-title {
+    display: initial;
+  }
+
+    .desktop-title {
+      display: none;
+    }
+
+    .content-img {
+      width: 80%;
+    }
+  
+
   }
 `;
