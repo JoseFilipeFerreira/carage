@@ -47,21 +47,21 @@ pub struct Car {
 type DieselResult<T> = Result<T, diesel::result::Error>;
 
 impl Car {
-    pub fn from_api(car: ApiCar, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
+    pub fn from_api(car: ApiCar, conn: &PgConnection) -> DieselResult<Self> {
         diesel::insert_into(Self::table())
             .values(Self::from(car))
             .get_result(conn)
     }
 
-    pub fn update(&self, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
+    pub fn update(&self, conn: &PgConnection) -> DieselResult<Self> {
         diesel::update(Self::table()).set(self).get_result(conn)
     }
 
-    pub fn delete(car: String, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
+    pub fn delete(car: String, conn: &PgConnection) -> DieselResult<Self> {
         diesel::delete(Self::table().find(car)).get_result(conn)
     }
 
-    pub fn get(car: String, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
+    pub fn get(car: String, conn: &PgConnection) -> DieselResult<Self> {
         Self::table().find(car).first(conn)
     }
 }
