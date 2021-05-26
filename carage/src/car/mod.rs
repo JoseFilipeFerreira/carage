@@ -44,6 +44,8 @@ pub struct Car {
     owner: String,
 }
 
+type DieselResult<T> = Result<T, diesel::result::Error>;
+
 impl Car {
     pub fn from_api(car: ApiCar, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
         diesel::insert_into(Self::table())

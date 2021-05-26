@@ -1,7 +1,7 @@
 use super::{Ad, ApiAd};
-use crate::Db;
+use crate::fairings::Db;
 use lazy_static::lazy_static;
-use rocket_contrib::json::Json;
+use rocket::serde::json::Json;
 use uuid::Uuid;
 
 lazy_static! {

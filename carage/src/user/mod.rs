@@ -139,4 +139,14 @@ impl User {
             update_date: dbuser.update_date,
         })
     }
+
+    pub fn check_passwd(&self, password: &str) -> bool {
+        self.passwd == password
+    }
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Eq, Clone, Debug)]
+pub struct UserCreds {
+    pub email: String,
+    pub password: String,
 }
