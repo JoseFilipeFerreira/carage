@@ -1,7 +1,7 @@
 use super::{ApiCar, Car};
-use crate::Db;
+use crate::fairings::Db;
 use lazy_static::lazy_static;
-use rocket_contrib::json::Json;
+use rocket::serde::json::Json;
 
 lazy_static! {
     pub static ref ROUTES: Vec<rocket::Route> = routes![get, create, remove];

@@ -1,7 +1,7 @@
 use super::{ApiMaintenance, DbMaintenance};
-use crate::Db;
+use crate::fairings::Db;
 use lazy_static::lazy_static;
-use rocket_contrib::json::Json;
+use rocket::serde::json::Json;
 use uuid::Uuid;
 
 lazy_static! {
@@ -10,13 +10,10 @@ lazy_static! {
 
 #[post("/create", format = "json", data = "<maint>")]
 pub async fn create(conn: Db, maint: Json<ApiMaintenance>) -> Option<Json<DbMaintenance>> {
-    match conn
-        .run(move |c| DbMaintenance::from_api(maint.clone(), c))
+    conn.run(move |c| DbMaintenance::from_api(maint.clone(), c))
         .await
-    {
-        Ok(u) => Some(Json(u)),
-        _ => None,
-    }
+        .ok()
+        .map(Json)
 }
 
 //TODO: Error reporting

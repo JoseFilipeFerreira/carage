@@ -1,8 +1,8 @@
 use super::Model;
-use crate::Db;
+use crate::fairings::Db;
 use diesel::{associations::HasTable, ExpressionMethods, QueryDsl, RunQueryDsl};
 use lazy_static::lazy_static;
-use rocket_contrib::json::Json;
+use rocket::serde::json::Json;
 
 lazy_static! {
     pub static ref ROUTES: Vec<rocket::Route> = routes![make, models];
