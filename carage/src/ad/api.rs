@@ -18,10 +18,7 @@ pub async fn create(conn: Db, _claims: Claims, ad: Json<ApiAd>) -> Option<Json<A
 
 //TODO: Error reporting
 #[post("/", data = "<ad>")]
-pub async fn get(
-    conn: Db,
-    ad: String,
-) -> Option<Json<Ad>> {
+pub async fn get(conn: Db, ad: String) -> Option<Json<Ad>> {
     if let Ok(ad) = Uuid::parse_str(&ad) {
         match conn.run(move |c| Ad::get(ad, c)).await {
             Ok(u) => Some(Json(u)),

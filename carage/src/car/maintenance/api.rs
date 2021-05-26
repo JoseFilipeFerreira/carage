@@ -23,10 +23,7 @@ pub async fn create(
 
 //TODO: Error reporting
 #[get("/<maint>")]
-pub async fn get(
-    conn: Db,
-    maint: String,
-) -> Option<Json<DbMaintenance>> {
+pub async fn get(conn: Db, maint: String) -> Option<Json<DbMaintenance>> {
     if let Ok(maint) = Uuid::parse_str(&maint) {
         match conn.run(move |c| DbMaintenance::get(maint, c)).await {
             Ok(u) => Some(Json(u)),

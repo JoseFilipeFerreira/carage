@@ -17,10 +17,7 @@ pub async fn create(conn: Db, _claims: Claims, car: Json<ApiCar>) -> Option<Json
 
 //TODO: Error reporting
 #[post("/", data = "<car>")]
-pub async fn get(
-    conn: Db,
-    car: String,
-) -> Option<Json<Car>> {
+pub async fn get(conn: Db, car: String) -> Option<Json<Car>> {
     match conn.run(|c| Car::get(car, c)).await {
         Ok(u) => Some(Json(u)),
         _ => None,

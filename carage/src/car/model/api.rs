@@ -27,10 +27,7 @@ pub async fn make(conn: Db) -> Option<Json<Vec<String>>> {
 
 //TODO: Error reporting
 #[get("/models", data = "<make>")]
-pub async fn models(
-    conn: Db,
-    make: String,
-) -> Option<Json<Vec<Model>>> {
+pub async fn models(conn: Db, make: String) -> Option<Json<Vec<Model>>> {
     match conn
         .run(|c| {
             Model::table()
