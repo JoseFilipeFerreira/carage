@@ -19,7 +19,6 @@ pub async fn create(conn: Db, user: Json<ApiUser>) -> Option<Json<DbUser>> {
 //TODO: Error reporting
 #[post("/", data = "<email>")]
 pub async fn get(
-    //_wakey: ApiKey,
     conn: Db,
     email: String,
 ) -> Option<Json<User>> {
@@ -57,4 +56,3 @@ pub async fn login(conn: Db, creds: Json<UserCreds>) -> Option<Json<String>> {
         };
     }
     None
-}
