@@ -9,6 +9,8 @@ lazy_static! {
 }
 
 //TODO: Check car ownership
+//Since the car sharing feature is not implemented yet
+//this needs to be fixed later
 #[post("/create", format = "json", data = "<maint>")]
 pub async fn create(
     conn: Db,
