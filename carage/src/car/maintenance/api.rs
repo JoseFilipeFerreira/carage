@@ -9,6 +9,8 @@ lazy_static! {
 }
 
 //TODO: Check car ownership
+//Since the car sharing feature is not implemented yet
+//this needs to be fixed later
 #[post("/create", format = "json", data = "<maint>")]
 pub async fn create(
     conn: Db,
@@ -25,7 +27,7 @@ pub async fn create(
 #[get("/<maint>")]
 pub async fn get(conn: Db, maint: String) -> Option<Json<DbMaintenance>> {
     if let Ok(maint) = Uuid::parse_str(&maint) {
-        match conn.run(move |c| DbMaintenance::get(maint, c)).await {
+        match conn.run(move |c| DbMaintenance::get(&maint, c)).await {
             Ok(u) => Some(Json(u)),
             _ => None,
         }
@@ -34,14 +36,17 @@ pub async fn get(conn: Db, maint: String) -> Option<Json<DbMaintenance>> {
     }
 }
 
-//TODO: Check ownership
 #[delete("/remove", data = "<maint>")]
-pub async fn remove(conn: Db, _claims: Claims, maint: String) -> Option<Json<DbMaintenance>> {
+pub async fn remove(conn: Db, claims: Claims, maint: String) -> Option<Json<DbMaintenance>> {
     if let Ok(maint) = Uuid::parse_str(&maint) {
-        match conn.run(move |c| DbMaintenance::delete(maint, c)).await {
-            Ok(u) => Some(Json(u)),
-            _ => None,
-        }
+        conn.run(move |c| {
+            DbMaintenance::get(&maint, c)
+                .ok()
+                .filter(|m| m.owner == claims.email)
+                .map(|_m| DbMaintenance::delete(&maint, c).ok().map(Json))
+        })
+        .await
+        .unwrap_or(None)
     } else {
         None
     }

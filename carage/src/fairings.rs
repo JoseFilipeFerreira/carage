@@ -55,7 +55,7 @@ impl<'r> FromRequest<'r> for Claims {
         ) {
             Outcome::Success(token_message.claims)
         } else {
-            Outcome::Failure((Status::BadRequest, ()))
+            Outcome::Failure((Status::Unauthorized, ()))
         }
     }
 }
