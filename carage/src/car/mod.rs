@@ -41,7 +41,7 @@ pub struct Car {
     gearbox: Gearbox,
     car_date: NaiveDate,
     add_date: NaiveDateTime,
-    owner: String,
+    pub owner: String,
 }
 
 type DieselResult<T> = Result<T, diesel::result::Error>;
@@ -57,11 +57,11 @@ impl Car {
         diesel::update(Self::table()).set(self).get_result(conn)
     }
 
-    pub fn delete(car: String, conn: &PgConnection) -> DieselResult<Self> {
+    pub fn delete(car: &str, conn: &PgConnection) -> DieselResult<Self> {
         diesel::delete(Self::table().find(car)).get_result(conn)
     }
 
-    pub fn get(car: String, conn: &PgConnection) -> DieselResult<Self> {
+    pub fn get(car: &str, conn: &PgConnection) -> DieselResult<Self> {
         Self::table().find(car).first(conn)
     }
 }

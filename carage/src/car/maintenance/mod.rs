@@ -63,11 +63,11 @@ impl DbMaintenance {
         diesel::update(Self::table()).set(self).get_result(conn)
     }
 
-    pub fn delete(id: Uuid, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
+    pub fn delete(id: &Uuid, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
         diesel::delete(Self::table().find(id)).get_result(conn)
     }
 
-    pub fn get(id: Uuid, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
+    pub fn get(id: &Uuid, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
         Self::table().find(id).first(conn)
     }
 }
