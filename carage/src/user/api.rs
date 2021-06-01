@@ -18,11 +18,7 @@ pub async fn create(conn: Db, user: Json<ApiUser>) -> Option<Json<DbUser>> {
 
 //TODO: Error reporting
 #[post("/", data = "<email>")]
-pub async fn get(
-    //_wakey: ApiKey,
-    conn: Db,
-    email: String,
-) -> Option<Json<User>> {
+pub async fn get(conn: Db, email: String) -> Option<Json<User>> {
     match conn.run(|c| User::get(email, c)).await {
         Ok(u) => Some(Json(u)),
         _ => None,

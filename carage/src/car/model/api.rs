@@ -8,6 +8,7 @@ lazy_static! {
     pub static ref ROUTES: Vec<rocket::Route> = routes![make, models];
 }
 
+//TODO: Discuss if users can submit car models
 #[get("/make")]
 pub async fn make(conn: Db) -> Option<Json<Vec<String>>> {
     match conn
@@ -26,11 +27,7 @@ pub async fn make(conn: Db) -> Option<Json<Vec<String>>> {
 
 //TODO: Error reporting
 #[get("/models", data = "<make>")]
-pub async fn models(
-    //_wakey: ApiKey,
-    conn: Db,
-    make: String,
-) -> Option<Json<Vec<Model>>> {
+pub async fn models(conn: Db, make: String) -> Option<Json<Vec<Model>>> {
     match conn
         .run(|c| {
             Model::table()
