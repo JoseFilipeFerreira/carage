@@ -6,12 +6,9 @@ export const Main = () => {
       <div className="text-title mobile-title">LoremWhat is Lorem Ipsum?</div>
       <img src="assets/homepage_image.svg" className="content-img"></img>
       <div className="homepage-text">
-        <div className="text-title desktop-title">LoremWhat is Lorem Ipsum?</div>
+        <div className="text-title desktop-title">Your Virtual Garage And Car Market In One Place</div>
         <div className="text-body homepage-body">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
+        Keep your vehicle information in just one place and decide if you want to sell them or buy a new one later
         </div>
       </div>
     </MainContent>

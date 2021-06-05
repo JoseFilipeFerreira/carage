@@ -15,6 +15,7 @@ export default function Home() {
     console.log("State after dispatch: ", store.getState())
   );
 
+
   return (
     <Provider store={store}>
       <Container>

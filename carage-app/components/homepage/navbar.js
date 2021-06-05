@@ -1,9 +1,12 @@
 import styled from "styled-components";
-
+import { useDispatch } from "react-redux";
 import { Options } from "./navbar/Options";
 import { Sign } from "./navbar/Sign";
 
 export const Navbar = () => {
+  const dispatch = useDispatch();
+  dispatch({ type: "sign/hideSign" })
+  
   return (
     <Nav>
       <a className="text-title logo" href="/">

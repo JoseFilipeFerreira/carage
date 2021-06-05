@@ -11,7 +11,7 @@ export const Footer = () => {
       <Social />
       <div className="text-title logo mobile">CARAGE</div>
       <div className="text-footnote made-with">
-        Made with <span>❤️</span> by Group 7
+        Made with <span>❤️</span> by Project 93
       </div>
       <div className="text-footnote direitos mobile">
         2021 © Todos os direitos reservados

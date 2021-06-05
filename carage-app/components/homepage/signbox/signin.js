@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+import Link from 'next/link'
 
 export const SignIn = () => {
   const showLogin = (state) => state.sign.showLogin;
@@ -15,7 +16,7 @@ export const SignIn = () => {
             <div className="box-header">
               <div className="text-title">Log In</div>
               <svg onClick={() => dispatch({ type: "sign/hideSign" })}>
-                <use href="#close"/>
+                <use href="#close" />
               </svg>
             </div>
             <div className="text-footnote">
@@ -46,7 +47,9 @@ export const SignIn = () => {
             ></input>
           </div>
           <div className="login-button">
-            <button className="text-button">Log In</button>
+            <Link href={`/dashboard`}>
+              <button className="text-button">Log In</button>
+            </Link>
           </div>
         </form>
       </SIBox>
@@ -147,11 +150,11 @@ const SIBox = styled.div`
   }
 
   @keyframes show {
-  0% {
-    opacity: 0%;
+    0% {
+      opacity: 0%;
+    }
+    100% {
+      opacity: 100%;
+    }
   }
-  100% {
-    opacity: 100%;
-  }
-}
 `;

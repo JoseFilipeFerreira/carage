@@ -6,6 +6,7 @@ export default createGlobalStyle`
           --LEI1-1: rgba(21, 20, 23, 0.7);
           --LEI2: #1f1e21;
           --LEI2-1: #3e3c42;
+          --LEI2-2: #262529;
           --LEI3: #ff5023;
           --LEI3-1: #ff7f5e;
           --LEI4: #4f73cf;
@@ -71,6 +72,14 @@ export default createGlobalStyle`
           font-weight: 500;
           font-size: 13px;
           line-height: 18px;
+        }
+
+        .text-headline {
+          font-family: Gotham;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 20px;
+          line-height: 24px;
         }
 
         * {
