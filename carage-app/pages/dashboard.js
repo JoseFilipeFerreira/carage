@@ -25,7 +25,7 @@ export default function Home() {
             content="width=device-width, initial-scale=1.0"
           ></meta>
         </Head>
-        <Navbar/>
+        <Navbar focused="dashboard"/>
         <Main/>
       </Container>
     </Provider>

@@ -1,21 +1,40 @@
 import styled from "styled-components";
 import { Option } from "./navbar/option";
+import Link from 'next/link'
 
-export const Navbar = () => {
+export const Navbar = ({ focused }) => {
+  let dashboard = false;
+  let cars = false;
+  let market = false;
+
+  switch (focused) {
+    case "dashboard":
+      dashboard = true;
+      break;
+    case "cars":
+      cars = true;
+      break;
+    case "market":
+      market = true;
+      break;
+    default:
+      break;
+  }
+
   return (
     <Nav>
-      <a className="text-title logo" href="/">
+      <Link className="text-title logo" href={`/`} passHref>
         <div className="logo">CARAGE</div>
-      </a>
-      <a href="/dashboard">
-        <Option title="Home" focused={true}/>
-      </a>
-      <a href="/dashboard/cars">
-        <Option title="Cars"/>
-      </a>
-      <a href="/dashboard/market">
-        <Option title="Market"/>
-      </a>
+      </Link>
+      <Link href={`/dashboard`} passHref>
+        <Option title="Home" focused={dashboard} />
+      </Link>
+      <Link href={`/dashboard/cars`} passHref>
+        <Option title="Cars" focused={cars} />
+      </Link>
+      <Link href={`/dashboard/market`} passHref>
+        <Option title="Market" focused={market} />
+      </Link>
     </Nav>
   );
 };
@@ -38,7 +57,9 @@ const Nav = styled.div`
     font-size: 40px;
     height: 216px;
     padding-top: 30px;
+    font-weight: bold;
   }
+
 
   /* Portrait and Landscape */
   @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {

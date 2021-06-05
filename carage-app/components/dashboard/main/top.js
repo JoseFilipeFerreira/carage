@@ -36,7 +36,7 @@ export const Top = ({ title }) => {
 
 const TopSection = styled.div`
   width: 100%;
-  height: 216px;
+  height: 130px;
   display: flex;
   flex-direction: row;
   align-items: center;
