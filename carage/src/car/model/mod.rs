@@ -23,8 +23,8 @@ pub struct Model {
     id: Uuid,
     make: String,
     model: String,
-    power: Option<i32>,
-    engine_size: Option<i32>,
+    power: i32,
+    engine_size: i32,
     fuel: Fuel,
     body_type: Bodytype,
 }
