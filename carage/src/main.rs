@@ -12,7 +12,7 @@ pub mod user;
 use crate::ad::api::ROUTES as AD_ROUTES;
 use crate::car::{
     api::ROUTES as CAR_ROUTES, maintenance::api::ROUTES as MAINT_ROUTES,
-    model::api::ROUTES as MODEL_ROUTES,
+    model::api::ROUTES as MODEL_ROUTES, share::api::ROUTES as SHARE_ROUTES,
 };
 use crate::user::api::ROUTES as USER_ROUTES;
 
@@ -25,6 +25,7 @@ pub fn rocket() -> _ {
         .mount("/ad", AD_ROUTES.to_vec())
         .mount("/car/model", MODEL_ROUTES.to_vec())
         .mount("/car/maintenance", MAINT_ROUTES.to_vec())
+        .mount("/car/share", SHARE_ROUTES.to_vec())
         .attach(fairings::Cors())
         .attach(fairings::Db::fairing())
 }
