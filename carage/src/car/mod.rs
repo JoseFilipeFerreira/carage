@@ -6,7 +6,7 @@ use crate::{schema::cars, user::DbUser};
 use chrono::{NaiveDate, NaiveDateTime};
 use diesel::{
     associations::HasTable, pg::PgConnection, AsExpression, Associations, Identifiable, Insertable,
-    QueryDsl, Queryable, RunQueryDsl,
+    QueryDsl, QueryResult, Queryable, RunQueryDsl,
 };
 use diesel_derive_enum::DbEnum;
 use model::Model;
@@ -44,24 +44,22 @@ pub struct Car {
     pub owner: String,
 }
 
-type DieselResult<T> = Result<T, diesel::result::Error>;
-
 impl Car {
-    pub fn from_api(car: ApiCar, conn: &PgConnection) -> DieselResult<Self> {
+    pub fn from_api(car: ApiCar, conn: &PgConnection) -> QueryResult<Self> {
         diesel::insert_into(Self::table())
             .values(Self::from(car))
             .get_result(conn)
     }
 
-    pub fn update(&self, conn: &PgConnection) -> DieselResult<Self> {
+    pub fn update(&self, conn: &PgConnection) -> QueryResult<Self> {
         diesel::update(Self::table()).set(self).get_result(conn)
     }
 
-    pub fn delete(car: &str, conn: &PgConnection) -> DieselResult<Self> {
+    pub fn delete(car: &str, conn: &PgConnection) -> QueryResult<Self> {
         diesel::delete(Self::table().find(car)).get_result(conn)
     }
 
-    pub fn get(car: &str, conn: &PgConnection) -> DieselResult<Self> {
+    pub fn get(car: &str, conn: &PgConnection) -> QueryResult<Self> {
         Self::table().find(car).first(conn)
     }
 }
