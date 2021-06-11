@@ -76,8 +76,8 @@ table! {
         id -> Uuid,
         make -> Varchar,
         model -> Varchar,
-        power -> Nullable<Int4>,
-        engine_size -> Nullable<Int4>,
+        power -> Int4,
+        engine_size -> Int4,
         fuel -> Fuelenum,
         body_type -> Bodytypeenum,
     }
