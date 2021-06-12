@@ -17,12 +17,12 @@ use uuid::Uuid;
     Queryable,
     Identifiable,
     AsExpression,
-    QueryId,
-    AsChangeset,
     PartialEq,
     Debug,
     Eq,
     Clone,
+    QueryId,
+    AsChangeset,
 )]
 #[belongs_to(DbUser, foreign_key = "owner")]
 #[belongs_to(Car, foreign_key = "car")]
