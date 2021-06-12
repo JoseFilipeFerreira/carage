@@ -32,14 +32,21 @@ pub struct DbUser {
     passwd: String,
     create_date: NaiveDateTime,
     update_date: NaiveDateTime,
+    phone: Option<i32>,
 }
 
 impl DbUser {
-    pub fn new(other_email: String, other_name: String, other_passwd: String) -> Self {
+    pub fn new(
+        other_email: String,
+        other_name: String,
+        other_passwd: String,
+        other_phone: Option<i32>,
+    ) -> Self {
         DbUser {
             email: other_email,
             name: other_name,
             passwd: other_passwd,
+            phone: other_phone,
             create_date: chrono::Utc::now().naive_utc(),
             update_date: chrono::Utc::now().naive_utc(),
         }
@@ -49,12 +56,14 @@ impl DbUser {
         other_email: String,
         other_name: String,
         other_passwd: String,
+        other_phone: Option<i32>,
         conn: &PgConnection,
     ) -> Result<Self, diesel::result::Error> {
         let u = DbUser {
             email: other_email,
             name: other_name,
             passwd: other_passwd,
+            phone: other_phone,
             create_date: chrono::Utc::now().naive_utc(),
             update_date: chrono::Utc::now().naive_utc(),
         };
@@ -82,6 +91,7 @@ impl From<User> for DbUser {
             email: user.email,
             name: user.name,
             passwd: user.passwd,
+            phone: user.phone,
             create_date: user.create_date,
             update_date: user.update_date,
         }
@@ -94,6 +104,7 @@ impl From<ApiUser> for DbUser {
             email: user.email,
             name: user.name,
             passwd: user.passwd,
+            phone: user.phone,
             create_date: chrono::Utc::now().naive_utc(),
             update_date: chrono::Utc::now().naive_utc(),
         }
@@ -105,6 +116,7 @@ pub struct ApiUser {
     email: String,
     name: String,
     passwd: String,
+    phone: Option<i32>,
 }
 
 #[derive(Serialize, Deserialize, Eq, PartialEq, Debug)]
@@ -112,6 +124,7 @@ pub struct User {
     email: String,
     name: String,
     passwd: String,
+    phone: Option<i32>,
     my_cars: Vec<Car>,
     shared_cars: Vec<CarShare>,
     ads: Vec<Ad>,
@@ -132,6 +145,7 @@ impl User {
             email: dbuser.email,
             name: dbuser.name,
             passwd: dbuser.passwd,
+            phone: dbuser.phone,
             my_cars,
             shared_cars,
             ads: other_ads,

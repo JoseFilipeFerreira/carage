@@ -93,6 +93,7 @@ table! {
         passwd -> Varchar,
         create_date -> Timestamp,
         update_date -> Timestamp,
+        phone -> Nullable<Int4>,
     }
 }
 
