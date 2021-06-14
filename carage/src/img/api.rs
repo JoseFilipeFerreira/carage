@@ -14,7 +14,7 @@ lazy_static! {
     pub static ref ROUTES: Vec<rocket::Route> = routes![get, create, remove];
 }
 
-#[post("/<id>")]
+#[get("/<id>")]
 pub async fn get(conn: Db, id: String) -> Option<NamedFile> {
     // TODO: get path from db via id
     let path = id;
@@ -37,7 +37,7 @@ pub async fn create(
             .ok_or_else(|| io::ErrorKind::InvalidInput)?,
     );
     //TODO: insert id and path into db
-    img.open(limits.get("image").unwrap_or(10.mebibytes()))
+    img.open(limits.get("file/image").unwrap_or(10.mebibytes()))
         .into_file(path)
         .await?;
     Ok(id.to_string())
