@@ -48,14 +48,20 @@ pub struct Auth(String);
 impl<'r> FromRequest<'r> for Claims {
     type Error = ();
     async fn from_request(request: &'r Request<'_>) -> Outcome<Self, Self::Error> {
-        if let Ok(token_message) = decode::<Self>(
+        let v = Validation {
+            validate_exp: false,
+            ..Default::default()
+        };
+        match decode::<Self>(
             &request.headers().get_one("jwt").unwrap(),
-            &DecodingKey::from_secret("secret".as_ref()),
-            &Validation::new(Algorithm::HS256),
+            &DecodingKey::from_secret(b"secret".as_ref()),
+            &v,
         ) {
-            Outcome::Success(token_message.claims)
-        } else {
-            Outcome::Failure((Status::Unauthorized, ()))
+            Ok(token_message) => Outcome::Success(token_message.claims),
+            Err(a) => {
+                dbg!(a);
+                Outcome::Failure((Status::Unauthorized, ()))
+            }
         }
     }
 }

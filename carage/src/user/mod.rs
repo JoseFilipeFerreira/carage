@@ -169,5 +169,5 @@ impl User {
 #[derive(Serialize, Deserialize, PartialEq, Eq, Clone, Debug)]
 pub struct UserCreds {
     pub email: String,
-    pub password: String,
+    pub passwd: String,
 }
