@@ -69,11 +69,27 @@ pub struct ApiCar {
     vin: String,
     name: Option<String>,
     number_plate: Option<String>,
-    kms: i32,
-    model: Uuid,
-    gearbox: Gearbox,
-    car_date: NaiveDate,
-    owner: String,
+    kms: Option<i32>,
+    model: Option<Uuid>,
+    gearbox: Option<Gearbox>,
+    car_date: Option<NaiveDate>,
+    owner: Option<String>,
+}
+
+impl ApiCar {
+    pub fn merge(&self, other: Car) -> Car {
+        Car {
+            vin: other.vin,
+            name: self.name.clone(),
+            number_plate: self.number_plate.clone(),
+            kms: self.kms.unwrap_or(other.kms),
+            model: other.model,
+            gearbox: self.gearbox.unwrap_or(other.gearbox),
+            car_date: self.car_date.unwrap_or(other.car_date),
+            add_date: other.add_date,
+            owner: other.owner,
+        }
+    }
 }
 
 impl From<ApiCar> for Car {
@@ -82,12 +98,12 @@ impl From<ApiCar> for Car {
             vin: other.vin,
             name: other.name,
             number_plate: other.number_plate,
-            kms: other.kms,
-            model: other.model,
-            gearbox: other.gearbox,
-            car_date: other.car_date,
+            kms: other.kms.unwrap(),
+            model: other.model.unwrap(),
+            gearbox: other.gearbox.unwrap(),
+            car_date: other.car_date.unwrap(),
             add_date: chrono::Utc::now().naive_utc(),
-            owner: other.owner,
+            owner: other.owner.unwrap(),
         }
     }
 }
