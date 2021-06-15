@@ -15,7 +15,7 @@ lazy_static! {
 }
 
 #[get("/<id>")]
-pub async fn get(conn: Db, id: String) -> Option<NamedFile> {
+pub async fn get(_conn: Db, id: String) -> Option<NamedFile> {
     // TODO: get path from db via id
     let path = id;
     NamedFile::open(Path::new("images/").join(path)).await.ok()
@@ -23,7 +23,7 @@ pub async fn get(conn: Db, id: String) -> Option<NamedFile> {
 
 #[post("/create/<filename>", data = "<img>")]
 pub async fn create(
-    conn: Db,
+    _conn: Db,
     filename: PathBuf,
     img: Data,
     _claims: Claims,
@@ -34,17 +34,17 @@ pub async fn create(
         filename
             .as_path()
             .extension()
-            .ok_or_else(|| io::ErrorKind::InvalidInput)?,
+            .ok_or(io::ErrorKind::InvalidInput)?,
     );
     //TODO: insert id and path into db
-    img.open(limits.get("file/image").unwrap_or(10.mebibytes()))
+    img.open(limits.get("file/image").unwrap_or_else(|| 10.mebibytes()))
         .into_file(path)
         .await?;
     Ok(id.to_string())
 }
 
 #[delete("/remove/<id>")]
-pub async fn remove(conn: Db, id: String, _claims: Claims) -> io::Result<()> {
+pub async fn remove(_conn: Db, id: String, _claims: Claims) -> io::Result<()> {
     // TODO: get path from db via id
     let path = id;
     //TODO: delete entry from database
