@@ -37,10 +37,6 @@ impl File {
             .get_result(conn)
     }
 
-    pub fn update(&self, conn: &PgConnection) -> QueryResult<Self> {
-        diesel::update(Self::table()).set(self).get_result(conn)
-    }
-
     pub fn delete(file: &str, conn: &PgConnection) -> QueryResult<Self> {
         diesel::delete(Self::table().find(file)).get_result(conn)
     }
