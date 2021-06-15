@@ -1,4 +1,5 @@
 use crate::fairings::{Claims, Db};
+use super::{FileApi, File};
 use lazy_static::lazy_static;
 use rocket::{
     data::{Data, Limits, ToByteUnit},
@@ -15,15 +16,19 @@ lazy_static! {
 }
 
 #[get("/<id>")]
-pub async fn get(_conn: Db, id: String) -> Option<NamedFile> {
+pub async fn get(conn: Db, id: String) -> Option<NamedFile> {
     // TODO: get path from db via id
-    let path = id;
+    let path = match conn.run(move |c| File::get(&id, c)).await {
+        Ok(f) => Some(f.filename),
+        _ => None,
+    }?;
     NamedFile::open(Path::new("images/").join(path)).await.ok()
 }
 
-#[post("/create/<filename>", data = "<img>")]
+#[post("/create/<car_id>/<filename>", data = "<img>")]
 pub async fn create(
     _conn: Db,
+    car_id: String,
     filename: PathBuf,
     img: Data,
     _claims: Claims,
