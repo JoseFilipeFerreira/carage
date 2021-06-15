@@ -6,6 +6,7 @@ use diesel::{
 };
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
+use rocket::data::Data;
 
 #[derive(
     Serialize,
@@ -40,14 +41,11 @@ impl File {
     pub fn delete(file: &str, conn: &PgConnection) -> QueryResult<Self> {
         diesel::delete(Self::table().find(file)).get_result(conn)
     }
-
-    pub fn get(file: &str, conn: &PgConnection) -> QueryResult<Self> {
-        Self::table().find(file).first(conn)
-    }
 }
 
 #[derive(Serialize, Clone, Deserialize, Eq, PartialEq, Debug, Insertable)]
 pub struct FileApi {
     pub filename: String,
     pub car_id: String,
+    pub image: String,
 }

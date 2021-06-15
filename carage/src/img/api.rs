@@ -25,31 +25,29 @@ pub async fn get(conn: Db, id: String) -> Option<NamedFile> {
     NamedFile::open(Path::new("images/").join(path)).await.ok()
 }
 
-#[post("/create/<car_id>/<filename>", data = "<img>")]
+#[post("/create", data = "<img>")]
 pub async fn create(
     _conn: Db,
-    car_id: String,
-    filename: PathBuf,
-    img: Data,
+    img: Json<FileApi>,
     _claims: Claims,
     limits: &Limits,
 ) -> Result<String, std::io::Error> {
     let id = Uuid::new_v4();
     let path = Path::new("images/").join(id.to_string()).join(
-        filename
-            .as_path()
+        Path::new(&img.filename)
             .extension()
             .ok_or(io::ErrorKind::InvalidInput)?,
     );
-    //TODO: insert id and path into db
-    img.open(limits.get("file/image").unwrap_or_else(|| 10.mebibytes()))
+    //TODO: insert id, path and car_id into db
+    //TODO: convert to file
+    img.image.open(limits.get("file/image").unwrap_or_else(|| 10.mebibytes()))
         .into_file(path)
         .await?;
     Ok(id.to_string())
 }
 
-#[delete("/remove/<id>")]
-pub async fn remove(_conn: Db, id: String, _claims: Claims) -> io::Result<()> {
+#[delete("/remove/<car_id>/<id>")]
+pub async fn remove(_conn: Db, id: String, car_id: String, _claims: Claims) -> io::Result<()> {
     // TODO: get path from db via id
     let path = id;
     //TODO: delete entry from database
