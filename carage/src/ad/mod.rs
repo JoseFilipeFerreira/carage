@@ -59,9 +59,10 @@ impl Ad {
 
 #[derive(Serialize, Clone, Deserialize, Eq, PartialEq, Debug)]
 pub struct ApiAd {
+    id: Option<Uuid>,
     car: String,
     owner: String,
-    price: i32,
+    price: Option<i32>,
     promo_price: Option<i32>,
 }
 
@@ -71,9 +72,35 @@ impl From<ApiAd> for Ad {
             id: Uuid::new_v4(),
             car: other.car,
             owner: other.owner,
-            price: other.price,
+            price: other.price.unwrap(),
             promo_price: other.promo_price,
             create_date: chrono::Utc::now().naive_utc(),
+            update_date: chrono::Utc::now().naive_utc(),
+        }
+    }
+}
+
+impl From<Ad> for ApiAd {
+    fn from(other: Ad) -> Self {
+        Self {
+            id: Some(other.id),
+            car: other.car,
+            owner: other.owner,
+            price: Some(other.price),
+            promo_price: other.promo_price,
+        }
+    }
+}
+
+impl ApiAd {
+    pub fn merge(&self, other: Ad) -> Ad {
+        Ad {
+            id: self.id.unwrap(),
+            car: other.car,
+            owner: other.owner,
+            price: self.price.unwrap_or(other.price),
+            promo_price: self.promo_price,
+            create_date: other.create_date,
             update_date: chrono::Utc::now().naive_utc(),
         }
     }
