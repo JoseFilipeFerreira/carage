@@ -2,13 +2,13 @@ import styled from "styled-components";
 
 import { Stat } from "./stats/stat";
 
-export const Stats = ({ title }) => {
+export const Stats = ({ title, cars, shared_cars, ads, fav_ads }) => {
   return (
     <StatsSections>
-        <Stat title="Cars" value="3" icon="Car"/>
-        <Stat title="Ads" value="0" icon="Ads"/>
-        <Stat title="Favourite Ads" value="0" icon="Favourite"/>
-        <Stat title="Shared Cars" value="0" icon="Car" />
+        <Stat title="Cars" value={cars} icon="Car"/>
+        <Stat title="Ads" value={ads} icon="Ads"/>
+        <Stat title="Favourite Ads" value={fav_ads} icon="Favourite"/>
+        <Stat title="Shared Cars" value={shared_cars} icon="Car" />
     </StatsSections>
   );
 };

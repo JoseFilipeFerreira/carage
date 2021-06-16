@@ -3,11 +3,12 @@ import { Top } from "./main/top";
 import { Stats } from "./main/stats";
 import { GraphPanel } from "./main/graphpanel";
 
-export const Main = () => {
+export const Main = ({user}) => {
+  console.log(user)
   return (
     <Dash>
         <Top title="Dashboard"/>
-        <Stats/>
+        <Stats cars={user.my_cars.length} shared_cars={user.shared_cars.length} ads={user.ads.length} fav_ads={user.fav_ads.length}/>
         <div className="divisor"></div>
         <GraphPanel />
     </Dash>
