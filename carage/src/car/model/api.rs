@@ -3,6 +3,7 @@ use crate::fairings::Db;
 use diesel::{associations::HasTable, ExpressionMethods, QueryDsl, RunQueryDsl};
 use lazy_static::lazy_static;
 use rocket::serde::json::Json;
+use uuid::Uuid;
 
 lazy_static! {
     pub static ref ROUTES: Vec<rocket::Route> = routes![make, models, variant];
@@ -60,5 +61,14 @@ pub async fn variant(conn: Db, make: Json<ModelDetails>) -> Option<Json<Vec<Mode
             dbg!(a);
             None
         }
+    }
+}
+
+#[get("/<id>")]
+pub async fn get(conn: Db, id: String) -> Option<Json<Model>> {
+    if let Ok(id) = Uuid::parse_str(&id) {
+        conn.run(move |c| Model::get(&id, c)).await.ok().map(Json)
+    } else {
+        None
     }
 }
