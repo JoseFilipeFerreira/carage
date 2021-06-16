@@ -1,5 +1,6 @@
 use super::{Ad, ApiAd};
-use crate::fairings::{Claims, Db};
+use crate::fairings::{Claims, Db, Page};
+use diesel::{associations::HasTable, QueryDsl, RunQueryDsl};
 use lazy_static::lazy_static;
 use rocket::serde::json::Json;
 use uuid::Uuid;
@@ -27,6 +28,22 @@ pub async fn get(conn: Db, ad: String) -> Option<Json<Ad>> {
         }
     } else {
         None
+    }
+}
+
+#[post("/all", data = "<page>")]
+pub async fn all(conn: Db, page: Json<Page>) -> Option<Json<Vec<Ad>>> {
+    match conn
+        .run(move |c| {
+            Ad::table()
+                .offset(page.size * page.page)
+                .limit(page.size)
+                .get_results(c)
+        })
+        .await
+    {
+        Ok(a) => Some(Json(a)),
+        _ => None,
     }
 }
 
