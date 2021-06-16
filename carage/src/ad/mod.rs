@@ -105,3 +105,22 @@ impl ApiAd {
         }
     }
 }
+
+#[derive(Serialize, Clone, Deserialize, Eq, PartialEq, Debug)]
+pub struct AdSearch {
+    pub make: Option<String>,
+    pub model: Option<String>,
+    pub fuel: Option<crate::car::model::Fuel>,
+    pub body_type: Option<crate::car::model::Bodytype>,
+    pub gearbox: Option<crate::car::Gearbox>,
+    pub max_price: Option<i32>,
+    pub min_price: Option<i32>,
+    pub max_date: Option<chrono::NaiveDate>,
+    pub min_date: Option<chrono::NaiveDate>,
+}
+
+#[derive(Serialize, Clone, Deserialize, Eq, PartialEq, Debug)]
+pub struct FullAd {
+    pub ad: Ad,
+    pub car: Car,
+}
