@@ -1,9 +1,11 @@
 import { combineReducers } from "redux";
 
 import signReducers from "./reducers/sign";
+import userReducers from "./reducers/user";
+import carReducers from "./reducers/car";
 
-const rootReducer = combineReducers({
+export default combineReducers({
   sign: signReducers,
+  user: userReducers,
+  car: carReducers,
 });
-
-export default rootReducer
