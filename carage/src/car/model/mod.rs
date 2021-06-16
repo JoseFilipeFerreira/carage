@@ -57,3 +57,9 @@ pub enum Bodytype {
     Suv,
     Minivan,
 }
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ModelDetails {
+    pub make: String,
+    pub model: String,
+}
