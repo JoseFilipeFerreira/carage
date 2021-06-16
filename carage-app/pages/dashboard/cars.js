@@ -1,19 +1,19 @@
 import Head from "next/head";
-import store from "../../store/store";
 import { Provider } from "react-redux";
+import ErrorPage from "next/error";
+import { useDispatch, useSelector } from "react-redux";
 
 import GlobalStyle from "../../styles/globals";
 import { Container } from "../../components/dashboard/container";
 import { Navbar } from "../../components/dashboard/navbar";
 import { Main } from "../../components/cars/main";
 
-export default function Home() {
-  console.log("Initial state: ", store.getState());
-  const unsubscribe = store.subscribe(() =>
-    console.log("State after dispatch: ", store.getState())
-  );
-  return (
-    <Provider store={store}>
+const axios = require("axios");
+const cookie = require("cookie");
+
+export default function Home({ user }) {
+  if (user) {
+    return (
       <Container>
         <GlobalStyle />
         <Head>
@@ -24,9 +24,46 @@ export default function Home() {
             content="width=device-width, initial-scale=1.0"
           ></meta>
         </Head>
-        <Navbar focused="cars"/>
-        <Main />
+        <Navbar focused="cars" />
+        <Main user={user} />
       </Container>
-    </Provider>
-  );
+    );
+  } else return <ErrorPage statusCode={404} title="You don't have access to this page"/>;
 }
+
+Home.getInitialProps = async ({ req, reduxStore }) => {
+  if (req) {
+    try {
+      reduxStore.dispatch({
+        type: "user/storeToken",
+        token: cookie.parse(req.headers.cookie).jwt,
+      });
+    } catch {}
+  }
+
+  let config = {
+    headers: {
+      "Content-Type": "application/json",
+      jwt: "",
+    },
+  };
+
+  if (req) {
+    try {
+      config.headers.jwt = cookie.parse(req.headers.cookie).jwt;
+    } catch {}
+  } else {
+    config.headers.jwt = reduxStore.getState().user.token;
+  }
+
+  const result = await axios.get("http://localhost:8000/user/", config).then(
+    (response) => {
+      return { user: response.data };
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+  if (result) return result;
+  else return { user: null };
+};

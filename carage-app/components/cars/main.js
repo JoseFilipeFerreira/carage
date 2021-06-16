@@ -2,11 +2,11 @@ import styled from "styled-components";
 import { Top } from "../dashboard/main/top";
 import { Cars } from "./main/cars";
 
-export const Main = () => {
+export const Main = ({user}) => {
   return (
     <Dash>
         <Top title="Cars"/>
-        <Cars />
+        <Cars user={user}/>
     </Dash>
   );
 };
