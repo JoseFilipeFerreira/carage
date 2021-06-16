@@ -32,7 +32,7 @@ pub async fn get(conn: Db, claims: Claims) -> Option<Json<User>> {
 pub async fn smol_get(conn: Db, claims: Claims) -> Option<Json<UserCreds>> {
     match conn.run(move |c| User::get(&claims.email, c)).await {
         Ok(u) => Some(Json(UserCreds {
-            email: u.email,
+            email: u.name,
             passwd: "[REDACTED]".to_owned(),
         })),
         _ => None,
