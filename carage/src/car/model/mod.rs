@@ -39,7 +39,7 @@ pub enum Fuel {
     Eletric,
     HybridPetrol,
     HybridDiesel,
-    Gas,
+    Gpl,
     Hydrogen,
 }
 
