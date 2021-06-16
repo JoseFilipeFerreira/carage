@@ -43,19 +43,22 @@ pub async fn models(conn: Db, make: String) -> Option<Json<Vec<String>>> {
 }
 
 //TODO: Error reporting
-#[get("/variant", data = "<make>")]
+#[post("/variant", data = "<make>")]
 pub async fn variant(conn: Db, make: Json<ModelDetails>) -> Option<Json<Vec<Model>>> {
     match conn
         .run(move |c| {
             Model::table()
-                .filter(crate::schema::models::make.eq(make.make.clone()))
-                .filter(crate::schema::models::model.eq(make.model.clone()))
+                .filter(crate::schema::models::make.eq(dbg!(make.make.clone())))
+                .filter(crate::schema::models::model.eq(dbg!(make.model.clone())))
                 .distinct()
-                .get_results(c)
+                .get_results::<Model>(c)
         })
         .await
     {
         Ok(u) => Some(Json(u)),
-        _ => None,
+        Err(a) => {
+            dbg!(a);
+            None
+        }
     }
 }
