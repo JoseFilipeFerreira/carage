@@ -3,13 +3,13 @@ import { Top } from "../dashboard/main/top";
 import { Ads } from "./main/ads";
 import { Filters } from "./main/filters";
 
-export const Main = () => {
+export const Main = ({ ads }) => {
   return (
     <Dash>
         <Top title="Market"/>
         <Filters />
         <div className="divisor"></div>
-        <Ads />
+        <Ads ads={ads}/>
     </Dash>
   );
 };
