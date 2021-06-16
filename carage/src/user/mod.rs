@@ -125,7 +125,7 @@ impl ApiUser {
             email: other_user.email,
             name: self.name.unwrap_or(other_user.name),
             passwd: self.passwd.unwrap_or(other_user.passwd),
-            phone: self.phone,
+            phone: self.phone.or(other_user.phone),
             create_date: other_user.create_date,
             update_date: chrono::Utc::now().naive_utc(),
         }

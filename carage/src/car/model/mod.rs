@@ -26,7 +26,6 @@ pub struct Model {
     power: i32,
     engine_size: i32,
     fuel: Fuel,
-    body_type: Bodytype,
 }
 
 #[derive(
@@ -47,9 +46,8 @@ pub enum Fuel {
 #[derive(
     Clone, Copy, DbEnum, Debug, PartialEq, Eq, SqlType, Serialize, Deserialize, AsExpression,
 )]
-#[postgres(type_name = "BodyType")]
+#[postgres(type_name = "Bodytype")]
 #[DieselType = "Bodytypeenum"]
-#[sql_type = "Bodytype"]
 pub enum Bodytype {
     Sedan,
     Wagon,
