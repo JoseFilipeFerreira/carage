@@ -1,6 +1,6 @@
 -- Your SQL goes here
-CREATE TYPE fuel AS ENUM ('Diesel', 'Petrol', 'Eletric', 'HybridDiesel', 'HybridPetrol', 'Gas', 'Hydrogen');
-CREATE TYPE Bodytype AS ENUM ('Sedan', 'Wagon', 'Convertible', 'Coupe', 'Hatchback', 'SUV', 'Minivan');
+CREATE TYPE fuel AS ENUM ('diesel', 'petrol', 'eletric', 'hybrid_diesel', 'hybrid_petrol', 'gas', 'hydrogen');
+CREATE TYPE Bodytype AS ENUM ('sedan', 'wagon', 'convertible', 'coupe', 'hatchback', 'sUV', 'minivan');
 
 create table models (
     id uuid primary key,

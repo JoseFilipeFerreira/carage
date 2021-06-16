@@ -48,14 +48,17 @@ pub async fn variant(conn: Db, make: Json<ModelDetails>) -> Option<Json<Vec<Mode
     match conn
         .run(move |c| {
             Model::table()
-                .filter(crate::schema::models::make.eq(make.make.clone()))
-                .filter(crate::schema::models::model.eq(make.model.clone()))
+                .filter(crate::schema::models::make.eq(dbg!(make.make.clone())))
+                .filter(crate::schema::models::model.eq(dbg!(make.model.clone())))
                 .distinct()
-                .get_results(c)
+                .get_results::<Model>(c)
         })
         .await
     {
         Ok(u) => Some(Json(u)),
-        _ => None,
+        Err(a) => {
+            dbg!(a);
+            None
+        }
     }
 }
