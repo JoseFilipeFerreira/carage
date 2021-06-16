@@ -1,0 +1,1 @@
+awk -F, '{print "\""$1"\",\""$2"\","$9","$8","$4}' StandVirtualCars.csv | sort | uniq | while read -r line; do echo "('$(uuidgen)',$line),";done | sed 's/Híbrido(Petrol)/HybridPetrol/g;s/Gasolina/Petrol/g;s/Híbrido(Diesel)/HybridDiesel/g' > data_uuid.sql

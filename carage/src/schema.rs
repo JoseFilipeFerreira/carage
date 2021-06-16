@@ -55,17 +55,6 @@ table! {
     use diesel::sql_types::*;
     use crate::car::{Gearboxenum, model::*, maintenance::Typeenum};
 
-    files (id, car_id) {
-        id -> Uuid,
-        filename -> Varchar,
-        car_id -> Varchar,
-    }
-}
-
-table! {
-    use diesel::sql_types::*;
-    use crate::car::{Gearboxenum, model::*, maintenance::Typeenum};
-
     maintenance (id) {
         id -> Uuid,
         kms -> Int4,
@@ -116,7 +105,6 @@ joinable!(cars -> models (model));
 joinable!(cars -> users (owner));
 joinable!(favorite_ads -> ads (ad_id));
 joinable!(favorite_ads -> users (user_id));
-joinable!(files -> cars (car_id));
 joinable!(maintenance -> cars (car));
 joinable!(maintenance -> users (owner));
 
@@ -125,7 +113,6 @@ allow_tables_to_appear_in_same_query!(
     car_shares,
     cars,
     favorite_ads,
-    files,
     maintenance,
     models,
     users,

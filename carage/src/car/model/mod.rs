@@ -36,10 +36,10 @@ pub struct Model {
 pub enum Fuel {
     Diesel,
     Petrol,
-    Eletric,
+    Electric,
     HybridPetrol,
     HybridDiesel,
-    Gas,
+    Gpl,
     Hydrogen,
 }
 
@@ -56,4 +56,10 @@ pub enum Bodytype {
     Hatchback,
     Suv,
     Minivan,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ModelDetails {
+    pub make: String,
+    pub model: String,
 }

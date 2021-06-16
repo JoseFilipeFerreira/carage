@@ -1,11 +1,11 @@
-use super::Model;
+use super::{Model, ModelDetails};
 use crate::fairings::Db;
 use diesel::{associations::HasTable, ExpressionMethods, QueryDsl, RunQueryDsl};
 use lazy_static::lazy_static;
 use rocket::serde::json::Json;
 
 lazy_static! {
-    pub static ref ROUTES: Vec<rocket::Route> = routes![make, models];
+    pub static ref ROUTES: Vec<rocket::Route> = routes![make, models, variant];
 }
 
 //TODO: Discuss if users can submit car models
@@ -25,13 +25,31 @@ pub async fn make(conn: Db) -> Option<Json<Vec<String>>> {
     }
 }
 
-//TODO: Error reporting
 #[get("/models", data = "<make>")]
-pub async fn models(conn: Db, make: String) -> Option<Json<Vec<Model>>> {
+pub async fn models(conn: Db, make: String) -> Option<Json<Vec<String>>> {
     match conn
         .run(|c| {
             Model::table()
                 .filter(crate::schema::models::make.eq(make))
+                .select(crate::schema::models::model)
+                .distinct()
+                .get_results(c)
+        })
+        .await
+    {
+        Ok(u) => Some(Json(u)),
+        _ => None,
+    }
+}
+
+//TODO: Error reporting
+#[get("/variant", data = "<make>")]
+pub async fn variant(conn: Db, make: Json<ModelDetails>) -> Option<Json<Vec<Model>>> {
+    match conn
+        .run(move |c| {
+            Model::table()
+                .filter(crate::schema::models::make.eq(make.make.clone()))
+                .filter(crate::schema::models::model.eq(make.model.clone()))
                 .distinct()
                 .get_results(c)
         })
