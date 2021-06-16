@@ -8,14 +8,11 @@ lazy_static! {
 }
 
 #[post("/create", format = "json", data = "<car>")]
-pub async fn create(conn: Db, claims: Claims, car: Json<ApiCar>) -> Option<Json<Car>> {
-    if car.owner == Some(claims.email) {
-        match conn.run(move |c| Car::from_api(car.clone(), c)).await {
-            Ok(u) => Some(Json(u)),
-            _ => None,
-        }
-    } else {
-        None
+pub async fn create(conn: Db, claims: Claims, mut car: Json<ApiCar>) -> Option<Json<Car>> {
+    car.owner = Some(claims.email);
+    match conn.run(move |c| Car::from_api(car.clone(), c)).await {
+        Ok(u) => Some(Json(u)),
+        _ => None,
     }
 }
 

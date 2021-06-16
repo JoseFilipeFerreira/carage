@@ -14,9 +14,10 @@ lazy_static! {
 #[post("/create", format = "json", data = "<maint>")]
 pub async fn create(
     conn: Db,
-    _claims: Claims,
-    maint: Json<ApiMaintenance>,
+    claims: Claims,
+    mut maint: Json<ApiMaintenance>,
 ) -> Option<Json<DbMaintenance>> {
+    maint.owner = claims.email;
     conn.run(move |c| DbMaintenance::from_api(maint.clone(), c))
         .await
         .ok()
