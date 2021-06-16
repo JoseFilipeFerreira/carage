@@ -1,7 +1,7 @@
 pub mod api;
 use crate::{
     ad::{fav_ad::FavoriteAd, Ad},
-    car::{share::CarShare, Car},
+    car::{share::CarShare, Car, SendCar},
     schema::users::{self, dsl::*},
 };
 use chrono::NaiveDateTime;
@@ -138,7 +138,7 @@ pub struct User {
     name: String,
     passwd: String,
     phone: Option<i32>,
-    my_cars: Vec<Car>,
+    my_cars: Vec<SendCar>,
     shared_cars: Vec<CarShare>,
     ads: Vec<Ad>,
     fav_ads: Vec<Ad>,
@@ -153,6 +153,10 @@ impl User {
 
     pub fn from_db(dbuser: DbUser, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
         let my_cars = Car::belonging_to(&dbuser).load(conn)?;
+        let my_cars = my_cars
+            .iter()
+            .filter_map(|car: &Car| SendCar::from_car(car.clone(), conn).ok())
+            .collect();
         let shared_cars = CarShare::belonging_to(&dbuser).load(conn)?;
         let other_ads = Ad::belonging_to(&dbuser).load(conn)?;
         let other_fav_ads = FavoriteAd::belonging_to(&dbuser)
