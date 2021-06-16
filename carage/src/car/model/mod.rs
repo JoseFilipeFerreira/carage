@@ -36,7 +36,7 @@ pub struct Model {
 pub enum Fuel {
     Diesel,
     Petrol,
-    Eletric,
+    Electric,
     HybridPetrol,
     HybridDiesel,
     Gpl,
