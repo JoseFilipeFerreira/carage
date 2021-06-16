@@ -51,3 +51,29 @@ pub async fn remove(conn: Db, claims: Claims, maint: String) -> Option<Json<DbMa
         None
     }
 }
+
+#[post("/update", data = "<maint>")]
+pub async fn update(
+    conn: Db,
+    claims: Claims,
+    maint: Json<ApiMaintenance>,
+) -> Option<Json<DbMaintenance>> {
+    if maint.id.is_some() {
+        conn.run(move |c| {
+            if let Ok(maintenance) = DbMaintenance::get(&maint.id.unwrap(), c) {
+                if maintenance.owner == claims.email {
+                    let upmain = maint.merge(maintenance);
+                    upmain.update(c).ok()
+                } else {
+                    None
+                }
+            } else {
+                None
+            }
+        })
+        .await
+        .map(Json)
+    } else {
+        None
+    }
+}

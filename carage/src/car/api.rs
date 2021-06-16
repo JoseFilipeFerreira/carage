@@ -9,7 +9,7 @@ lazy_static! {
 
 #[post("/create", format = "json", data = "<car>")]
 pub async fn create(conn: Db, claims: Claims, car: Json<ApiCar>) -> Option<Json<Car>> {
-    if car.owner == claims.email {
+    if car.owner == Some(claims.email) {
         match conn.run(move |c| Car::from_api(car.clone(), c)).await {
             Ok(u) => Some(Json(u)),
             _ => None,
@@ -19,7 +19,6 @@ pub async fn create(conn: Db, claims: Claims, car: Json<ApiCar>) -> Option<Json<
     }
 }
 
-//TODO: Error reporting
 #[post("/", data = "<car>")]
 pub async fn get(conn: Db, car: String) -> Option<Json<Car>> {
     match conn.run(move |c| Car::get(&car, c)).await {
@@ -42,4 +41,21 @@ pub async fn remove(conn: Db, claims: Claims, car: String) -> Option<Json<Car>> 
         }
     })
     .await
+}
+
+pub async fn update(conn: Db, claims: Claims, car: Json<ApiCar>) -> Option<Json<Car>> {
+    conn.run(move |c| {
+        if let Ok(carr) = Car::get(&car.vin, c) {
+            if carr.owner == claims.email {
+                let upcar = car.merge(carr);
+                upcar.update(c).ok()
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    })
+    .await
+    .map(Json)
 }

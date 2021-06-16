@@ -8,6 +8,7 @@ lazy_static! {
     pub static ref ROUTES: Vec<rocket::Route> = routes![get, create, remove];
 }
 
+//TODO: Missing some ownership checks
 #[post("/create", format = "json", data = "<ad>")]
 pub async fn create(conn: Db, _claims: Claims, ad: Json<ApiAd>) -> Option<Json<Ad>> {
     match conn.run(move |c| Ad::from_api(ad.clone(), c)).await {
@@ -37,6 +38,29 @@ pub async fn remove(conn: Db, _claims: Claims, ad: String) -> Option<Json<Ad>> {
             Ok(u) => Some(Json(u)),
             _ => None,
         }
+    } else {
+        None
+    }
+}
+
+#[post("/update", data = "<ad>")]
+pub async fn update(conn: Db, claims: Claims, ad: Json<ApiAd>) -> Option<Json<ApiAd>> {
+    if ad.id.is_some() {
+        conn.run(move |c| {
+            Ad::get(ad.id.unwrap(), c)
+                .and_then(|db_ad| {
+                    if db_ad.owner == claims.email {
+                        let up_ad = ad.merge(db_ad);
+                        up_ad.update(c)
+                    } else {
+                        Err(diesel::result::Error::NotFound)
+                    }
+                })
+                .map(ApiAd::from)
+        })
+        .await
+        .map(Json)
+        .ok()
     } else {
         None
     }
