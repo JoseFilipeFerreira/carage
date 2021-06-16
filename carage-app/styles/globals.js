@@ -10,19 +10,32 @@ export default createGlobalStyle`
           --LEI3: #ff5023;
           --LEI3-1: #ff7f5e;
           --LEI4: #4f73cf;
+          --LEI4-1: #6188ed;
           --LEI5: #f0f0f1;
+          --LEI6: #27AE60;
+          --LEI6-1: #6FCF97;
+          --LEI7: #9B51E0;
+          --LEI7-1: #BB6BD9;
         }
 
         html,
         body {
           padding: 0;
           margin: 0;
+          background-color: var(--LEI1);
+        }
+
+        *,
+        *::after,
+        *::before {
+          padding: 0;
+          margin: 0;
           font-family: Gotham, "Inter", -apple-system, BlinkMacSystemFont,
             "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
             "Droid Sans", "Helvetica Neue", sans-serif;
-          background-color: var(--LEI1);
           color: var(--LEI5);
         }
+
         a:hover,
         a:visited,
         a:link,
@@ -31,35 +44,27 @@ export default createGlobalStyle`
         }
 
         .text-title {
-          font-family: Gotham;
           font-style: normal;
           font-weight: 500;
           font-size: 24px;
           line-height: 26px;
-          color: #f0f0f1;
         }
 
         .text-button {
-          font-family: Gotham;
           font-style: normal;
           font-weight: 500;
           font-size: 14px;
           line-height: 22px;
-
-          color: #f0f0f1;
         }
 
         .text-subhead {
-          font-family: Gotham;
           font-style: normal;
           font-weight: bold;
           font-size: 15px;
           line-height: 18px;
-          color: #f0f0f1;
         }
 
         .text-body {
-          font-family: Gotham;
           font-style: normal;
           font-weight: 500;
           font-size: 14px;
@@ -67,7 +72,6 @@ export default createGlobalStyle`
         }
 
         .text-footnote {
-          font-family: Gotham;
           font-style: normal;
           font-weight: 500;
           font-size: 13px;
@@ -75,9 +79,8 @@ export default createGlobalStyle`
         }
 
         .text-headline {
-          font-family: Gotham;
           font-style: normal;
-          font-weight: 500;
+          font-weight: bold;
           font-size: 20px;
           line-height: 24px;
         }
