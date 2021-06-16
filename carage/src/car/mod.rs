@@ -9,6 +9,7 @@ use diesel::{
     QueryDsl, QueryResult, Queryable, RunQueryDsl,
 };
 use diesel_derive_enum::DbEnum;
+use model::Bodytype;
 use model::Model;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -42,6 +43,7 @@ pub struct Car {
     car_date: NaiveDate,
     add_date: NaiveDateTime,
     pub owner: String,
+    body_type: Bodytype,
 }
 
 impl Car {
@@ -74,20 +76,22 @@ pub struct ApiCar {
     gearbox: Option<Gearbox>,
     car_date: Option<NaiveDate>,
     owner: Option<String>,
+    body_type: Option<Bodytype>,
 }
 
 impl ApiCar {
     pub fn merge(&self, other: Car) -> Car {
         Car {
             vin: other.vin,
-            name: self.name.clone(),
-            number_plate: self.number_plate.clone(),
+            name: self.name.clone().or(other.name),
+            number_plate: self.number_plate.clone().or(other.number_plate),
             kms: self.kms.unwrap_or(other.kms),
             model: other.model,
             gearbox: self.gearbox.unwrap_or(other.gearbox),
             car_date: self.car_date.unwrap_or(other.car_date),
             add_date: other.add_date,
             owner: other.owner,
+            body_type: self.body_type.unwrap_or(other.body_type),
         }
     }
 }
@@ -104,6 +108,7 @@ impl From<ApiCar> for Car {
             car_date: other.car_date.unwrap(),
             add_date: chrono::Utc::now().naive_utc(),
             owner: other.owner.unwrap(),
+            body_type: other.body_type.unwrap(),
         }
     }
 }

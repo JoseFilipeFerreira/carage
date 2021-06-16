@@ -37,6 +37,7 @@ table! {
         car_date -> Date,
         add_date -> Timestamp,
         owner -> Varchar,
+        body_type -> Bodytypeenum,
     }
 }
 
@@ -47,6 +48,17 @@ table! {
     favorite_ads (ad_id, user_id) {
         ad_id -> Uuid,
         user_id -> Varchar,
+    }
+}
+
+table! {
+    use diesel::sql_types::*;
+    use crate::car::{Gearboxenum, model::*, maintenance::Typeenum};
+
+    files (id, car_id) {
+        id -> Uuid,
+        filename -> Varchar,
+        car_id -> Varchar,
     }
 }
 
@@ -79,7 +91,6 @@ table! {
         power -> Int4,
         engine_size -> Int4,
         fuel -> Fuelenum,
-        body_type -> Bodytypeenum,
     }
 }
 
@@ -105,6 +116,7 @@ joinable!(cars -> models (model));
 joinable!(cars -> users (owner));
 joinable!(favorite_ads -> ads (ad_id));
 joinable!(favorite_ads -> users (user_id));
+joinable!(files -> cars (car_id));
 joinable!(maintenance -> cars (car));
 joinable!(maintenance -> users (owner));
 
@@ -113,6 +125,7 @@ allow_tables_to_appear_in_same_query!(
     car_shares,
     cars,
     favorite_ads,
+    files,
     maintenance,
     models,
     users,
