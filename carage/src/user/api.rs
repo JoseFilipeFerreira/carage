@@ -6,7 +6,7 @@ use lazy_static::lazy_static;
 use rocket::serde::json::Json;
 
 lazy_static! {
-    pub static ref ROUTES: Vec<rocket::Route> = routes![get, create, remove, login];
+    pub static ref ROUTES: Vec<rocket::Route> = routes![get, create, remove, login, smol_get];
 }
 
 #[post("/create", format = "json", data = "<user>")]
@@ -24,6 +24,17 @@ pub async fn get(conn: Db, claims: Claims) -> Option<Json<User>> {
             u.passwd = "[REDACTED]".to_owned();
             Some(Json(u))
         }
+        _ => None,
+    }
+}
+
+#[get("/smol")]
+pub async fn smol_get(conn: Db, claims: Claims) -> Option<Json<UserCreds>> {
+    match conn.run(move |c| User::get(&claims.email, c)).await {
+        Ok(u) => Some(Json(UserCreds {
+            email: u.email,
+            passwd: "[REDACTED]".to_owned(),
+        })),
         _ => None,
     }
 }
