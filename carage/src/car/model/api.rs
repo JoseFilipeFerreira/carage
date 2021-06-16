@@ -25,7 +25,7 @@ pub async fn make(conn: Db) -> Option<Json<Vec<String>>> {
     }
 }
 
-#[get("/models", data = "<make>")]
+#[post("/models", data = "<make>")]
 pub async fn models(conn: Db, make: String) -> Option<Json<Vec<String>>> {
     match conn
         .run(|c| {
@@ -43,7 +43,7 @@ pub async fn models(conn: Db, make: String) -> Option<Json<Vec<String>>> {
 }
 
 //TODO: Error reporting
-#[get("/variant", data = "<make>")]
+#[post("/variant", data = "<make>")]
 pub async fn variant(conn: Db, make: Json<ModelDetails>) -> Option<Json<Vec<Model>>> {
     match conn
         .run(move |c| {
