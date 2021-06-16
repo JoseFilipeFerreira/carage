@@ -10,7 +10,7 @@ export const Navbar = () => {
   return (
     <Nav>
       <a className="text-title logo" href="/">
-        <div>CARAGE</div>
+        CARAGE
       </a>
       <Options />
       <Sign />

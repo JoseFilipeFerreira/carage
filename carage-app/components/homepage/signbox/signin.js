@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import Link from 'next/link'
+const axios = require('axios');
+const cookie = require('cookie');
 
 export const SignIn = () => {
   const showLogin = (state) => state.sign.showLogin;
@@ -11,7 +13,40 @@ export const SignIn = () => {
   if (value)
     return (
       <SIBox>
-        <form>
+        <Form />
+      </SIBox>
+    );
+  else return null;
+};
+
+function Form() {
+  const showLogin = (state) => state.sign.showLogin;
+  const dispatch = useDispatch();
+  const loginUser = async event => {
+    event.preventDefault()
+
+    axios.post('http://localhost:8000/user/login', {
+      email: event.target.email.value,
+      passwd: event.target.passwd.value
+    }, {headers: {"Content-Type": "application/json"}})
+    .then((response) => {
+      console.log(response);
+      switch (response.status) {
+        case 404:
+          alert('Invalid credentials')
+          break;
+        default:
+          document.cookie = cookie.serialize('jwt', response.data);
+          window.location.replace("/dashboard");
+          break;
+      }
+    }, (error) => {
+      console.log(error);
+    });
+  }
+
+  return (
+    <form onSubmit={loginUser}>
           <div>
             <div className="box-header">
               <div className="text-title">Log In</div>
@@ -34,6 +69,8 @@ export const SignIn = () => {
             <div className="text-subhead">Email address</div>
             <input
               type="email"
+              id="email"
+              name="email"
               placeholder="Enter your email address..."
               className="signin-input"
             ></input>
@@ -42,20 +79,19 @@ export const SignIn = () => {
             <div className="text-subhead">Password</div>
             <input
               type="password"
+              id="passwd"
+              name="passwd"
               placeholder="Enter your password..."
               className="signin-input"
             ></input>
           </div>
           <div className="login-button">
-            <Link href={`/dashboard`}>
               <button className="text-button">Log In</button>
-            </Link>
           </div>
         </form>
-      </SIBox>
-    );
-  else return null;
-};
+  )
+}
+
 
 const SIBox = styled.div`
   width: 496px;

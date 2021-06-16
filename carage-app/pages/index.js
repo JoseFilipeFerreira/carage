@@ -1,6 +1,4 @@
 import Head from "next/head";
-import store from "../store/store";
-import { Provider } from "react-redux";
 
 import GlobalStyle from "../styles/globals";
 import { Navbar } from "../components/homepage/navbar";
@@ -10,14 +8,7 @@ import { Footer } from "../components/homepage/footer";
 import { SignBox } from "../components/homepage/signbox";
 
 export default function Home() {
-  console.log("Initial state: ", store.getState());
-  const unsubscribe = store.subscribe(() =>
-    console.log("State after dispatch: ", store.getState())
-  );
-
-
   return (
-    <Provider store={store}>
       <Container>
         <GlobalStyle />
         <Head>
@@ -57,6 +48,5 @@ export default function Home() {
           </symbol>
         </svg>
       </Container>
-    </Provider>
   );
 }
