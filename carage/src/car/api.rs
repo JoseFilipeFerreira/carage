@@ -1,4 +1,4 @@
-use super::{ApiCar, Car};
+use super::{ApiCar, Car, SendCar};
 use crate::fairings::{Claims, Db};
 use lazy_static::lazy_static;
 use rocket::serde::json::Json;
@@ -17,8 +17,8 @@ pub async fn create(conn: Db, claims: Claims, mut car: Json<ApiCar>) -> Option<J
 }
 
 #[post("/", data = "<car>")]
-pub async fn get(conn: Db, car: String) -> Option<Json<Car>> {
-    match conn.run(move |c| Car::get(&car, c)).await {
+pub async fn get(conn: Db, car: String) -> Option<Json<SendCar>> {
+    match conn.run(move |c| SendCar::get(&car, c)).await {
         Ok(u) => Some(Json(u)),
         _ => None,
     }

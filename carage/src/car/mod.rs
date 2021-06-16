@@ -67,6 +67,20 @@ impl Car {
 }
 
 #[derive(Serialize, Clone, Deserialize, Eq, PartialEq, Debug)]
+pub struct SendCar {
+    pub car: Car,
+    pub model: Model,
+}
+
+impl SendCar {
+    pub fn get(car: &str, conn: &PgConnection) -> QueryResult<Self> {
+        let car = Car::get(car, conn)?;
+        let model = Model::get(&car.model, conn)?;
+        Ok(Self { car, model })
+    }
+}
+
+#[derive(Serialize, Clone, Deserialize, Eq, PartialEq, Debug)]
 pub struct ApiCar {
     vin: String,
     name: Option<String>,

@@ -1,6 +1,9 @@
 pub mod api;
 use crate::schema::models;
-use diesel::{AsExpression, Identifiable, Insertable, Queryable};
+use diesel::{
+    associations::HasTable, pg::PgConnection, AsExpression, Identifiable, Insertable, QueryDsl,
+    QueryResult, Queryable, RunQueryDsl,
+};
 use diesel_derive_enum::DbEnum;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -26,6 +29,12 @@ pub struct Model {
     power: i32,
     engine_size: i32,
     fuel: Fuel,
+}
+
+impl Model {
+    pub fn get(model: &Uuid, conn: &PgConnection) -> QueryResult<Self> {
+        Self::table().find(model).first(conn)
+    }
 }
 
 #[derive(
