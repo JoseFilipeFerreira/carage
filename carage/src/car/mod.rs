@@ -78,6 +78,10 @@ impl SendCar {
         let model = Model::get(&car.model, conn)?;
         Ok(Self { car, model })
     }
+    pub fn from_car(car: Car, conn: &PgConnection) -> QueryResult<Self> {
+        let model = Model::get(&car.model, conn)?;
+        Ok(Self { car, model })
+    }
 }
 
 #[derive(Serialize, Clone, Deserialize, Eq, PartialEq, Debug)]
