@@ -1,5 +1,5 @@
 pub mod api;
-use super::Car;
+use super::{Car, SendCar};
 use crate::{schema::car_shares, user::DbUser};
 use diesel::{
     associations::HasTable, pg::PgConnection, AsExpression, Associations, Identifiable, Insertable,
@@ -39,5 +39,9 @@ impl CarShare {
 
     pub fn delete(&self, conn: &PgConnection) -> QueryResult<Self> {
         diesel::delete(self).get_result(conn)
+    }
+
+    pub fn to_car(&self, conn: &PgConnection) -> QueryResult<SendCar> {
+        SendCar::get(&self.car, conn)
     }
 }

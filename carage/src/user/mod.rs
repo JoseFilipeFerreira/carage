@@ -140,7 +140,7 @@ pub struct User {
     passwd: String,
     phone: Option<i32>,
     my_cars: Vec<SendCar>,
-    shared_cars: Vec<CarShare>,
+    shared_cars: Vec<SendCar>,
     ads: Vec<Ad>,
     fav_ads: Vec<Ad>,
     create_date: NaiveDateTime,
@@ -158,7 +158,11 @@ impl User {
             .iter()
             .filter_map(|car: &Car| SendCar::from_car(car.clone(), conn).ok())
             .collect();
-        let shared_cars = CarShare::belonging_to(&dbuser).load(conn)?;
+        let shared_cars = CarShare::belonging_to(&dbuser)
+            .load::<CarShare>(conn)?
+            .iter()
+            .filter_map(|x| x.to_car(conn).ok())
+            .collect();
         let other_ads = Ad::belonging_to(&dbuser).load(conn)?;
         let other_fav_ads = FavoriteAd::belonging_to(&dbuser)
             .load::<FavoriteAd>(conn)?
