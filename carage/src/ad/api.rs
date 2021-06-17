@@ -1,4 +1,4 @@
-use super::{Ad, AdSearch, ApiAd};
+use super::{Ad, AdSearch, ApiAd, FullAd};
 use crate::{
     car::{model::Model, Car},
     fairings::{Claims, Db},
@@ -72,42 +72,50 @@ pub async fn update(conn: Db, claims: Claims, ad: Json<ApiAd>) -> Option<Json<Ap
 }
 
 #[post("/search", data = "<filters>")]
-pub async fn search(conn: Db, filters: Json<AdSearch>) -> Option<Json<Vec<Ad>>> {
+pub async fn search(conn: Db, filters: Json<AdSearch>) -> Option<Json<Vec<FullAd>>> {
     match conn
         .run(move |c| {
-            let query = Ad::table().inner_join(Car::table().inner_join(Model::table()));
+            let mut query = Ad::table()
+                .inner_join(Car::table().inner_join(Model::table()))
+                .into_boxed();
             if let Some(make) = &filters.make {
-                let query = query.filter(crate::schema::models::make.eq(make));
+                query = query.filter(crate::schema::models::make.eq(make));
             };
             if let Some(model) = &filters.model {
-                let query = query.filter(crate::schema::models::model.eq(model));
+                query = query.filter(crate::schema::models::model.eq(model));
             };
             if let Some(fuel) = filters.fuel {
-                let query = query.filter(crate::schema::models::fuel.eq(fuel));
+                query = query.filter(crate::schema::models::fuel.eq(fuel));
             };
             if let Some(body_type) = filters.body_type {
-                let query = query.filter(crate::schema::cars::body_type.eq(body_type));
+                query = query.filter(crate::schema::cars::body_type.eq(body_type));
             };
             if let Some(gearbox) = filters.gearbox {
-                let query = query.filter(crate::schema::cars::gearbox.eq(gearbox));
+                query = query.filter(crate::schema::cars::gearbox.eq(gearbox));
             };
             if let Some(min_price) = filters.min_price {
-                let query = query.filter(crate::schema::ads::price.gt(min_price));
+                query = query.filter(crate::schema::ads::price.gt(min_price));
             };
             if let Some(max_price) = filters.max_price {
-                let query = query.filter(crate::schema::ads::price.lt(max_price));
+                query = query.filter(crate::schema::ads::price.lt(max_price));
             };
             if let Some(min_date) = filters.min_date {
-                let query = query.filter(crate::schema::cars::car_date.gt(min_date));
+                query = query.filter(crate::schema::cars::car_date.gt(min_date));
             };
             if let Some(max_date) = filters.max_date {
-                let query = query.filter(crate::schema::cars::car_date.lt(max_date));
+                query = query.filter(crate::schema::cars::car_date.lt(max_date));
             };
-            query.select(crate::schema::ads::all_columns).get_results(c)
+            query
+                .select((
+                    crate::schema::ads::all_columns,
+                    crate::schema::cars::all_columns,
+                    crate::schema::models::all_columns,
+                ))
+                .get_results::<(Ad, Car, Model)>(c)
         })
         .await
     {
-        Ok(a) => Some(Json(a)),
+        Ok(a) => Some(Json(a.iter().map(FullAd::new).collect())),
         _ => None,
     }
 }

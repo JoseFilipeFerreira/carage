@@ -1,6 +1,10 @@
 pub mod api;
 pub mod fav_ad;
-use crate::{car::Car, schema::ads, user::DbUser};
+use crate::{
+    car::{model::Model, Car},
+    schema::ads,
+    user::DbUser,
+};
 use chrono::NaiveDateTime;
 use diesel::{
     associations::HasTable, pg::PgConnection, AsExpression, Associations, Identifiable, Insertable,
@@ -123,4 +127,15 @@ pub struct AdSearch {
 pub struct FullAd {
     pub ad: Ad,
     pub car: Car,
+    pub model: Model,
+}
+
+impl FullAd {
+    pub fn new((ad, car, model): &(Ad, Car, Model)) -> Self {
+        Self {
+            ad: ad.clone(),
+            car: car.clone(),
+            model: model.clone(),
+        }
+    }
 }
