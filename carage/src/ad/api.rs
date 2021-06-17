@@ -37,7 +37,7 @@ pub async fn get(conn: Db, ad: String) -> Option<Json<FullAd>> {
 }
 
 #[post("/all", data = "<page>")]
-pub async fn all(conn: Db, page: Json<Page>) -> Option<Json<Vec<FullAd>>> {
+pub async fn all(conn: Db, page: Json<Page>) -> Option<Json<(i64, Vec<FullAd>)>> {
     match conn
         .run(move |c| {
             Ad::table()
@@ -55,7 +55,9 @@ pub async fn all(conn: Db, page: Json<Page>) -> Option<Json<Vec<FullAd>>> {
         })
         .await
     {
-        Ok(a) => Some(Json(
+        Ok(a) => Some(Json((
+            conn.run(|c| Ad::table().count().get_result(c).unwrap())
+                .await,
             a.iter()
                 .map(|x| {
                     let mut z = FullAd::new(x);
@@ -63,7 +65,7 @@ pub async fn all(conn: Db, page: Json<Page>) -> Option<Json<Vec<FullAd>>> {
                     z
                 })
                 .collect(),
-        )),
+        ))),
         _ => None,
     }
 }
@@ -105,7 +107,7 @@ pub async fn update(conn: Db, claims: Claims, ad: Json<ApiAd>) -> Option<Json<Ap
 }
 
 #[post("/search", data = "<filters>")]
-pub async fn search(conn: Db, filters: Json<AdSearch>) -> Option<Json<Vec<FullAd>>> {
+pub async fn search(conn: Db, filters: Json<AdSearch>) -> Option<Json<(i64, Vec<FullAd>)>> {
     match conn
         .run(move |c| {
             let mut query = Ad::table()
@@ -152,7 +154,9 @@ pub async fn search(conn: Db, filters: Json<AdSearch>) -> Option<Json<Vec<FullAd
         })
         .await
     {
-        Ok(a) => Some(Json(
+        Ok(a) => Some(Json((
+            conn.run(|c| Ad::table().count().get_result(c).unwrap())
+                .await,
             a.iter()
                 .map(|x| {
                     let mut z = FullAd::new(x);
@@ -160,7 +164,7 @@ pub async fn search(conn: Db, filters: Json<AdSearch>) -> Option<Json<Vec<FullAd
                     z
                 })
                 .collect(),
-        )),
+        ))),
         _ => None,
     }
 }
