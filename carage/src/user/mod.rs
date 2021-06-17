@@ -21,6 +21,7 @@ use serde::{Deserialize, Serialize};
     PartialEq,
     Debug,
     Eq,
+    Clone,
     QueryId,
     AsChangeset,
 )]
@@ -29,7 +30,7 @@ use serde::{Deserialize, Serialize};
 pub struct DbUser {
     email: String,
     name: String,
-    passwd: String,
+    pub passwd: String,
     create_date: NaiveDateTime,
     update_date: NaiveDateTime,
     phone: Option<i32>,
