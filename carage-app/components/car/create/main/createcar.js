@@ -126,6 +126,7 @@ function Form({ owner, brands, models }) {
         .then(
           (response) => {
             console.log(response);
+            window.location.replace('/dashboard/cars/')
           },
           (error) => {
             console.log(error);
@@ -179,7 +180,7 @@ function Form({ owner, brands, models }) {
           document.getElementById(
             "pdf"
           ).innerHTML = `<option value="default" disabled selected>Select car's model...</option>`;
-          response.data.sort().map((x) => {
+          response.data.sort((x,y) => x.power - y.power).map((x) => {
             document.getElementById("pdf")
               .innerHTML += `<option value="${x.id}">${x.power}cv + ${x.engine_size}cc + ${x.fuel}</option>`;
           });

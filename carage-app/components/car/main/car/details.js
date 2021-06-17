@@ -11,8 +11,8 @@ export const Details = ({ car }) => {
   let year = date.getYear(
     date.parse(car.car.car_date, "yyyy-MM-dd", new Date())
   );
-  let month = date.getMonth(
-    date.parse(car.car.car_date, "yyyy-MM-dd", new Date())
+  let month = date.format(
+    date.parse(ad.ad.car.car_date, "yyyy-MM-dd", new Date()), 'MMM'
   );
   return (
     <DetailsComponent>
@@ -57,7 +57,12 @@ export const Details = ({ car }) => {
       <div className="price">{null} EUR</div>
       <div className="buttons text-headline">
         <div className="buttons-top">
-          <div className="maintenance">Add Maintenance</div>
+          <div
+            className="maintenance"
+            onClick={() => dispatch({ type: "car/showMaintenance" })}
+          >
+            Add Maintenance
+          </div>
           <div
             className="sell"
             onClick={() => dispatch({ type: "car/showSell" })}

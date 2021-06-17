@@ -2,12 +2,14 @@ import styled from "styled-components";
 
 import { Preview } from "./ad/preview"
 import { Details } from "./ad/details"
+import { ContactBox } from "./ad/contactbox"
 
-export const Ad = ({id}) => {
+export const Ad = ({ad}) => {
   return (
     <AdComponent>
-        <Preview />
-        <Details />
+        <Preview ad={ad}/>
+        <Details ad={ad}/>
+        <ContactBox email={ad.ad.ad.owner}/>
     </AdComponent>
   );
 };

@@ -1,19 +1,33 @@
 import styled from "styled-components";
+import Link from "next/link";
 
-export const Ad = ({ car, model, km, year, month, fuel, power, price, image }) => {
+export const Ad = ({
+  id,
+  car,
+  model,
+  km,
+  year,
+  month,
+  fuel,
+  power,
+  price,
+  image,
+}) => {
   return (
-    <AdBox>
-      <div className="image">
-        <img src={image} />
-      </div>
-      <div className="data">
-        <div className="name text-headline">{`${car} ${model}`}</div>
-        <div className="fym text-body">{`${fuel} • ${year} • ${month}`}</div>
-        <div className="kp text-body">{`${km} km • ${power} cv`}</div>
-        <div className="price text-headline">{`${price} EUR`}</div>
-      </div>
-      <SVGs />
-    </AdBox>
+    <Link href={`/dashboard/market/ad/${id}`} passHref>
+      <AdBox>
+        <div className="image">
+          <img src={image} />
+        </div>
+        <div className="data">
+          <div className="name text-headline">{`${car} ${model}`}</div>
+          <div className="fym text-body">{`${fuel} • ${year} • ${month}`}</div>
+          <div className="kp text-body">{`${km} km • ${power} cv`}</div>
+          <div className="price text-headline">{`${price} EUR`}</div>
+        </div>
+        <SVGs />
+      </AdBox>
+    </Link>
   );
 };
 
@@ -36,15 +50,15 @@ const AdBox = styled.div`
   }
 
   .data {
-      width: 100%;
-      justify-self: start;
-      align-self: start;
+    width: 100%;
+    justify-self: start;
+    align-self: start;
   }
 
   .price {
-      color: var(--LEI3);
-      text-align: end;
-      margin-top: 3px;
+    color: var(--LEI3);
+    text-align: end;
+    margin-top: 3px;
   }
 
   .image {

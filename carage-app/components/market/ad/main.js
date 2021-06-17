@@ -4,13 +4,13 @@ import { TopTitle } from "./main/toptitle"
 import { Top } from "../../dashboard/main/top";
 import { Ad } from "./main/ad";
 
-export const Main = ({id}) => {
+export const Main = ({ad}) => {
   return (
     <Dash>
         <Top title="Market • Ad"/>
         <TopTitle />
         <div className="divisor"></div>
-        <Ad />
+        <Ad ad={ad}/>
     </Dash>
   );
 };

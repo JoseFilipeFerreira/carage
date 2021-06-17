@@ -26,6 +26,7 @@ const Dash = styled.div`
   padding-left: 144px;
   display: grid;
   grid-template-rows: 130px auto auto;
+  overflow: scroll;
 
   .shared-cars {
     margin-bottom: 60px

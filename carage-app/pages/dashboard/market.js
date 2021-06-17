@@ -68,6 +68,24 @@ Home.getInitialProps = async ({ req, reduxStore }) => {
         console.log(error);
       }
     );
-  if (result) return result;
-  else return { user: null };
+
+  const ads = await axios
+  .post("http://localhost:8000/ad/all", {
+    page: 0,
+    size: 10
+  })
+  .then(
+    (response) => {
+      return response.data;
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+
+  if (result) {
+    result.ads = ads;
+    return result
+  }
+  else return { user: null, ads: null };
 };

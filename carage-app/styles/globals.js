@@ -44,43 +44,37 @@ export default createGlobalStyle`
         }
 
         .text-title {
-          font-style: normal;
-          font-weight: 500;
+          /* font-weight: bold; */
           font-size: 24px;
           line-height: 26px;
         }
 
         .text-button {
-          font-style: normal;
           font-weight: 500;
           font-size: 14px;
           line-height: 22px;
         }
 
         .text-subhead {
-          font-style: normal;
           font-weight: bold;
           font-size: 15px;
           line-height: 18px;
         }
 
         .text-body {
-          font-style: normal;
           font-weight: 500;
           font-size: 14px;
           line-height: 24px;
         }
 
         .text-footnote {
-          font-style: normal;
           font-weight: 500;
           font-size: 13px;
           line-height: 18px;
         }
 
         .text-headline {
-          font-style: normal;
-          font-weight: bold;
+          /* font-weight: bold; */
           font-size: 20px;
           line-height: 24px;
         }

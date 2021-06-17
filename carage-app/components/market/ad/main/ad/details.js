@@ -1,27 +1,27 @@
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
 
-export const Details = ({
-  brand,
-  model,
-  year,
-  month,
-  km,
-  pow,
-  displacement,
-  gear,
-  body,
-  price,
-}) => {
+const date = require('date-fns')
+
+export const Details = ({ ad }) => {
+  const dispatch = useDispatch();
+  console.log(ad)
+  let year = date.getYear(
+    date.parse(ad.ad.car.car_date, "yyyy-MM-dd", new Date())
+  );
+  let month = date.format(
+    date.parse(ad.ad.car.car_date, "yyyy-MM-dd", new Date()), 'MMM'
+  );
   return (
     <DetailsComponent>
       <div className="details">
         <div className="detail">
           <div className="text-headline">Brand</div>
-          <div className="text-body">{brand}</div>
+          <div className="text-body">{ad.ad.model.make}</div>
         </div>
         <div className="detail">
           <div className="text-headline">Model</div>
-          <div className="text-body">{model}</div>
+          <div className="text-body">{ad.ad.model.model}</div>
         </div>
         <div className="detail">
           <div className="text-headline">Year</div>
@@ -33,29 +33,29 @@ export const Details = ({
         </div>
         <div className="detail">
           <div className="text-headline">Kilometers</div>
-          <div className="text-body">{km}</div>
+          <div className="text-body">{ad.ad.car.kms}</div>
         </div>
         <div className="detail">
           <div className="text-headline">Power</div>
-          <div className="text-body">{pow}</div>
+          <div className="text-body">{ad.ad.model.power}</div>
         </div>
         <div className="detail">
           <div className="text-headline">Displacement</div>
-          <div className="text-body">{displacement}</div>
+          <div className="text-body">{ad.ad.model.engine_size}</div>
         </div>
         <div className="detail">
           <div className="text-headline">Gearbox</div>
-          <div className="text-body">{gear}</div>
+          <div className="text-body">{ad.ad.car.gearbox}</div>
         </div>
         <div className="detail">
           <div className="text-headline">Body type</div>
-          <div className="text-body">{body}</div>
+          <div className="text-body">{ad.ad.car.body_type}</div>
         </div>
       </div>
-      <div className="price">{price} EUR</div>
+      <div className="price">{ad.ad.ad.price} EUR</div>
       <div className="contacts text-headline">
-        <div className="phone">Show Phone</div>
-        <div className="email">Show Email</div>
+        <div className="phone" onClick={()  => dispatch({ type: "ad/showPhone" })}>Show Phone</div>
+        <div className="email" onClick={() => dispatch({ type: "ad/showEmail" })}>Show Email</div>
       </div>
     </DetailsComponent>
   );

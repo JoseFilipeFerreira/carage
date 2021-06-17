@@ -8,15 +8,15 @@ import { Container } from "../../../components/dashboard/container";
 import { Main } from "../../../components/car/main";
 import { Navbar } from "../../../components/dashboard/navbar";
 
-const axios = require("axios")
-const cookie = require("cookie")
+const axios = require("axios");
+const cookie = require("cookie");
 
 export default function Home({ user, car }) {
   const router = useRouter();
   const { id } = router.query;
 
-  console.log(car)
-  console.log(user)
+  console.log(car);
+  console.log(user);
 
   if (car) {
     return (
@@ -40,7 +40,7 @@ export default function Home({ user, car }) {
     );
 }
 
-Home.getInitialProps = async ({ req, reduxStore, query}) => {
+Home.getInitialProps = async ({ req, reduxStore, query }) => {
   if (req) {
     try {
       reduxStore.dispatch({
@@ -83,7 +83,8 @@ Home.getInitialProps = async ({ req, reduxStore, query}) => {
     }
   );
 
-  result.user = user;
-  if (result) return result;
-  else return { user: null, car: null };
+  if (result) {
+    result.user = user;
+    return result;
+  } else return { user: null, car: null };
 };
