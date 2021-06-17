@@ -11,7 +11,7 @@ import { Navbar } from "../../../../components/dashboard/navbar";
 const axios = require("axios");
 const cookie = require("cookie");
 
-export default function Home({ user, ad }) {
+export default function Home({ user, ad, car }) {
   const router = useRouter();
   const { id } = router.query;
   if (user) {
@@ -27,7 +27,7 @@ export default function Home({ user, ad }) {
           ></meta>
         </Head>
         <Navbar focused="market" />
-        <Main ad={ad} />
+        <Main ad={ad} car={car}/>
       </Container>
     );
   } else
@@ -72,15 +72,26 @@ Home.getInitialProps = async ({ req, reduxStore, query }) => {
 
   const ad = await axios.post("http://localhost:8000/ad/", query.id).then(
     (response) => {
-      return { ad: response.data };
+      return response.data;
     },
     (error) => {
       console.log(error);
     }
   );
 
+  const car = await axios.post("http://localhost:8000/car/", ad.car.vin).then(
+    (response) => {
+      return response.data;
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+
+
   if (result) {
     result.ad = ad;
+    result.car = car;
     return result;
   } else return { user: null, ad: null };
 };

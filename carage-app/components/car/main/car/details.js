@@ -12,7 +12,7 @@ export const Details = ({ car }) => {
     date.parse(car.car.car_date, "yyyy-MM-dd", new Date())
   );
   let month = date.format(
-    date.parse(ad.ad.car.car_date, "yyyy-MM-dd", new Date()), 'MMM'
+    date.parse(car.car.car_date, "yyyy-MM-dd", new Date()), 'MMM'
   );
   return (
     <DetailsComponent>

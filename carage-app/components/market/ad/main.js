@@ -4,13 +4,14 @@ import { TopTitle } from "./main/toptitle"
 import { Top } from "../../dashboard/main/top";
 import { Ad } from "./main/ad";
 
-export const Main = ({ad}) => {
+
+export const Main = ({ad, car}) => {
   return (
     <Dash>
         <Top title="Market • Ad"/>
         <TopTitle />
         <div className="divisor"></div>
-        <Ad ad={ad}/>
+        <Ad ad={ad} car={car}/>
     </Dash>
   );
 };
@@ -25,6 +26,7 @@ const Dash = styled.div`
   padding-left: 144px;
   display: grid;
   grid-template-rows: min-content min-content min-content auto;
+  overflow-y: scroll;
 
     .divisor {
         width: 100%;
