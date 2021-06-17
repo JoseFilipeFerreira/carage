@@ -1,5 +1,6 @@
 pub mod api;
-use crate::schema::maintenance;
+use super::Car;
+use crate::{schema::maintenance, user::DbUser};
 use chrono::{NaiveDate, NaiveDateTime};
 use diesel::{
     associations::HasTable, pg::PgConnection, AsExpression, Associations, Identifiable, Insertable,
@@ -24,8 +25,8 @@ use uuid::Uuid;
     Eq,
     Clone,
 )]
-#[belongs_to(DbUser, foreign_key = owner)]
-#[belongs_to(Car, foreign_key = car)]
+#[belongs_to(Car, foreign_key = "car")]
+#[belongs_to(DbUser, foreign_key = "owner")]
 #[table_name = "maintenance"]
 pub struct DbMaintenance {
     id: Uuid,

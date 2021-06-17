@@ -2,15 +2,15 @@ pub mod api;
 pub mod maintenance;
 pub mod model;
 pub mod share;
+use self::maintenance::DbMaintenance;
 use crate::{schema::cars, user::DbUser};
 use chrono::{NaiveDate, NaiveDateTime};
 use diesel::{
-    associations::HasTable, pg::PgConnection, AsExpression, Associations, Identifiable, Insertable,
-    QueryDsl, QueryResult, Queryable, RunQueryDsl,
+    associations::HasTable, pg::PgConnection, AsExpression, Associations, BelongingToDsl,
+    Identifiable, Insertable, QueryDsl, QueryResult, Queryable, RunQueryDsl,
 };
 use diesel_derive_enum::DbEnum;
-use model::Bodytype;
-use model::Model;
+use model::{Bodytype, Model};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -70,17 +70,28 @@ impl Car {
 pub struct SendCar {
     pub car: Car,
     pub model: Model,
+    pub maintenances: Vec<DbMaintenance>,
 }
 
 impl SendCar {
     pub fn get(car: &str, conn: &PgConnection) -> QueryResult<Self> {
         let car = Car::get(car, conn)?;
         let model = Model::get(&car.model, conn)?;
-        Ok(Self { car, model })
+        let maintenances = DbMaintenance::belonging_to(&car).load(conn)?;
+        Ok(Self {
+            car,
+            model,
+            maintenances,
+        })
     }
     pub fn from_car(car: Car, conn: &PgConnection) -> QueryResult<Self> {
         let model = Model::get(&car.model, conn)?;
-        Ok(Self { car, model })
+        let maintenances = DbMaintenance::belonging_to(&car).load(conn)?;
+        Ok(Self {
+            car,
+            model,
+            maintenances,
+        })
     }
 }
 
