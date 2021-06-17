@@ -40,6 +40,7 @@ pub async fn remove(conn: Db, claims: Claims, car: String) -> Option<Json<Car>> 
     .await
 }
 
+#[post("/update", data = "<car>")]
 pub async fn update(conn: Db, claims: Claims, car: Json<ApiCar>) -> Option<Json<Car>> {
     conn.run(move |c| {
         if let Ok(carr) = Car::get(&car.vin, c) {
