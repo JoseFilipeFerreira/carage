@@ -59,6 +59,18 @@ impl Ad {
     pub fn get(id: Uuid, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
         Self::table().find(id).first(conn)
     }
+    pub fn get_full_info(id: Uuid, conn: &PgConnection) -> Result<FullAd, diesel::result::Error> {
+        Ad::table()
+            .find(id)
+            .inner_join(Car::table().inner_join(Model::table()))
+            .select((
+                crate::schema::ads::all_columns,
+                crate::schema::cars::all_columns,
+                crate::schema::models::all_columns,
+            ))
+            .first::<(Ad, Car, Model)>(conn)
+            .map(|x| FullAd::new(&x))
+    }
 }
 
 #[derive(Serialize, Clone, Deserialize, Eq, PartialEq, Debug)]
