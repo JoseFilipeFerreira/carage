@@ -6,7 +6,7 @@ use rocket::serde::json::Json;
 use uuid::Uuid;
 
 lazy_static! {
-    pub static ref ROUTES: Vec<rocket::Route> = routes![make, models, variant];
+    pub static ref ROUTES: Vec<rocket::Route> = routes![make, models, variant, get];
 }
 
 //TODO: Discuss if users can submit car models

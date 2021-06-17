@@ -9,7 +9,7 @@ use rocket::serde::json::Json;
 use uuid::Uuid;
 
 lazy_static! {
-    pub static ref ROUTES: Vec<rocket::Route> = routes![get, create, remove];
+    pub static ref ROUTES: Vec<rocket::Route> = routes![get, create, remove, all, search, update];
 }
 
 //TODO: Missing some ownership checks

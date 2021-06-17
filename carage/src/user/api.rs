@@ -6,7 +6,8 @@ use lazy_static::lazy_static;
 use rocket::serde::json::Json;
 
 lazy_static! {
-    pub static ref ROUTES: Vec<rocket::Route> = routes![get, create, remove, login, smol_get];
+    pub static ref ROUTES: Vec<rocket::Route> =
+        routes![get, create, remove, login, smol_get, update];
 }
 
 #[post("/create", format = "json", data = "<user>")]
