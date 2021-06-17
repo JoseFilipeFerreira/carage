@@ -29,7 +29,7 @@ const CarsSections = styled.div`
   grid-template-columns: repeat(auto-fill, 310px);
   grid-template-rows: repeat(auto-fill, 135px);
   justify-content: center;
-  gap: 40px;
+  gap: 30px;
 
   @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
   }
