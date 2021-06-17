@@ -1,5 +1,5 @@
 -- Your SQL goes here
-CREATE TYPE type AS ENUM ('Fuel', 'Scheduled', 'Preventive', 'Tires', 'BreakDown');
+CREATE TYPE type AS ENUM ('fuel', 'scheduled', 'preventive', 'tires', 'break_down');
 create table maintenance (
     id uuid primary key,
     kms integer not null,

@@ -18,10 +18,17 @@ pub async fn create(
     mut maint: Json<ApiMaintenance>,
 ) -> Option<Json<DbMaintenance>> {
     maint.owner = claims.email;
-    conn.run(move |c| DbMaintenance::from_api(maint.clone(), c))
+    match conn
+        .run(move |c| DbMaintenance::from_api(maint.clone(), c))
         .await
-        .ok()
         .map(Json)
+    {
+        Ok(a) => Some(a),
+        Err(a) => {
+            dbg!(a);
+            None
+        }
+    }
 }
 
 //TODO: Error reporting
