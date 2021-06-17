@@ -2,6 +2,7 @@ use super::{Ad, AdSearch, ApiAd, FullAd};
 use crate::{
     car::{model::Model, Car},
     fairings::{Claims, Db, Page},
+    user::DbUser,
 };
 use diesel::{associations::HasTable, ExpressionMethods, QueryDsl, RunQueryDsl};
 use lazy_static::lazy_static;
@@ -40,19 +41,29 @@ pub async fn all(conn: Db, page: Json<Page>) -> Option<Json<Vec<FullAd>>> {
     match conn
         .run(move |c| {
             Ad::table()
+                .inner_join(DbUser::table())
                 .inner_join(Car::table().inner_join(Model::table()))
                 .select((
                     crate::schema::ads::all_columns,
                     crate::schema::cars::all_columns,
                     crate::schema::models::all_columns,
+                    crate::schema::users::all_columns,
                 ))
                 .offset(page.size * page.page)
                 .limit(page.size)
-                .get_results::<(Ad, Car, Model)>(c)
+                .get_results::<(Ad, Car, Model, DbUser)>(c)
         })
         .await
     {
-        Ok(a) => Some(Json(a.iter().map(FullAd::new).collect())),
+        Ok(a) => Some(Json(
+            a.iter()
+                .map(|x| {
+                    let mut z = FullAd::new(x);
+                    z.user.passwd = "[REDACTED]".to_owned();
+                    z
+                })
+                .collect(),
+        )),
         _ => None,
     }
 }
@@ -98,6 +109,7 @@ pub async fn search(conn: Db, filters: Json<AdSearch>) -> Option<Json<Vec<FullAd
     match conn
         .run(move |c| {
             let mut query = Ad::table()
+                .inner_join(DbUser::table())
                 .inner_join(Car::table().inner_join(Model::table()))
                 .into_boxed();
             if let Some(make) = &filters.make {
@@ -132,14 +144,23 @@ pub async fn search(conn: Db, filters: Json<AdSearch>) -> Option<Json<Vec<FullAd
                     crate::schema::ads::all_columns,
                     crate::schema::cars::all_columns,
                     crate::schema::models::all_columns,
+                    crate::schema::users::all_columns,
                 ))
                 .offset(filters.page.size * filters.page.page)
                 .limit(filters.page.size)
-                .get_results::<(Ad, Car, Model)>(c)
+                .get_results::<(Ad, Car, Model, DbUser)>(c)
         })
         .await
     {
-        Ok(a) => Some(Json(a.iter().map(FullAd::new).collect())),
+        Ok(a) => Some(Json(
+            a.iter()
+                .map(|x| {
+                    let mut z = FullAd::new(x);
+                    z.user.passwd = "[REDACTED]".to_owned();
+                    z
+                })
+                .collect(),
+        )),
         _ => None,
     }
 }

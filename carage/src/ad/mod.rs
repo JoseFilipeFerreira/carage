@@ -63,14 +63,20 @@ impl Ad {
     pub fn get_full_info(id: Uuid, conn: &PgConnection) -> Result<FullAd, diesel::result::Error> {
         Ad::table()
             .find(id)
+            .inner_join(DbUser::table())
             .inner_join(Car::table().inner_join(Model::table()))
             .select((
                 crate::schema::ads::all_columns,
                 crate::schema::cars::all_columns,
                 crate::schema::models::all_columns,
+                crate::schema::users::all_columns,
             ))
-            .first::<(Ad, Car, Model)>(conn)
-            .map(|x| FullAd::new(&x))
+            .first::<(Ad, Car, Model, DbUser)>(conn)
+            .map(|x| {
+                let mut z = FullAd::new(&x);
+                z.user.passwd = "[REDACTED]".to_owned();
+                z
+            })
     }
 }
 
@@ -142,14 +148,16 @@ pub struct FullAd {
     pub ad: Ad,
     pub car: Car,
     pub model: Model,
+    pub user: DbUser,
 }
 
 impl FullAd {
-    pub fn new((ad, car, model): &(Ad, Car, Model)) -> Self {
+    pub fn new((ad, car, model, user): &(Ad, Car, Model, DbUser)) -> Self {
         Self {
             ad: ad.clone(),
             car: car.clone(),
             model: model.clone(),
+            user: user.clone(),
         }
     }
 }
