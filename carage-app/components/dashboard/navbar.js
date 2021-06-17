@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import { Option } from "./navbar/option";
-import Link from 'next/link'
+import Link from "next/link";
 
 export const Navbar = ({ focused }) => {
   let dashboard = false;
   let cars = false;
   let market = false;
+  let favorite = false;
 
   switch (focused) {
     case "dashboard":
@@ -16,6 +17,9 @@ export const Navbar = ({ focused }) => {
       break;
     case "market":
       market = true;
+      break;
+    case "favorite":
+      favorite = true;
       break;
     default:
       break;
@@ -34,6 +38,9 @@ export const Navbar = ({ focused }) => {
       </Link>
       <Link href={`/dashboard/market`} passHref>
         <Option title="Market" focused={market} />
+      </Link>
+      <Link href={`/dashboard/market/favorite`} passHref>
+        <Option title="Favorite" focused={favorite} />
       </Link>
     </Nav>
   );
@@ -59,7 +66,6 @@ const Nav = styled.div`
     padding-top: 30px;
     font-weight: bold;
   }
-
 
   /* Portrait and Landscape */
   @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {

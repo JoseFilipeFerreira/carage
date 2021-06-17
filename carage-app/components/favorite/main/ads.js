@@ -5,9 +5,10 @@ import { Ad } from "./ads/ad";
 const date = require('date-fns')
 
 export const Ads = ({ ads }) => {
+  console.log(ads)
   return (
     <AdsSections>
-      {ads[1].map(function (x) {
+      {ads.map(function (x) {
         let year = date.getYear(
           date.parse(x.car.car_date, "yyyy-MM-dd", new Date())
         );

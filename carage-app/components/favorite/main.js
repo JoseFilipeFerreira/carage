@@ -1,17 +1,13 @@
 import styled from "styled-components";
+import { Top } from "../dashboard/main/top";
+import { Ads } from "./main/ads";
 
-import { TopTitle } from "./main/toptitle"
-import { Top } from "../../dashboard/main/top";
-import { Ad } from "./main/ad";
-
-
-export const Main = ({ad, car}) => {
+export const Main = ({ ads }) => {
   return (
     <Dash>
-        <Top title="Market • Ad"/>
-        <TopTitle title={`${ad.model.make} ${ad.model.model}`} id={ad.ad.id}/>
+        <Top title="Favorite Ads"/>
         <div className="divisor"></div>
-        <Ad ad={ad} car={car}/>
+        <Ads ads={ads}/>
     </Dash>
   );
 };
@@ -25,10 +21,9 @@ const Dash = styled.div`
   padding-right: 144px;
   padding-left: 144px;
   display: grid;
-  grid-template-rows: min-content min-content min-content auto;
-  overflow-y: scroll;
+  grid-template-rows: 130px 55px min-content auto;
 
-    .divisor {
+  .divisor {
         width: 100%;
         height: 2px;
         background-color: var(--LEI2);

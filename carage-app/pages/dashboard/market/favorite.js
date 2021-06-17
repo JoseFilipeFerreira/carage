@@ -2,15 +2,15 @@ import Head from "next/head";
 import { Provider } from "react-redux";
 import ErrorPage from "next/error";
 
-import GlobalStyle from "../../styles/globals";
-import { Container } from "../../components/dashboard/container";
-import { Navbar } from "../../components/dashboard/navbar";
-import { Main } from "../../components/market/main";
+import GlobalStyle from "../../../styles/globals";
+import { Container } from "../../../components/dashboard/container";
+import { Navbar } from "../../../components/dashboard/navbar";
+import { Main } from "../../../components/favorite/main";
 
 const axios = require("axios");
 const cookie = require("cookie");
 
-export default function Home({ user, ads }) {
+export default function Home({ user }) {
   if (user) {
     return (
       <Container>
@@ -23,8 +23,8 @@ export default function Home({ user, ads }) {
             content="width=device-width, initial-scale=1.0"
           ></meta>
         </Head>
-        <Navbar focused="market" />
-        <Main ads={ads} />
+        <Navbar focused="favorite" />
+        <Main ads={user.fav_ads} favorite={true}/>
       </Container>
     );
   } else
@@ -59,7 +59,7 @@ Home.getInitialProps = async ({ req, reduxStore, query }) => {
   }
 
   const result = await axios
-    .get("http://localhost:8000/user/smol", config)
+    .get("http://localhost:8000/user/", config)
     .then(
       (response) => {
         return { user: response.data };
@@ -68,40 +68,8 @@ Home.getInitialProps = async ({ req, reduxStore, query }) => {
         console.log(error);
       }
     );
-
-  const ads = await axios
-    .post("http://localhost:8000/ad/all", {
-      page: query.page ?? 0,
-      size: 10,
-    })
-    .then(
-      (response) => {
-        return response.data;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-
-  if (!ads) {
-    ads = await axios
-    .post("http://localhost:8000/ad/all", {
-      page: 0,
-      size: 10,
-    })
-    .then(
-      (response) => {
-        return response.data;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
   
-
   if (result) {
-    result.ads = ads;
     return result;
-  } else return { user: null, ads: null };
+  } else return { user: null};
 };
