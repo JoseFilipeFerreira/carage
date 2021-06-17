@@ -1,6 +1,6 @@
 pub mod api;
 use crate::{
-    ad::{fav_ad::FavoriteAd, Ad},
+    ad::{fav_ad::FavoriteAd, Ad, FullAd},
     car::{share::CarShare, Car, SendCar},
     schema::users::{self, dsl::*},
 };
@@ -141,8 +141,8 @@ pub struct User {
     phone: Option<i32>,
     my_cars: Vec<SendCar>,
     shared_cars: Vec<SendCar>,
-    ads: Vec<Ad>,
-    fav_ads: Vec<Ad>,
+    ads: Vec<FullAd>,
+    fav_ads: Vec<FullAd>,
     create_date: NaiveDateTime,
     update_date: NaiveDateTime,
 }
@@ -163,11 +163,16 @@ impl User {
             .iter()
             .filter_map(|x| x.to_car(conn).ok())
             .collect();
-        let other_ads = Ad::belonging_to(&dbuser).load(conn)?;
+        let other_ads = Ad::belonging_to(&dbuser)
+            .load::<Ad>(conn)?
+            .iter()
+            .filter_map(|x| Ad::get_full_info(x.id, conn).ok())
+            .collect();
         let other_fav_ads = FavoriteAd::belonging_to(&dbuser)
             .load::<FavoriteAd>(conn)?
             .iter()
-            .filter_map(|x| Ad::table().find(x.ad_id).first(conn).ok())
+            .filter_map(|x| Ad::table().find(x.ad_id).first::<Ad>(conn).ok())
+            .filter_map(|x| Ad::get_full_info(x.id, conn).ok())
             .collect();
         Ok(User {
             email: dbuser.email,
