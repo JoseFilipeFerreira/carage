@@ -8,11 +8,12 @@ lazy_static! {
     pub static ref ROUTES: Vec<rocket::Route> = routes![create, remove];
 }
 
-#[post("/", format = "json", data = "<ad>")]
-pub async fn create(conn: Db, claims: Claims, ad: Json<Uuid>) -> Option<Json<FavoriteAd>> {
+#[post("/", data = "<ad>")]
+pub async fn create(conn: Db, claims: Claims, ad: String) -> Option<Json<FavoriteAd>> {
+    let ad = Uuid::parse_str(&ad).unwrap();
     conn.run(move |c| {
         FavoriteAd {
-            ad_id: *ad,
+            ad_id: ad,
             user_id: claims.email,
         }
         .insert(c)
