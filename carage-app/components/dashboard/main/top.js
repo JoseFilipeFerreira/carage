@@ -15,7 +15,7 @@ export const Top = ({ title }) => {
           className="text-subhead option"
           onClick={() => {
             dispatch({ type: "user/removeToken" });
-            document.cookie = cookie.serialize('jwt', null);
+            document.cookie = cookie.serialize('jwt', '');
             window.location.replace("/");
           }}
         >
