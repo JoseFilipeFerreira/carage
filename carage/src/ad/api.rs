@@ -36,17 +36,23 @@ pub async fn get(conn: Db, ad: String) -> Option<Json<FullAd>> {
 }
 
 #[post("/all", data = "<page>")]
-pub async fn all(conn: Db, page: Json<Page>) -> Option<Json<Vec<Ad>>> {
+pub async fn all(conn: Db, page: Json<Page>) -> Option<Json<Vec<FullAd>>> {
     match conn
         .run(move |c| {
             Ad::table()
+                .inner_join(Car::table().inner_join(Model::table()))
+                .select((
+                    crate::schema::ads::all_columns,
+                    crate::schema::cars::all_columns,
+                    crate::schema::models::all_columns,
+                ))
                 .offset(page.size * page.page)
                 .limit(page.size)
-                .get_results(c)
+                .get_results::<(Ad, Car, Model)>(c)
         })
         .await
     {
-        Ok(a) => Some(Json(a)),
+        Ok(a) => Some(Json(a.iter().map(FullAd::new).collect())),
         _ => None,
     }
 }
@@ -127,6 +133,8 @@ pub async fn search(conn: Db, filters: Json<AdSearch>) -> Option<Json<Vec<FullAd
                     crate::schema::cars::all_columns,
                     crate::schema::models::all_columns,
                 ))
+                .offset(filters.page.size * filters.page.page)
+                .limit(filters.page.size)
                 .get_results::<(Ad, Car, Model)>(c)
         })
         .await

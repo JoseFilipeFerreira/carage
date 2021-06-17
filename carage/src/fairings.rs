@@ -67,7 +67,7 @@ impl<'r> FromRequest<'r> for Claims {
     }
 }
 
-#[derive(Serialize, Deserialize, Default, Eq, PartialEq, Clone)]
+#[derive(Serialize, Deserialize, Default, Eq, PartialEq, Clone, Debug)]
 pub struct Page {
     pub page: i64,
     pub size: i64,

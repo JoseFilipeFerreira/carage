@@ -2,6 +2,7 @@ pub mod api;
 pub mod fav_ad;
 use crate::{
     car::{model::Model, Car},
+    fairings::Page,
     schema::ads,
     user::DbUser,
 };
@@ -124,6 +125,7 @@ impl ApiAd {
 
 #[derive(Serialize, Clone, Deserialize, Eq, PartialEq, Debug)]
 pub struct AdSearch {
+    pub page: Page,
     pub make: Option<String>,
     pub model: Option<String>,
     pub fuel: Option<crate::car::model::Fuel>,
