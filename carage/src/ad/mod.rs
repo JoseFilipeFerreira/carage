@@ -33,7 +33,7 @@ use uuid::Uuid;
 #[belongs_to(Car, foreign_key = "car")]
 #[table_name = "ads"]
 pub struct Ad {
-    id: Uuid,
+    pub id: Uuid,
     car: String,
     owner: String,
     price: i32,
