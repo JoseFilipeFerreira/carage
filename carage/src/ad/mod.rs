@@ -1,6 +1,10 @@
 pub mod api;
 pub mod fav_ad;
-use crate::{car::Car, schema::ads, user::DbUser};
+use crate::{
+    car::{model::Model, Car},
+    schema::ads,
+    user::DbUser,
+};
 use chrono::NaiveDateTime;
 use diesel::{
     associations::HasTable, pg::PgConnection, AsExpression, Associations, Identifiable, Insertable,
@@ -102,6 +106,36 @@ impl ApiAd {
             promo_price: self.promo_price,
             create_date: other.create_date,
             update_date: chrono::Utc::now().naive_utc(),
+        }
+    }
+}
+
+#[derive(Serialize, Clone, Deserialize, Eq, PartialEq, Debug)]
+pub struct AdSearch {
+    pub make: Option<String>,
+    pub model: Option<String>,
+    pub fuel: Option<crate::car::model::Fuel>,
+    pub body_type: Option<crate::car::model::Bodytype>,
+    pub gearbox: Option<crate::car::Gearbox>,
+    pub max_price: Option<i32>,
+    pub min_price: Option<i32>,
+    pub max_date: Option<chrono::NaiveDate>,
+    pub min_date: Option<chrono::NaiveDate>,
+}
+
+#[derive(Serialize, Clone, Deserialize, Eq, PartialEq, Debug)]
+pub struct FullAd {
+    pub ad: Ad,
+    pub car: Car,
+    pub model: Model,
+}
+
+impl FullAd {
+    pub fn new((ad, car, model): &(Ad, Car, Model)) -> Self {
+        Self {
+            ad: ad.clone(),
+            car: car.clone(),
+            model: model.clone(),
         }
     }
 }
