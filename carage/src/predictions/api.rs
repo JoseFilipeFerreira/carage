@@ -8,7 +8,7 @@ lazy_static! {
 }
 
 //TODO: Error reporting
-#[post("/", data = "<car>")]
+#[get("/<car>")]
 pub async fn get(conn: Db, car: String) -> Option<Json<Prediction>> {
     match conn.run(move |c| SendCar::get(&car, c)).await {
         Ok(u) => Some(Json(Prediction::predict(u.car, u.model).await)),
