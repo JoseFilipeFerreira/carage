@@ -24,11 +24,11 @@ use uuid::Uuid;
 #[table_name = "models"]
 pub struct Model {
     id: Uuid,
-    make: String,
-    model: String,
-    power: i32,
-    engine_size: i32,
-    fuel: Fuel,
+    pub make: String,
+    pub model: String,
+    pub power: i32,
+    pub engine_size: i32,
+    pub fuel: Fuel,
 }
 
 impl Model {
