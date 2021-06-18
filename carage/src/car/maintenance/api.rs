@@ -1,11 +1,11 @@
-use super::{ApiMaintenance, DbMaintenance};
+use super::{super::Car, ApiMaintenance, DbMaintenance};
 use crate::fairings::{Claims, Db};
 use lazy_static::lazy_static;
 use rocket::serde::json::Json;
 use uuid::Uuid;
 
 lazy_static! {
-    pub static ref ROUTES: Vec<rocket::Route> = routes![get, create, remove];
+    pub static ref ROUTES: Vec<rocket::Route> = routes![get, create, remove, update];
 }
 
 //TODO: Check car ownership
@@ -14,13 +14,32 @@ lazy_static! {
 #[post("/create", format = "json", data = "<maint>")]
 pub async fn create(
     conn: Db,
-    _claims: Claims,
-    maint: Json<ApiMaintenance>,
+    claims: Claims,
+    mut maint: Json<ApiMaintenance>,
 ) -> Option<Json<DbMaintenance>> {
-    conn.run(move |c| DbMaintenance::from_api(maint.clone(), c))
+    maint.owner = claims.email;
+    match conn
+        .run(move |c| {
+            let mut car = Car::get(&maint.car, c)?;
+            if car.owner == maint.owner {
+                if car.kms < maint.kms.unwrap() {
+                    car.kms = maint.kms.unwrap();
+                    car.update(c)?;
+                }
+                DbMaintenance::from_api(maint.clone(), c)
+            } else {
+                Err(diesel::result::Error::NotFound)
+            }
+        })
         .await
-        .ok()
         .map(Json)
+    {
+        Ok(a) => Some(a),
+        Err(a) => {
+            dbg!(a);
+            None
+        }
+    }
 }
 
 //TODO: Error reporting
@@ -36,7 +55,7 @@ pub async fn get(conn: Db, maint: String) -> Option<Json<DbMaintenance>> {
     }
 }
 
-#[delete("/remove", data = "<maint>")]
+#[delete("/remove/<maint>")]
 pub async fn remove(conn: Db, claims: Claims, maint: String) -> Option<Json<DbMaintenance>> {
     if let Ok(maint) = Uuid::parse_str(&maint) {
         conn.run(move |c| {
@@ -47,6 +66,32 @@ pub async fn remove(conn: Db, claims: Claims, maint: String) -> Option<Json<DbMa
         })
         .await
         .unwrap_or(None)
+    } else {
+        None
+    }
+}
+
+#[post("/update", data = "<maint>")]
+pub async fn update(
+    conn: Db,
+    claims: Claims,
+    maint: Json<ApiMaintenance>,
+) -> Option<Json<DbMaintenance>> {
+    if maint.id.is_some() {
+        conn.run(move |c| {
+            if let Ok(maintenance) = DbMaintenance::get(&maint.id.unwrap(), c) {
+                if maintenance.owner == claims.email {
+                    let upmain = maint.merge(maintenance);
+                    upmain.update(c).ok()
+                } else {
+                    None
+                }
+            } else {
+                None
+            }
+        })
+        .await
+        .map(Json)
     } else {
         None
     }

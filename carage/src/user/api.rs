@@ -1,11 +1,13 @@
 use super::{ApiUser, DbUser, User, UserCreds};
 use crate::fairings::{Claims, Db};
+use diesel::{associations::HasTable, QueryDsl, RunQueryDsl};
 use jsonwebtoken::{encode, EncodingKey, Header};
 use lazy_static::lazy_static;
 use rocket::serde::json::Json;
 
 lazy_static! {
-    pub static ref ROUTES: Vec<rocket::Route> = routes![get, create, remove, login];
+    pub static ref ROUTES: Vec<rocket::Route> =
+        routes![get, create, remove, login, smol_get, update];
 }
 
 #[post("/create", format = "json", data = "<user>")]
@@ -16,14 +18,24 @@ pub async fn create(conn: Db, user: Json<ApiUser>) -> Option<Json<DbUser>> {
     }
 }
 
-//TODO: Error reporting
 #[get("/")]
 pub async fn get(conn: Db, claims: Claims) -> Option<Json<User>> {
-    match conn.run(|c| User::get(claims.email, c)).await {
+    match conn.run(move |c| User::get(&claims.email, c)).await {
         Ok(mut u) => {
             u.passwd = "[REDACTED]".to_owned();
             Some(Json(u))
         }
+        _ => None,
+    }
+}
+
+#[get("/smol")]
+pub async fn smol_get(conn: Db, claims: Claims) -> Option<Json<UserCreds>> {
+    match conn.run(move |c| User::get(&claims.email, c)).await {
+        Ok(u) => Some(Json(UserCreds {
+            email: u.name,
+            passwd: "[REDACTED]".to_owned(),
+        })),
         _ => None,
     }
 }
@@ -40,7 +52,7 @@ pub async fn remove(conn: Db, claims: Claims) -> Option<Json<DbUser>> {
 pub async fn login(conn: Db, creds: Json<UserCreds>) -> Option<Json<String>> {
     let clone_passwd = creds.passwd.clone();
     let clone_email = creds.email.clone();
-    if let Ok(user) = conn.run(move |c| User::get(creds.email.clone(), &c)).await {
+    if let Ok(user) = conn.run(move |c| User::get(&creds.email.clone(), &c)).await {
         if user.check_passwd(&clone_passwd) {
             let claims = Claims { email: clone_email };
             Some(Json(
@@ -57,4 +69,21 @@ pub async fn login(conn: Db, creds: Json<UserCreds>) -> Option<Json<String>> {
     } else {
         None
     }
+}
+
+#[post("/update", data = "<user>")]
+pub async fn update(conn: Db, user: Json<ApiUser>, claims: Claims) -> Option<Json<DbUser>> {
+    conn.run(move |c| {
+        if user.email == claims.email {
+            DbUser::table()
+                .find(claims.email)
+                .first(c)
+                .and_then(|dbuser| user.clone().merge(dbuser).update(&c))
+                .ok()
+        } else {
+            None
+        }
+    })
+    .await
+    .map(Json)
 }

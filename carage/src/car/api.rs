@@ -1,28 +1,24 @@
-use super::{ApiCar, Car};
+use super::{ApiCar, Car, SendCar};
 use crate::fairings::{Claims, Db};
 use lazy_static::lazy_static;
 use rocket::serde::json::Json;
 
 lazy_static! {
-    pub static ref ROUTES: Vec<rocket::Route> = routes![get, create, remove];
+    pub static ref ROUTES: Vec<rocket::Route> = routes![get, create, remove, update];
 }
 
 #[post("/create", format = "json", data = "<car>")]
-pub async fn create(conn: Db, claims: Claims, car: Json<ApiCar>) -> Option<Json<Car>> {
-    if car.owner == claims.email {
-        match conn.run(move |c| Car::from_api(car.clone(), c)).await {
-            Ok(u) => Some(Json(u)),
-            _ => None,
-        }
-    } else {
-        None
+pub async fn create(conn: Db, claims: Claims, mut car: Json<ApiCar>) -> Option<Json<Car>> {
+    car.owner = Some(claims.email);
+    match conn.run(move |c| Car::from_api(car.clone(), c)).await {
+        Ok(u) => Some(Json(u)),
+        _ => None,
     }
 }
 
-//TODO: Error reporting
 #[post("/", data = "<car>")]
-pub async fn get(conn: Db, car: String) -> Option<Json<Car>> {
-    match conn.run(move |c| Car::get(&car, c)).await {
+pub async fn get(conn: Db, car: String) -> Option<Json<SendCar>> {
+    match conn.run(move |c| SendCar::get(&car, c)).await {
         Ok(u) => Some(Json(u)),
         _ => None,
     }
@@ -42,4 +38,22 @@ pub async fn remove(conn: Db, claims: Claims, car: String) -> Option<Json<Car>> 
         }
     })
     .await
+}
+
+#[post("/update", data = "<car>")]
+pub async fn update(conn: Db, claims: Claims, car: Json<ApiCar>) -> Option<Json<Car>> {
+    conn.run(move |c| {
+        if let Ok(carr) = Car::get(&car.vin, c) {
+            if carr.owner == claims.email {
+                let upcar = car.merge(carr);
+                upcar.update(c).ok()
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    })
+    .await
+    .map(Json)
 }

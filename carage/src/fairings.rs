@@ -1,4 +1,4 @@
-use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
+use jsonwebtoken::{decode, DecodingKey, Validation};
 use rocket::fairing::{Fairing, Info, Kind};
 use rocket::http::Header;
 use rocket::http::Status;
@@ -27,7 +27,7 @@ impl Fairing for Cors {
         response.set_header(Header::new("Access-Control-Allow-Origin", "*"));
         response.set_header(Header::new(
             "Access-Control-Allow-Methods",
-            "POST, GET, PATCH, OPTIONS",
+            "POST, GET, PATCH, OPTIONS, DELETE",
         ));
         response.set_header(Header::new("Access-Control-Allow-Headers", "*"));
         response.set_header(Header::new("Access-Control-Allow-Credentials", "true"));
@@ -52,16 +52,23 @@ impl<'r> FromRequest<'r> for Claims {
             validate_exp: false,
             ..Default::default()
         };
+        let jwt = request.headers().get_one("jwt");
+        if jwt.is_none() {
+            return Outcome::Failure((Status::Unauthorized, ()));
+        }
         match decode::<Self>(
-            &request.headers().get_one("jwt").unwrap(),
+            jwt.unwrap(),
             &DecodingKey::from_secret(b"secret".as_ref()),
             &v,
         ) {
             Ok(token_message) => Outcome::Success(token_message.claims),
-            Err(a) => {
-                dbg!(a);
-                Outcome::Failure((Status::Unauthorized, ()))
-            }
+            Err(_) => Outcome::Failure((Status::Unauthorized, ())),
         }
     }
+}
+
+#[derive(Serialize, Deserialize, Default, Eq, PartialEq, Clone, Debug)]
+pub struct Page {
+    pub page: i64,
+    pub size: i64,
 }

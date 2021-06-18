@@ -37,6 +37,7 @@ table! {
         car_date -> Date,
         add_date -> Timestamp,
         owner -> Varchar,
+        body_type -> Bodytypeenum,
     }
 }
 
@@ -90,7 +91,6 @@ table! {
         power -> Int4,
         engine_size -> Int4,
         fuel -> Fuelenum,
-        body_type -> Bodytypeenum,
     }
 }
 

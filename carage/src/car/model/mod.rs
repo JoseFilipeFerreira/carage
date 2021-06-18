@@ -1,6 +1,9 @@
 pub mod api;
 use crate::schema::models;
-use diesel::{AsExpression, Identifiable, Insertable, Queryable};
+use diesel::{
+    associations::HasTable, pg::PgConnection, AsExpression, Identifiable, Insertable, QueryDsl,
+    QueryResult, Queryable, RunQueryDsl,
+};
 use diesel_derive_enum::DbEnum;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -21,12 +24,17 @@ use uuid::Uuid;
 #[table_name = "models"]
 pub struct Model {
     id: Uuid,
-    make: String,
-    model: String,
-    power: i32,
-    engine_size: i32,
-    fuel: Fuel,
-    body_type: Bodytype,
+    pub make: String,
+    pub model: String,
+    pub power: i32,
+    pub engine_size: i32,
+    pub fuel: Fuel,
+}
+
+impl Model {
+    pub fn get(model: &Uuid, conn: &PgConnection) -> QueryResult<Self> {
+        Self::table().find(model).first(conn)
+    }
 }
 
 #[derive(
@@ -37,19 +45,18 @@ pub struct Model {
 pub enum Fuel {
     Diesel,
     Petrol,
-    Eletric,
+    Electric,
     HybridPetrol,
     HybridDiesel,
-    Gas,
+    Gpl,
     Hydrogen,
 }
 
 #[derive(
     Clone, Copy, DbEnum, Debug, PartialEq, Eq, SqlType, Serialize, Deserialize, AsExpression,
 )]
-#[postgres(type_name = "BodyType")]
+#[postgres(type_name = "Bodytype")]
 #[DieselType = "Bodytypeenum"]
-#[sql_type = "Bodytype"]
 pub enum Bodytype {
     Sedan,
     Wagon,
@@ -58,4 +65,10 @@ pub enum Bodytype {
     Hatchback,
     Suv,
     Minivan,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ModelDetails {
+    pub make: String,
+    pub model: String,
 }
