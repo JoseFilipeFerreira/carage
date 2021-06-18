@@ -141,6 +141,8 @@ pub struct AdSearch {
     pub min_price: Option<i32>,
     pub max_date: Option<chrono::NaiveDate>,
     pub min_date: Option<chrono::NaiveDate>,
+    pub max_kms: Option<i32>,
+    pub min_kms: Option<i32>,
 }
 
 #[derive(Serialize, Clone, Deserialize, Eq, PartialEq, Debug)]
