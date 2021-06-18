@@ -4,6 +4,7 @@ import { Preview } from "../../market/ad/main/ad/preview";
 import { Details } from "./car/details";
 import { SellBox } from "./car/sellbox";
 import { ShareBox } from "./car/sharebox";
+import { PriceBox } from "./car/pricebox";
 import { MaintenanceBox } from "./car/maintenancebox";
 import { MaintenanceHistory } from "./car/maintenancehistory";
 
@@ -18,6 +19,7 @@ export const Car = ({ car }) => {
       <SellBox car={car} />
       <ShareBox car={car} />
       <MaintenanceBox car={car} />
+      <PriceBox car={car}/>
     </CarComponent>
   );
 };

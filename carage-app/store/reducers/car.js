@@ -2,6 +2,7 @@ const initialState = {
   showSell: false,
   showShare: false,
   showMaintenance: false,
+  showPrice: false,
 };
 
 // Use the initialState as a default value
@@ -41,6 +42,18 @@ export default function appReducer(state = initialState, action) {
       return {
         ...state,
         showMaintenance: false,
+      };
+    }
+    case "car/showPrice": {
+      return {
+        ...state,
+        showPrice: true,
+      };
+    }
+    case "car/hidePrice": {
+      return {
+        ...state,
+        showPrice: false,
       };
     }
     default:

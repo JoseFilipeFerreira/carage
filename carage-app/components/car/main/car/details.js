@@ -7,13 +7,16 @@ const cookie = require("cookie");
 
 export const Details = ({ car }) => {
   const dispatch = useDispatch();
+  let price = 10;
 
   let year = date.getYear(
     date.parse(car.car.car_date, "yyyy-MM-dd", new Date())
   );
   let month = date.format(
-    date.parse(car.car.car_date, "yyyy-MM-dd", new Date()), 'MMM'
+    date.parse(car.car.car_date, "yyyy-MM-dd", new Date()),
+    "MMM"
   );
+
   return (
     <DetailsComponent>
       <div className="details">
@@ -54,7 +57,6 @@ export const Details = ({ car }) => {
           <div className="text-body">{car.car.body_type}</div>
         </div>
       </div>
-      <div className="price">{null} EUR</div>
       <div className="buttons text-headline">
         <div className="buttons-top">
           <div
@@ -71,7 +73,9 @@ export const Details = ({ car }) => {
           </div>
         </div>
         <div className="buttons-top">
-          <div className="estimate">Estimate Price</div>
+          <div className="estimate" onClick={() => dispatch({ type: "car/showPrice" })}>
+            Estimate Price
+          </div>
           <div
             className="share"
             onClick={() => dispatch({ type: "car/showShare" })}

@@ -1,19 +1,34 @@
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 
-const date = require('date-fns')
+const date = require("date-fns");
 
 export const Details = ({ ad, car }) => {
   const dispatch = useDispatch();
-  console.log(ad)
+  console.log(ad);
   let year = date.getYear(
     date.parse(ad.car.car_date, "yyyy-MM-dd", new Date())
   );
   let month = date.format(
-    date.parse(ad.car.car_date, "yyyy-MM-dd", new Date()), 'MMM'
+    date.parse(ad.car.car_date, "yyyy-MM-dd", new Date()),
+    "MMM"
   );
+
+  let appraisal = parseInt(ad.appraisal);
+  let appraisal_text, appraisal_color;
+  if (appraisal > appraisal * 1.05) {
+    appraisal_color = "#6FCF97"
+    appraisal_text = "This car is cheaper than normal";
+  } else if (appraisal < appraisal * 1.05) {
+    appraisal_color = "#ff3333"
+    appraisal_text = "This car is more expensive than normal";
+  } else {
+    appraisal_color = "#6188ed"
+    appraisal_text = "This car is fairly priced";
+  }
+
   return (
-    <DetailsComponent>
+    <DetailsComponent appraisal_color={appraisal_color}>
       <div className="details">
         <div className="detail">
           <div className="text-headline">Brand</div>
@@ -53,9 +68,20 @@ export const Details = ({ ad, car }) => {
         </div>
       </div>
       <div className="price">{ad.ad.price} EUR</div>
+      <div className="appraisal" color={appraisal_color}>{appraisal_text}</div>
       <div className="contacts text-headline">
-        <div className="phone" onClick={()  => dispatch({ type: "ad/showPhone" })}>Show Phone</div>
-        <div className="email" onClick={() => dispatch({ type: "ad/showEmail" })}>Show Email</div>
+        <div
+          className="phone"
+          onClick={() => dispatch({ type: "ad/showPhone" })}
+        >
+          Show Phone
+        </div>
+        <div
+          className="email"
+          onClick={() => dispatch({ type: "ad/showEmail" })}
+        >
+          Show Email
+        </div>
       </div>
     </DetailsComponent>
   );
@@ -85,6 +111,11 @@ const DetailsComponent = styled.div`
     text-align: right;
     font-size: 50px;
     color: var(--LEI3);
+  }
+
+  .appraisal {
+    text-align: right;
+    color: ${props => props.appraisal_color}
   }
 
   .contacts {
