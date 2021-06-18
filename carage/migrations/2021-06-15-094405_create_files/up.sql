@@ -1,7 +1,6 @@
 -- Your SQL goes here
 create table files (
-    id uuid not null,
+    id uuid not null primary key,
     filename varchar not null,
-    car_id varchar not null references cars,
-    primary key(id, car_id)
+    car_id varchar not null references cars
 )

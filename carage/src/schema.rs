@@ -54,7 +54,7 @@ table! {
     use diesel::sql_types::*;
     use crate::car::{Gearboxenum, model::*, maintenance::Typeenum};
 
-    files (id, car_id) {
+    files (id) {
         id -> Uuid,
         filename -> Varchar,
         car_id -> Varchar,

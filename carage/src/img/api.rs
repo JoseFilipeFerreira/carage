@@ -1,6 +1,5 @@
 use super::{File, FileApi};
 use crate::fairings::{Claims, Db};
-use base64;
 use lazy_static::lazy_static;
 use rocket::serde::json::Json;
 use rocket::{
@@ -45,8 +44,7 @@ pub async fn create(
         Err(io::Error::new(io::ErrorKind::InvalidInput, "Image too big"))
     } else {
         let mut image_file = fs::File::create(path)?;
-        image_file.write(&bytes);
-        Ok(id.to_string())
+        image_file.write_all(&bytes)
     }?;
 
     let db_entry = File {
@@ -60,10 +58,18 @@ pub async fn create(
         .map_err(|_| io::Error::new(io::ErrorKind::InvalidInput, "Invalid base64 format"))
 }
 
-#[delete("/remove/<car_id>/<id>")]
-pub async fn remove(_conn: Db, id: String, car_id: String, _claims: Claims) -> io::Result<()> {
-    // TODO: get path from db via id
-    let path = id;
-    //TODO: delete entry from database
-    fs::remove_file(Path::new("images/").join(path))
+#[delete("/remove/<img>")]
+pub async fn remove(conn: Db, _claims: Claims, img: String) -> Option<Json<File>> {
+    if fs::remove_file(Path::new("images/").join(img.clone())).is_ok() {
+        if let Ok(img) = Uuid::parse_str(&img) {
+            match conn.run(move |c| File::delete(img, c)).await {
+                Ok(u) => Some(Json(u)),
+                _ => None,
+            }
+        } else {
+            None
+        }
+    } else {
+        None
+    }
 }

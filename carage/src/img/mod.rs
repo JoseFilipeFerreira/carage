@@ -4,7 +4,6 @@ use diesel::{
     associations::HasTable, pg::PgConnection, AsExpression, Associations, Identifiable, Insertable,
     QueryDsl, QueryResult, Queryable, RunQueryDsl,
 };
-use rocket::data::Data;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -47,7 +46,7 @@ impl File {
     }
 }
 
-#[derive(Serialize, Clone, Deserialize, Eq, PartialEq, Debug, Insertable)]
+#[derive(Serialize, Clone, Deserialize, Eq, PartialEq, Debug)]
 pub struct FileApi {
     pub filename: String,
     pub car_id: String,
