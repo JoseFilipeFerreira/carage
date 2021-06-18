@@ -112,6 +112,7 @@ checksum = "b700ce4376041dcd0a327fd0097c41095743c4c8af8887265942faf1100bd040"
 name = "carage"
 version = "0.1.0"
 dependencies = [
+ "base64 0.13.0",
  "chrono",
  "diesel",
  "diesel-derive-enum",

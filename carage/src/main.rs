@@ -7,6 +7,7 @@ extern crate rocket_sync_db_pools;
 pub mod ad;
 pub mod car;
 pub mod fairings;
+pub mod img;
 pub mod predictions;
 pub mod schema;
 pub mod user;
@@ -18,6 +19,7 @@ use crate::{
     },
     predictions::api::ROUTES as PRED_ROUTES,
     user::api::ROUTES as USER_ROUTES,
+    img::api::ROUTES as IMG_ROUTES,
 };
 
 #[launch]
@@ -33,6 +35,7 @@ pub async fn rocket() -> _ {
         .mount("/car/model", MODEL_ROUTES.to_vec())
         .mount("/car/maintenance", MAINT_ROUTES.to_vec())
         .mount("/car/share", SHARE_ROUTES.to_vec())
+        .mount("/img", IMG_ROUTES.to_vec())
         .attach(fairings::Cors())
         .attach(fairings::Db::fairing())
 }
