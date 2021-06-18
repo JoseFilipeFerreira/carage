@@ -22,10 +22,12 @@ pub async fn get(conn: Db, id: String) -> Option<NamedFile> {
     // TODO: get path from db via id
     let id = Uuid::parse_str(&id).unwrap();
     let path = match conn.run(move |c| File::get(id, c)).await {
-        Ok(f) => Some(f.filename),
+        Ok(f) => Some(f.id),
         _ => None,
     }?;
-    NamedFile::open(Path::new("images/").join(path)).await.ok()
+    NamedFile::open(Path::new("images/").join(format!("{}", path)))
+        .await
+        .ok()
 }
 
 #[post("/create", data = "<img>")]
