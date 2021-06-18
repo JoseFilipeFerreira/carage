@@ -141,6 +141,12 @@ pub async fn search(conn: Db, filters: Json<AdSearch>) -> Option<Json<(i64, Vec<
             if let Some(max_date) = filters.max_date {
                 query = query.filter(crate::schema::cars::car_date.lt(max_date));
             };
+            if let Some(min_kms) = filters.min_kms {
+                query = query.filter(crate::schema::cars::kms.gt(min_kms));
+            };
+            if let Some(max_kms) = filters.max_kms {
+                query = query.filter(crate::schema::cars::kms.lt(max_kms));
+            };
             query
                 .select((
                     crate::schema::ads::all_columns,
