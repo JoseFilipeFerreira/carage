@@ -15,6 +15,7 @@ export const SharedCars = ({ user }) => {
           km={x.car.kms}
           year={date.getYear(date.parse(x.car.car_date, "yyyy-MM-dd", new Date()))}
           id={x.car.vin}
+          key={x.car.vin}
         />
       ))}
     </SharedCarsSections>

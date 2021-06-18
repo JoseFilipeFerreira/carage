@@ -29,7 +29,7 @@ export const MaintenanceHistory = ({ car }) => {
         <tbody>
           {car.maintenances.map(function (x) {
             return (
-              <tr className="hover">
+              <tr className="hover" key={x.created_date}>
                 <td className="center">{x.date}</td>
                 <td className="center">{x.type_}</td>
                 <td className="desc">{x.description}</td>

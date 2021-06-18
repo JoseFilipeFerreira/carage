@@ -47,7 +47,7 @@ export const TopTitle = ({ title, id, favorite }) => {
       {[""].map(function () {
         if (favorite)
           return (
-            <div className="clickable" onClick={unstarAd}>
+            <div className="clickable" onClick={unstarAd} key={title}>
               <svg className="star">
                 <use href="#star" />
               </svg>
@@ -55,7 +55,7 @@ export const TopTitle = ({ title, id, favorite }) => {
           );
         else
           return (
-            <div className="clickable" onClick={starAd}>
+            <div className="clickable" onClick={starAd} key={title}>
               <svg>
                 <use href="#unstar" />
               </svg>

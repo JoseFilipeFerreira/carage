@@ -21,7 +21,7 @@ class MyApp extends App {
         <title>Carage</title>
 
         <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/apple-icon.png"></link>
+        {/* <link rel="apple-touch-icon" href="/apple-icon.png"></link> */}
         <meta name="theme-color" content="#317EFB" />
       </Head>
           <Component {...pageProps} />

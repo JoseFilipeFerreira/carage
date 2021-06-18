@@ -1,54 +1,142 @@
+import { quartersInYear } from "date-fns";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
-export const Filters = ({}) => {
+const axios = require("axios");
+
+export const Filters = ({ brands, query, models, page }) => {
+  const router = useRouter();
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      getAds();
+    }
+  };
+
+  const getAds = async () => {
+    const make =
+      document.getElementById("make").value === "default"
+        ? ""
+        : document.getElementById("make").value;
+    const model =
+      document.getElementById("model").value === "default"
+        ? ""
+        : document.getElementById("model").value;
+    const min_date = document.getElementById("min_date").value;
+    const max_date = document.getElementById("max_date").value;
+    const min_price = document.getElementById("min_price").value;
+    const max_price = document.getElementById("max_price").value;
+    const min_kms = document.getElementById("min_kms").value;
+    const max_kms = document.getElementById("max_kms").value;
+    const fuel = document.getElementById("fuel").value;
+
+    router.push(
+      `/dashboard/market?make=${make}&model=${model}&min_date=${min_date}&max_date=${max_date}&min_price=${min_price}&max_price=${max_price}&min_kms=${min_kms}&max_kms=${max_kms}&fuel=${fuel}&page=${page}`
+    );
+  };
+
   return (
     <FiltersBox>
-      <form>
-        <input
+      <form onKeyPress={handleKeyPress}>
+        <select
           type="text"
+          id="make"
+          name="make"
           placeholder="Brand"
           className="filter text-headline"
-        ></input>
-        <input
-          type="text"
-          placeholder="Model"
+          defaultValue={"default"}
+          onChange={getAds}
+        >
+          <option value="default">Brand</option>
+          {brands.sort().map(function (brand) {
+            return (
+              <option value={brand} key={brand}>
+                {brand}
+              </option>
+            );
+          })}
+        </select>
+        <select
+          id="model"
+          name="model"
           className="filter text-headline"
-        ></input>
+          defaultValue="default"
+          onChange={getAds}
+        >
+          <option value="default">Model</option>
+          {models.sort().map(function (model) {
+            return (
+              <option value={model} key={model}>
+                {model}
+              </option>
+            );
+          })}
+        </select>
         <input
           type="text"
+          id="min_date"
+          name="min_date"
           placeholder="Year of"
           className="filter text-headline"
+          defaultValue={query.min_date}
         ></input>
         <input
           type="text"
+          id="max_date"
+          name="max_date"
           placeholder="Year until"
           className="filter text-headline"
+          defaultValue={query.max_date}
         ></input>
         <input
           type="text"
+          id="min_price"
+          name="min_price"
           placeholder="Price of"
           className="filter text-headline"
+          defaultValue={query.min_price}
         ></input>
         <input
           type="text"
+          id="max_price"
+          name="max_price"
           placeholder="Price up to"
           className="filter text-headline"
+          defaultValue={query.max_price}
         ></input>
         <input
           type="text"
+          id="min_kms"
+          name="min_kms"
           placeholder="Kilometers of"
           className="filter text-headline"
+          defaultValue={query.min_kms}
         ></input>
         <input
           type="text"
+          id="max_kms"
+          name="max_kms"
           placeholder="Kilometers to"
           className="filter text-headline"
+          defaultValue={query.max_kms}
         ></input>
-        <input
+        <select
           type="text"
-          placeholder="Fuel"
+          id="fuel"
+          name="fuel"
+          defaultValue={query.fuel}
           className="filter text-headline"
-        ></input>
+          onChange={getAds}
+        >
+          <option value="default">Fuel</option>
+          <option value="Diesel">Diesel</option>
+          <option value="Petrol">Petrol</option>
+          <option value="Electric">Electric</option>
+          <option value="HybridPetrol">Hybrid Petrol</option>
+          <option value="HybridDiesel">Hybrid Diesel</option>
+          <option value="Gpl">GPL</option>
+          <option value="Hydrogen">Hydrogen</option>
+        </select>
       </form>
       <SVGs />
     </FiltersBox>
@@ -66,11 +154,11 @@ const FiltersBox = styled.div`
   background-color: var(--LEI2);
   border-radius: 15px;
 
-    form {
-        display: grid;
-        grid-template-columns: 110px 110px 120px 145px 130px 160px 185px 185px 95px;
-        gap: 10px;
-    }
+  form {
+    display: grid;
+    grid-template-columns: 110px 110px 120px 145px 130px 160px 185px 185px 95px;
+    gap: 10px;
+  }
 
   .filter {
     margin-left: 8px;
@@ -78,14 +166,18 @@ const FiltersBox = styled.div`
     border-radius: 8px;
     padding: 0 16px;
     height: 42px;
-    background-color: #28262A;
+    background-color: #28262a;
     color: var(--LEI5);
-    border: solid 1px #28262A;
+    border: solid 1px #28262a;
     outline: none;
   }
 
+  .text-headline {
+    font-size: 15px;
+  }
+
   .filter::placeholder {
-      color: #373439;
+    color: #373439;
   }
 
   .filter:hover {
@@ -94,6 +186,13 @@ const FiltersBox = styled.div`
 
   .filter:focus {
     outline: solid 2px var(--LEI3);
+  }
+
+  .submit {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
   }
 
   svg {

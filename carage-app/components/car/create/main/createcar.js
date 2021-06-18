@@ -207,7 +207,7 @@ function Form({ owner, brands, models }) {
               Select car's brand...
             </option>
             {brands.sort().map(function (brand) {
-              return <option value={brand}>{brand}</option>;
+              return <option value={brand} key={brand}>{brand}</option>;
             })}
           </select>
         </div>

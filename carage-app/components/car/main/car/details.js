@@ -31,7 +31,7 @@ export const Details = ({ car }) => {
         </div>
         <div className="detail">
           <div className="text-headline">Month</div>
-          <div>{month}</div>
+          <div className="text-body">{month}</div>
         </div>
         <div className="detail">
           <div className="text-headline">Kilometers</div>

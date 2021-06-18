@@ -26,6 +26,7 @@ export const Ads = ({ ads }) => {
             fuel={x.model.fuel}
             price={x.ad.price}
             image="/assets/noPhotoAd.png"
+            key={x.ad.id}
           />
         );
       })}
