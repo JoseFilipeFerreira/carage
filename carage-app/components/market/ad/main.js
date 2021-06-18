@@ -9,7 +9,7 @@ export const Main = ({ad, car}) => {
   return (
     <Dash>
         <Top title="Market • Ad"/>
-        <TopTitle title={`${ad.model.make} ${ad.model.model}`} id={ad.ad.id}/>
+        <TopTitle title={`${ad.model.make} ${ad.model.model}`} id={ad.ad.id} favorite={ad.favorite}/>
         <div className="divisor"></div>
         <Ad ad={ad} car={car}/>
     </Dash>

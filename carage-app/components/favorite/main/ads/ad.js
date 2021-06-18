@@ -14,7 +14,7 @@ export const Ad = ({
   image,
 }) => {
   return (
-    <Link href={`/dashboard/market/ad/${id}`} passHref>
+    <Link href={`/dashboard/market/ad/${id}?favorite=true`} passHref>
       <AdBox>
         <div className="image">
           <img src={image} />

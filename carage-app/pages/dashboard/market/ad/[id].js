@@ -87,10 +87,11 @@ Home.getInitialProps = async ({ req, reduxStore, query }) => {
       console.log(error);
     }
   );
-
+  
 
   if (result) {
     result.ad = ad;
+    result.ad.favorite = query.favorite;
     result.car = car;
     return result;
   } else return { user: null, ad: null };
