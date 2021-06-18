@@ -147,22 +147,22 @@ pub async fn search(conn: Db, filters: Json<AdSearch>) -> Option<Json<(i64, Vec<
                 query = query.filter(crate::schema::cars::gearbox.eq(gearbox));
             };
             if let Some(min_price) = filters.min_price {
-                query = query.filter(crate::schema::ads::price.gt(min_price));
+                query = query.filter(crate::schema::ads::price.ge(min_price));
             };
             if let Some(max_price) = filters.max_price {
-                query = query.filter(crate::schema::ads::price.lt(max_price));
+                query = query.filter(crate::schema::ads::price.le(max_price));
             };
             if let Some(min_date) = filters.min_date {
-                query = query.filter(crate::schema::cars::car_date.gt(min_date));
+                query = query.filter(crate::schema::cars::car_date.ge(min_date));
             };
             if let Some(max_date) = filters.max_date {
-                query = query.filter(crate::schema::cars::car_date.lt(max_date));
+                query = query.filter(crate::schema::cars::car_date.le(max_date));
             };
             if let Some(min_kms) = filters.min_kms {
-                query = query.filter(crate::schema::cars::kms.gt(min_kms));
+                query = query.filter(crate::schema::cars::kms.ge(min_kms));
             };
             if let Some(max_kms) = filters.max_kms {
-                query = query.filter(crate::schema::cars::kms.lt(max_kms));
+                query = query.filter(crate::schema::cars::kms.le(max_kms));
             };
             query
                 .select((
