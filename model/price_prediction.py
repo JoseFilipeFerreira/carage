@@ -127,7 +127,7 @@ def model_comparison(X, y):
     # lasso_train_score, lasso_test_score, lasso_mae, lasso_mse, lasso_rmse, lasso_predict, lasso_model = fit_predict_score(Lasso(), X_train, y_train, X_test, y_test)
     # ridge_train_score, ridge_test_score, ridge_mae, ridge_mse, ridge_rmse, ridge_predict, ridge_model = fit_predict_score(Ridge(), X_train, y_train, X_test, y_test)
     # svr_train_score, svr_test_score, svr_mae, svr_mse, svr_rmse = fit_predict_score(SVR(kernel='linear'), X_train, y_train, X_test, y_test)
-    xgbr_train_score, xgbr_test_score, xgbr_mae, xgbr_mse, xgbr_rmse, xgbr_predict, xgbr_model = fit_predict_score(<, X_train, y_train, X_test, y_test)
+    xgbr_train_score, xgbr_test_score, xgbr_mae, xgbr_mse, xgbr_rmse, xgbr_predict, xgbr_model = fit_predict_score(XGBRegressor(), X_train, y_train, X_test, y_test)
     # lgbr_train_score, lgbr_test_score, lgbr_mae, lgbr_mse, lgbr_rmse = fit_predict_score(LGBMRegressor(), X_train, y_train, X_test, y_test)
     
     models = ['XGBoost (Regressor)']
@@ -143,15 +143,4 @@ def model_comparison(X, y):
                                                                                     4: 'Mean Squared Error',
                                                                                     5:'Root Mean Squared Error'}, axis=1)
     
-    return model_comparison, xgbr_predict, xgbr_model
-
-dataset = '/content/gdrive/MyDrive/StandVirtualCars.csv'
-
-df_cars = prepare_data(dataset)
-X, y = preprocess_data(df_cars)
-
-model_comparison, xgbr_predict, xgbr_model = model_comparison(X, y)
-
-car = {'brand': 'Renault', 'fuel': 'Diesel', 'year': 2004, 'km': 205000.0, 'displacement': 1900.0, 'power': 120.0, 'gearbox': 'Manual'}
-
-price = predict_score(xgbr_model, car, X)
+    return model_comparison, xgbr_predict, xgbr_model, rmse

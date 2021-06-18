@@ -17,3 +17,5 @@ uuid = { version = "0.8", features = ["v4", "serde"] }
 serde = "*"
 lazy_static = "*"
 jsonwebtoken = "*"
+inline-python = "0.6.0"
+tokio = "1.7.0"
