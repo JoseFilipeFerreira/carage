@@ -1,4 +1,4 @@
-use super::{ApiMaintenance, DbMaintenance};
+use super::{super::Car, ApiMaintenance, DbMaintenance};
 use crate::fairings::{Claims, Db};
 use lazy_static::lazy_static;
 use rocket::serde::json::Json;
@@ -19,7 +19,18 @@ pub async fn create(
 ) -> Option<Json<DbMaintenance>> {
     maint.owner = claims.email;
     match conn
-        .run(move |c| DbMaintenance::from_api(maint.clone(), c))
+        .run(move |c| {
+            let mut car = Car::get(&maint.car, c)?;
+            if car.owner == maint.owner {
+                if car.kms < maint.kms.unwrap() {
+                    car.kms = maint.kms.unwrap();
+                    car.update(c)?;
+                }
+                DbMaintenance::from_api(maint.clone(), c)
+            } else {
+                Err(diesel::result::Error::NotFound)
+            }
+        })
         .await
         .map(Json)
     {
@@ -44,7 +55,7 @@ pub async fn get(conn: Db, maint: String) -> Option<Json<DbMaintenance>> {
     }
 }
 
-#[delete("/remove", data = "<maint>")]
+#[delete("/remove/<maint>")]
 pub async fn remove(conn: Db, claims: Claims, maint: String) -> Option<Json<DbMaintenance>> {
     if let Ok(maint) = Uuid::parse_str(&maint) {
         conn.run(move |c| {

@@ -13,17 +13,25 @@ lazy_static! {
     pub static ref ROUTES: Vec<rocket::Route> = routes![get, create, remove, all, search, update];
 }
 
-//TODO: Missing some ownership checks
 #[post("/create", format = "json", data = "<ad>")]
 pub async fn create(conn: Db, claims: Claims, mut ad: Json<ApiAd>) -> Option<Json<Ad>> {
     ad.owner = claims.email;
-    match conn.run(move |c| Ad::from_api(ad.clone(), c)).await {
+    match conn
+        .run(move |c| {
+            let car = Car::get(&ad.car, c)?;
+            if car.owner == ad.owner {
+                Ad::from_api(ad.clone(), c)
+            } else {
+                Err(diesel::result::Error::NotFound)
+            }
+        })
+        .await
+    {
         Ok(u) => Some(Json(u)),
         _ => None,
     }
 }
 
-//TODO: Error reporting
 #[post("/", data = "<ad>")]
 pub async fn get(conn: Db, ad: String) -> Option<Json<FullAd>> {
     if let Ok(ad) = Uuid::parse_str(&ad) {
@@ -70,11 +78,20 @@ pub async fn all(conn: Db, page: Json<Page>) -> Option<Json<(i64, Vec<FullAd>)>>
     }
 }
 
-//TODO: Missing some ownership checks
-#[delete("/remove", data = "<ad>")]
-pub async fn remove(conn: Db, _claims: Claims, ad: String) -> Option<Json<Ad>> {
+#[delete("/remove/<ad>")]
+pub async fn remove(conn: Db, claims: Claims, ad: String) -> Option<Json<Ad>> {
     if let Ok(ad) = Uuid::parse_str(&ad) {
-        match conn.run(move |c| Ad::delete(ad, c)).await {
+        match conn
+            .run(move |c| {
+                let full_ad = Ad::get(ad, c)?;
+                if full_ad.owner == claims.email {
+                    Ad::delete(ad, c)
+                } else {
+                    Err(diesel::result::Error::NotFound)
+                }
+            })
+            .await
+        {
             Ok(u) => Some(Json(u)),
             _ => None,
         }
