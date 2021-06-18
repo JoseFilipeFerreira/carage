@@ -2,11 +2,11 @@ pub mod api;
 use crate::{car::Car, schema::files};
 use diesel::{
     associations::HasTable, pg::PgConnection, AsExpression, Associations, Identifiable, Insertable,
-    QueryResult, Queryable, RunQueryDsl, QueryDsl,
+    QueryDsl, QueryResult, Queryable, RunQueryDsl,
 };
+use rocket::data::Data;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use rocket::data::Data;
 
 #[derive(
     Serialize,
@@ -23,7 +23,7 @@ use rocket::data::Data;
     QueryId,
 )]
 #[table_name = "files"]
-#[primary_key(id, car_id)]
+#[primary_key(id)]
 #[belongs_to(Car, foreign_key = "car_id")]
 pub struct File {
     pub id: Uuid,
@@ -32,14 +32,18 @@ pub struct File {
 }
 
 impl File {
-    pub fn from_api(file: FileApi, conn: &PgConnection) -> QueryResult<Self> {
+    pub fn insert(&self, conn: &PgConnection) -> QueryResult<Self> {
         diesel::insert_into(Self::table())
-            .values(file)
+            .values(self)
             .get_result(conn)
     }
 
-    pub fn delete(file: &str, conn: &PgConnection) -> QueryResult<Self> {
-        diesel::delete(Self::table().find(file)).get_result(conn)
+    pub fn get(id: Uuid, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
+        Self::table().find(id).first(conn)
+    }
+
+    pub fn delete(id: Uuid, conn: &PgConnection) -> QueryResult<Self> {
+        diesel::delete(Self::table().find(id)).get_result(conn)
     }
 }
 

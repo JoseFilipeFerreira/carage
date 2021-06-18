@@ -13,7 +13,8 @@ rocket = { git = "https://github.com/SergioBenitez/Rocket", features = ["json"] 
 rocket_sync_db_pools = { git = "https://github.com/SergioBenitez/Rocket", features = ["diesel_postgres_pool"] }
 chrono = { version = "*", features = ["serde"] }
 diesel-derive-enum = { version = "1", features = ["postgres"] }
-uuid = { version = "0.8", features = ["v4", "serde"] } 
+uuid = { version = "0.8", features = ["v4", "serde"] }
 serde = "*"
 lazy_static = "*"
 jsonwebtoken = "*"
+base64 = "0.13"
