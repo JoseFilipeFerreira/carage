@@ -17,9 +17,9 @@ use crate::{
         api::ROUTES as CAR_ROUTES, maintenance::api::ROUTES as MAINT_ROUTES,
         model::api::ROUTES as MODEL_ROUTES, share::api::ROUTES as SHARE_ROUTES,
     },
+    img::api::ROUTES as IMG_ROUTES,
     predictions::api::ROUTES as PRED_ROUTES,
     user::api::ROUTES as USER_ROUTES,
-    img::api::ROUTES as IMG_ROUTES,
 };
 
 #[launch]
