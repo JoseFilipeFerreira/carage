@@ -24,6 +24,7 @@ pub async fn create(
             if car.owner == maint.owner {
                 if car.kms < maint.kms.unwrap() {
                     car.kms = maint.kms.unwrap();
+                    car.number_plate = None;
                     car.update(c)?;
                 }
                 DbMaintenance::from_api(maint.clone(), c)
