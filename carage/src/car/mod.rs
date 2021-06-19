@@ -3,7 +3,7 @@ pub mod maintenance;
 pub mod model;
 pub mod share;
 use self::maintenance::DbMaintenance;
-use crate::{schema::cars, user::DbUser};
+use crate::{img::File, schema::cars, user::DbUser};
 use chrono::{NaiveDate, NaiveDateTime};
 use diesel::{
     associations::HasTable, pg::PgConnection, AsExpression, Associations, BelongingToDsl,
@@ -70,6 +70,7 @@ impl Car {
 pub struct SendCar {
     pub car: Car,
     pub model: Model,
+    pub imgs: Vec<File>,
     pub maintenances: Vec<DbMaintenance>,
 }
 
@@ -78,18 +79,22 @@ impl SendCar {
         let car = Car::get(car, conn)?;
         let model = Model::get(&car.model, conn)?;
         let maintenances = DbMaintenance::belonging_to(&car).load(conn)?;
+        let imgs = File::belonging_to(&car).load(conn)?;
         Ok(Self {
             car,
             model,
+            imgs,
             maintenances,
         })
     }
     pub fn from_car(car: Car, conn: &PgConnection) -> QueryResult<Self> {
         let model = Model::get(&car.model, conn)?;
         let maintenances = DbMaintenance::belonging_to(&car).load(conn)?;
+        let imgs = File::belonging_to(&car).load(conn)?;
         Ok(Self {
             car,
             model,
+            imgs,
             maintenances,
         })
     }

@@ -20,6 +20,7 @@ use uuid::Uuid;
     Debug,
     Eq,
     QueryId,
+    Clone,
 )]
 #[table_name = "files"]
 #[primary_key(id)]
