@@ -39,8 +39,7 @@ pub async fn create(
 ) -> Result<Json<File>, std::io::Error> {
     let id = Uuid::new_v4();
     let path = Path::new("images/").join(id.to_string());
-    let bytes = base64::decode(img.image.clone())
-        .map_err(|_| io::Error::new(io::ErrorKind::InvalidInput, "Invalid base64 format"))?;
+    let bytes = image_base64::from_base64(img.image.clone());
 
     if bytes.len() > limits.get("file/image").unwrap_or_else(|| 10.mebibytes()) {
         Err(io::Error::new(io::ErrorKind::InvalidInput, "Image too big"))
