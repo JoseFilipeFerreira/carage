@@ -13,10 +13,10 @@ export const PriceBox = ({ car }) => {
     await axios.get(`http://localhost:8000/car/predict/${car.car.vin}`).then(
       (response) => {
         console.log(response.data);
-        let price = response.data.price
-        let error = response.data.error
+        let price = response.data.price;
+        let error = response.data.error;
         document.getElementById("price").innerHTML = `${parseInt(
-           price - error
+          price - error
         )} - ${parseInt(price + error)} EUR`;
         document.getElementById("price").style.display = "initial";
       },
@@ -27,7 +27,7 @@ export const PriceBox = ({ car }) => {
   }
 
   if (value) {
-    estimatePrice()
+    estimatePrice();
     return (
       <Background>
         <PriceBoxContainer>
@@ -40,15 +40,15 @@ export const PriceBox = ({ car }) => {
             </div>
           </div>
           <div className="content">
-            <div className="text-subhead">Your car is worth between <span id="price"></span></div>
+            <div className="text-subhead">
+              Your car is worth between <span id="price"></span>
+            </div>
           </div>
         </PriceBoxContainer>
         <SVGs />
       </Background>
     );
-
-  }
-  else return null;
+  } else return null;
 };
 
 const Background = styled.div`
@@ -72,7 +72,7 @@ const PriceBoxContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  animation: 0.2s ease-in-out show;
+  animation: 0.2s ease-in-out showOpacity;
   position: fixed;
 
   .content {
@@ -162,12 +162,23 @@ const PriceBoxContainer = styled.div`
     font-size: 20px;
   }
 
-
   /* Portrait and Landscape */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+    width: 80%;
+    .text-subhead {
+      text-align: center;
+    }
+
+    .box-header {
+      align-items: center;
+
+      .text-title {
+        margin-bottom: 0;
+      }
+    }
   }
 
-  @keyframes show {
+  @keyframes showOpacity {
     0% {
       opacity: 0%;
     }

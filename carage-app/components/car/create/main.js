@@ -23,6 +23,11 @@ const Dash = styled.div`
   grid-template-rows: 130px auto;
 
   /* Portrait and Landscape */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px)  {
+    padding: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    grid-template-rows: min-content auto;
+    border-radius: 0;
   }
 `;

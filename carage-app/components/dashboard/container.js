@@ -10,8 +10,8 @@ export const Container = styled.div`
 
   @media only screen 
   and (min-device-width: 320px) 
-  and (max-device-width: 568px)
-  and (-webkit-min-device-pixel-ratio: 2) {
-    grid-template-rows: 68px auto 255px;
+  and (max-device-width: 568px) {
+    grid-template-columns: auto;
+    background-color: var(--LEI1);
   }
 `;

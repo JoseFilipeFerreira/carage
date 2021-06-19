@@ -188,7 +188,15 @@ const SellBoxContainer = styled.div`
   }
 
   /* Portrait and Landscape */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+
+    .content {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
   }
 
   @keyframes show {

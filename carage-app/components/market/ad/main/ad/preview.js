@@ -24,12 +24,13 @@ const PreviewComponent = styled.div`
   flex-direction: column;
   justify-content: start;
 
-  .big, .big img {
+  .big,
+  .big img {
     width: 100%;
     object-fit: contain;
 
     img {
-        margin-bottom: 10px;
+      margin-bottom: 10px;
     }
   }
 
@@ -48,6 +49,6 @@ const PreviewComponent = styled.div`
   }
 
   /* Portrait and Landscape */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
   }
 `;

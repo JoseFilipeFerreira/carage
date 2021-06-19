@@ -28,10 +28,10 @@ export const Filters = ({ brands, query, models, page }) => {
     const max_price = document.getElementById("max_price").value;
     const min_kms = document.getElementById("min_kms").value;
     const max_kms = document.getElementById("max_kms").value;
-    const fuel = 
-    document.getElementById("fuel").value === "default"
-      ? ""
-      : document.getElementById("fuel").value;
+    const fuel =
+      document.getElementById("fuel").value === "default"
+        ? ""
+        : document.getElementById("fuel").value;
 
     router.push(
       `/dashboard/market?make=${make}&model=${model}&min_date=${min_date}&max_date=${max_date}&min_price=${min_price}&max_price=${max_price}&min_kms=${min_kms}&max_kms=${max_kms}&fuel=${fuel}&page=${page}`
@@ -207,7 +207,15 @@ const FiltersBox = styled.div`
     fill: ${(props) => (props.focused ? "var(--LEI3)" : "var(--LEI5)")};
   }
 
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+    display: flex;
+    flex-direction: column;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
   }
 `;
 

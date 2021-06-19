@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Option } from "./navbar/option";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 
 export const Navbar = ({ focused }) => {
@@ -7,6 +8,11 @@ export const Navbar = ({ focused }) => {
   let cars = false;
   let market = false;
   let favorite = false;
+
+  const showNavbar = (state) => state.dashboard.showNavbar;
+  const dispatch = useDispatch();
+
+  const value = useSelector(showNavbar);
 
   switch (focused) {
     case "dashboard":
@@ -24,26 +30,37 @@ export const Navbar = ({ focused }) => {
     default:
       break;
   }
-
-  return (
-    <Nav>
-      <Link className="text-title logo" href={`/`} passHref>
-        <div className="logo">CARAGE</div>
-      </Link>
-      <Link href={`/dashboard`} passHref>
-        <Option title="Home" focused={dashboard} />
-      </Link>
-      <Link href={`/dashboard/cars`} passHref>
-        <Option title="Cars" focused={cars} />
-      </Link>
-      <Link href={`/dashboard/market`} passHref>
-        <Option title="Market" focused={market} />
-      </Link>
-      <Link href={`/dashboard/market/favorite`} passHref>
-        <Option title="Favorite" focused={favorite} />
-      </Link>
-    </Nav>
-  );
+    return (
+      <Nav value={value}>
+        <div className="mobile-logo">
+          <Link className="text-title logo" href={`/`} passHref>
+            <div className="mobile-logo-text">CARAGE</div>
+          </Link>
+          <svg
+            className="close"
+            onClick={() => dispatch({ type: "dashboard/hideNavbar" })}
+          >
+            <use href="#close" />
+          </svg>
+        </div>
+        <Link className="text-title logo" href={`/`} passHref>
+          <div className="logo" onClick={() => dispatch({ type: "dashboard/hideNavbar" })}>CARAGE</div>
+        </Link>
+        <Link href={`/dashboard`} passHref>
+          <Option title="Home" focused={dashboard} onClick={() => dispatch({ type: "dashboard/hideNavbar" })}/>
+        </Link>
+        <Link href={`/dashboard/cars`} passHref>
+          <Option title="Cars" focused={cars} onClick={() => dispatch({ type: "dashboard/hideNavbar" })}/>
+        </Link>
+        <Link href={`/dashboard/market`} passHref>
+          <Option title="Market" focused={market} onClick={() => dispatch({ type: "dashboard/hideNavbar" })}/>
+        </Link>
+        <Link href={`/dashboard/market/favorite`} passHref>
+          <Option title="Favorite" focused={favorite} onClick={() => dispatch({ type: "dashboard/hideNavbar" })}/>
+        </Link>
+        <SVGs />
+      </Nav>
+    );
 };
 
 const Nav = styled.div`
@@ -55,6 +72,7 @@ const Nav = styled.div`
   padding: 30px;
   padding-right: 0;
   padding-top: 0;
+  animation: 0.2s ease-in-out show;
 
   .logo {
     grid-column-start: 2;
@@ -67,7 +85,70 @@ const Nav = styled.div`
     font-weight: bold;
   }
 
+  .mobile-logo {
+    display: none;
+  }
+
   /* Portrait and Landscape */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--LEI2);
+    height: 100vh;
+    width: 100vw;
+    display: ${props => props.value ? "flex" : "none"};
+
+    .logo {
+      display: none;
+    }
+
+    .mobile-logo {
+      display: initial;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .mobile-logo-text {
+      color: var(--LEI3);
+      font-size: 40px;
+      height: 216px;
+      padding-top: 30px;
+      font-weight: bold;
+    }
+
+    .close {
+      margin-top: 40px;
+      margin-right: 30px;
+      fill: var(--LEI5);
+    }
+
+    svg {
+      width: 25px;
+      height: 25px;
+      transition: 0.1s ease;
+      cursor: pointer;
+    }
+
+  }
+
+  @keyframes show {
+    0% {
+      left: 100vw;
+    }
+    100% {
+      left: 0;
+    }
   }
 `;
+
+const SVGs = () => {
+  return (
+    <svg display="none">
+      <symbol width="25" height="25" viewBox="0 0 25 25" id="close">
+        <path d="M 16.628906 12.503906 L 24.367188 4.769531 C 25.21875 3.914062 25.21875 2.527344 24.367188 1.675781 L 23.335938 0.644531 C 22.480469 -0.210938 21.09375 -0.210938 20.238281 0.644531 L 12.503906 8.378906 L 4.769531 0.640625 C 3.914062 -0.214844 2.527344 -0.214844 1.675781 0.640625 L 0.640625 1.671875 C -0.214844 2.527344 -0.214844 3.914062 0.640625 4.765625 L 8.378906 12.503906 L 0.644531 20.238281 C -0.210938 21.09375 -0.210938 22.480469 0.644531 23.335938 L 1.675781 24.367188 C 2.527344 25.21875 3.914062 25.21875 4.769531 24.367188 L 12.503906 16.628906 L 20.238281 24.367188 C 21.09375 25.21875 22.480469 25.21875 23.335938 24.367188 L 24.367188 23.335938 C 25.21875 22.480469 25.21875 21.09375 24.367188 20.238281 Z M 16.628906 12.503906 " />
+      </symbol>
+    </svg>
+  );
+};

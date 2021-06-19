@@ -24,7 +24,6 @@ export const SharedCars = ({ user }) => {
 
 const SharedCarsSections = styled.div`
   width: 100%;
-  height: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, 310px);
   grid-template-rows: repeat(auto-fill, 135px);

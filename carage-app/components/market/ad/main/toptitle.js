@@ -90,6 +90,10 @@ export const TopTitleComponent = styled.div`
   .star {
     fill: #fcca03;
   }
+
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+    margin-top: 20px;
+  }
 `;
 
 const SVGs = () => {

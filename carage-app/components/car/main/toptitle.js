@@ -13,4 +13,8 @@ export const TopTitleComponent = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+    margin-top: 20px;
+  }
 `;

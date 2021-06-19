@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 
 const axios = require("axios");
-const date = require('date-fns');
+const date = require("date-fns");
 const cookie = require("cookie");
 
 export const CreateCar = ({ owner, brands }) => {
@@ -87,28 +87,57 @@ const CreateCarComponent = styled.div`
     outline: solid 2px var(--LEI3);
   }
 
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .form {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(10px, 1fr));
+      width: 100%;
+      column-gap: 20px;
+      row-gap: 50px;
+    }
+    .text-subhead {
+      text-align: center;
+    }
   }
 `;
 
 function Form({ owner, brands, models }) {
   const dispatch = useDispatch();
+
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+
   const createCar = async (event) => {
     event.preventDefault();
 
     let allFilled = true;
 
     for (let i of event.target) {
-      if (i.localName !== "button") {
+      if (i.localName !== "button" && i.type !== "file") {
         if (i.value === undefined || i.value === "" || i.value === "default")
           allFilled = false;
       }
     }
 
     if (allFilled) {
-      let car_date = date.format(new Date(event.target.year.value, event.target.month.value - 1, 1), 'yyyy-MM-dd', false);
-      console.log(car_date)
-      axios
+      let car_date = date.format(
+        new Date(event.target.year.value, event.target.month.value - 1, 1),
+        "yyyy-MM-dd",
+        false
+      );
+
+      const reload = axios
         .post(
           "http://localhost:8000/car/create",
           {
@@ -121,17 +150,54 @@ function Form({ owner, brands, models }) {
             car_date: car_date,
             body_type: event.target.body_type.value,
           },
-          { headers: { "Content-Type": "application/json", "jwt": cookie.parse(document.cookie).jwt} }
+          {
+            headers: {
+              "Content-Type": "application/json",
+              jwt: cookie.parse(document.cookie).jwt,
+            },
+          }
         )
         .then(
           (response) => {
-            console.log(response);
-            window.location.replace('/dashboard/cars/')
+            return response.data;
           },
           (error) => {
             console.log(error);
           }
         );
+
+      if (event.target.image.files) {
+        console.log(event.target.image.files);
+        for (let i = 0; i < event.target.image.files.length; i++) {
+          let file = event.target.image.files[i];
+          if (file.type.includes("image")) {
+            await axios
+              .post(
+                "http://localhost:8000/img/create",
+                {
+                  car_id: event.target.vin.value,
+                  filename: file.name,
+                  image: await toBase64(file),
+                },
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    jwt: cookie.parse(document.cookie).jwt,
+                  },
+                }
+              )
+              .then(
+                (response) => {
+                  console.log(response);
+                },
+                (error) => {
+                  console.log(error);
+                }
+              );
+          }
+        }
+      }
+      if (reload) window.location.replace("/dashboard/cars/");
     }
   };
 
@@ -176,14 +242,17 @@ function Form({ owner, brands, models }) {
       )
       .then(
         (response) => {
-          console.log(response.data)
+          console.log(response.data);
           document.getElementById(
             "pdf"
           ).innerHTML = `<option value="default" disabled selected>Select car's model...</option>`;
-          response.data.sort((x,y) => x.power - y.power).map((x) => {
-            document.getElementById("pdf")
-              .innerHTML += `<option value="${x.id}">${x.power}cv + ${x.engine_size}cc + ${x.fuel}</option>`;
-          });
+          response.data
+            .sort((x, y) => x.power - y.power)
+            .map((x) => {
+              document.getElementById(
+                "pdf"
+              ).innerHTML += `<option value="${x.id}">${x.power}cv + ${x.engine_size}cc + ${x.fuel}</option>`;
+            });
         },
         (error) => {
           console.log(error);
@@ -207,7 +276,11 @@ function Form({ owner, brands, models }) {
               Select car's brand...
             </option>
             {brands.sort().map(function (brand) {
-              return <option value={brand} key={brand}>{brand}</option>;
+              return (
+                <option value={brand} key={brand}>
+                  {brand}
+                </option>
+              );
             })}
           </select>
         </div>
@@ -334,6 +407,17 @@ function Form({ owner, brands, models }) {
             name="name"
             placeholder="Enter car's name..."
             className="signin-input"
+          ></input>
+        </div>
+        <div>
+          <div className="text-subhead">Images</div>
+          <input
+            type="file"
+            id="image"
+            name="image"
+            placeholder="Upload car's photos..."
+            className="signin-input"
+            multiple
           ></input>
         </div>
       </div>

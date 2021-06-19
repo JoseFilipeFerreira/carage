@@ -90,6 +90,40 @@ const MaintenanceHistoryComponent = styled.div`
   }
 
   /* Portrait and Landscape */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+    padding: 15px;
+   
+    table {
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+
+    th {
+      width: min-content;
+      padding-left: 0;
+      padding-right: 0;
+      padding-bottom: 20px;
+    }
+
+    tr {
+      border-bottom: 2px solid var(--LEI2);
+    }
+
+    td {
+      padding: 5px;
+    }
+
+    .hover:hover {
+      background-color: var(--LEI2-2);
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .desc {
+      text-align: left;
+    }
+  }
   }
 `;

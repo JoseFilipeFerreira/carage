@@ -22,7 +22,7 @@ const CarBox = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 100%;
+  height: 135px;
   justify-content: space-between;
   align-items: center;
   padding: 25px;

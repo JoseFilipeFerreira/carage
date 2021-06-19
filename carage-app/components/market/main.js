@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 import ReactPaginate from "react-paginate";
 
 import { Top } from "../dashboard/main/top";
@@ -7,22 +7,24 @@ import { Ads } from "./main/ads";
 import { Filters } from "./main/filters";
 
 export const Main = ({ ads, page, brands, query, models }) => {
-  const router = useRouter()
+  const router = useRouter();
   let totalPages = Math.ceil(ads[0] / 10);
   let currentPage = page;
 
   function changePage(page) {
-    if (window.location.href.includes('page')) {
-      router.push(window.location.href.replace(/page=(\d+)/g,`page=${page.selected}`))
+    if (window.location.href.includes("page")) {
+      router.push(
+        window.location.href.replace(/page=(\d+)/g, `page=${page.selected}`)
+      );
     } else {
-      router.push(window.location.href + `?page=${page.selected}`)
+      router.push(window.location.href + `?page=${page.selected}`);
     }
   }
 
   return (
     <Dash>
       <Top title="Market" />
-      <Filters brands={brands} query={query} models={models} page={page}/>
+      <Filters brands={brands} query={query} models={models} page={page} />
       <div className="divisor"></div>
       <Ads ads={ads} />
       <ReactPaginate
@@ -72,7 +74,9 @@ const Dash = styled.div`
     font-size: 17px;
   }
 
-  .page a, .previous a, .next a {
+  .page a,
+  .previous a,
+  .next a {
     padding-left: 7px;
     padding-right: 7px;
     margin-left: 5px;
@@ -81,7 +85,9 @@ const Dash = styled.div`
     cursor: pointer;
   }
 
-  .page a:hover, .previous a:hover, .next a:hover {
+  .page a:hover,
+  .previous a:hover,
+  .next a:hover {
     background-color: var(--LEI2-1);
   }
 
@@ -89,9 +95,19 @@ const Dash = styled.div`
     background-color: var(--LEI2);
   }
 
-
-
   /* Portrait and Landscape */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+    padding: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    grid-template-rows: min-content min-content min-content min-content auto;
+    row-gap: 15px;
+    border-radius: 0;
+
+    .divisor {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
   }
 `;

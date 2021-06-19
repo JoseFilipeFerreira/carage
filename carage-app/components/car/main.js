@@ -1,20 +1,20 @@
 import styled from "styled-components";
 
-import { TopTitle } from "./main/toptitle"
+import { TopTitle } from "./main/toptitle";
 import { Top } from "../dashboard/main/top";
 import { Car } from "./main/car";
 
-export const Main = ({car}) => {
+export const Main = ({ car }) => {
   return (
     <Dash>
-        <Top title={"Car • " + car.car.name}/>
-        <TopTitle title={car.car.name}/>
-        <div className="divisor"></div>
-        <Car car={car}/>
+      <Top title={"Car • " + car.car.name} />
+      <TopTitle title={car.car.name} />
+      <div className="divisor"></div>
+      <Car car={car} />
     </Dash>
   );
 };
-1
+1;
 const Dash = styled.div`
   background-color: var(--LEI1);
   height: 100%;
@@ -27,15 +27,24 @@ const Dash = styled.div`
   grid-template-rows: min-content min-content min-content auto;
   overflow-y: scroll;
 
-    .divisor {
-        width: 100%;
-        height: 2px;
-        background-color: var(--LEI2);
-        margin-top: 25px;
-        margin-bottom: 25px;
-    }
+  .divisor {
+    width: 100%;
+    height: 2px;
+    background-color: var(--LEI2);
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
 
   /* Portrait and Landscape */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+    padding: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    grid-template-rows: min-content min-content min-content auto;
+    border-radius: 0;
+
+    .divisor {
+      margin-top: 10px;
+    }
   }
 `;

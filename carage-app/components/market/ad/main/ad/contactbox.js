@@ -29,8 +29,8 @@ export const ContactBox = ({ email, phone }) => {
       </div>
       <div className="content">
         {[''].map(function () {
-            if (email_value) return <div className="text-subhead">{email}</div>
-            else return <div className="text-subhead">{phone}</div>
+            if (email_value) return <div className="text-subhead orange">{email}</div>
+            else return <div className="text-subhead orange">{phone}</div>
           })}
       </div>
         </ContactBoxContainer>
@@ -62,7 +62,7 @@ const ContactBoxContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  animation: 0.2s ease-in-out show;
+  animation: 0.2s ease-in-out showOpacity;
   position: fixed;
 
   .content {
@@ -147,11 +147,27 @@ const ContactBoxContainer = styled.div`
     color: var(--LEI3);
   }
 
-  /* Portrait and Landscape */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  .orange {
+    color: var(--LEI3);
   }
 
-  @keyframes show {
+  /* Portrait and Landscape */
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+    width: 80%;
+    .text-subhead {
+      text-align: center;
+    }
+
+    .box-header {
+      align-items: center;
+
+      .text-title {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  @keyframes showOpacity {
     0% {
       opacity: 0%;
     }

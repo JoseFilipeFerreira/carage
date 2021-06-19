@@ -25,13 +25,14 @@ export const Cars = ({ user }) => {
 
 const CarsSections = styled.div`
   width: 100%;
-  height: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, 310px);
   grid-template-rows: repeat(auto-fill, 135px);
   justify-content: center;
   gap: 30px;
+  margin-bottom: 50px;
 
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+    margin-top: 30px;
   }
 `;

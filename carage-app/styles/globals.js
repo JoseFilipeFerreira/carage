@@ -25,6 +25,7 @@ export default createGlobalStyle`
           background-color: var(--LEI1);
         }
 
+
         *,
         *::after,
         *::before {

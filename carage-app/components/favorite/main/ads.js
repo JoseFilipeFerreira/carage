@@ -43,6 +43,8 @@ const AdsSections = styled.div`
   justify-content: center;
   gap: 20px;
 
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+    margin-bottom: 20px;
+  
   }
 `;

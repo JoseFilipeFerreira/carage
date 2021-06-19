@@ -5,9 +5,9 @@ import { Ads } from "./main/ads";
 export const Main = ({ ads }) => {
   return (
     <Dash>
-        <Top title="Favorite Ads"/>
-        <div className="divisor"></div>
-        <Ads ads={ads}/>
+      <Top title="Favorite Ads" />
+      <div className="divisor"></div>
+      <Ads ads={ads} />
     </Dash>
   );
 };
@@ -24,14 +24,25 @@ const Dash = styled.div`
   grid-template-rows: 130px 55px min-content auto;
 
   .divisor {
-        width: 100%;
-        height: 2px;
-        background-color: var(--LEI2);
-        margin-top: 25px;
-        margin-bottom: 25px;
-    }
+    width: 100%;
+    height: 2px;
+    background-color: var(--LEI2);
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
 
   /* Portrait and Landscape */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+    padding: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    grid-template-rows: min-content min-content min-content min-content auto;
+    row-gap: 15px;
+    border-radius: 0;
+
+    .divisor {
+      margin-top: 15px;
+      margin-bottom: 15px;
+    }
   }
 `;

@@ -55,7 +55,11 @@ const StatBox = styled.div`
     text-align: right;
   }
 
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+    margin-top: 20px;
+    & + & {
+      margin-left: 0;
+    }
   }
 `;
 
