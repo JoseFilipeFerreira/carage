@@ -41,7 +41,7 @@ function Form() {
           break;
       }
     }, (error) => {
-      console.log(error);
+      alert('Invalid credentials')
     });
   }
 
