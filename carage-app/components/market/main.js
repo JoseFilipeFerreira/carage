@@ -56,7 +56,7 @@ const Dash = styled.div`
   padding-right: 144px;
   padding-left: 144px;
   display: grid;
-  grid-template-rows: 130px 55px min-content auto min-content;
+  grid-template-rows: 130px min-content min-content auto min-content;
 
   .divisor {
     width: 100%;

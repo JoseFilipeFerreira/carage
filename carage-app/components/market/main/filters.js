@@ -147,20 +147,19 @@ export const Filters = ({ brands, query, models, page }) => {
 };
 
 const FiltersBox = styled.div`
-  display: flex;
-  flex-direction: row;
   width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  padding: 12px;
-  background-color: var(--LEI2);
-  border-radius: 15px;
+  max-height: 100%;
 
   form {
     display: grid;
-    grid-template-columns: 110px 110px 120px 145px 130px 160px 185px 185px 95px;
+    grid-template-columns: repeat(auto-fill, 137px);
+    grid-template-rows: repeat(auto-fill, 50px);
+    background-color: var(--LEI2);
+    border-radius: 15px;
+    padding: 10px;
     gap: 10px;
+    align-items: center;
+    justify-content: center;
   }
 
   .filter {

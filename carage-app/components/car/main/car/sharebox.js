@@ -101,7 +101,7 @@ const ShareBoxContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  animation: 0.2s ease-in-out show;
+  animation: 0.2s ease-in-out showOpacity;
   position: fixed;
 
   .content {
@@ -191,6 +191,7 @@ const ShareBoxContainer = styled.div`
     width: 100%;
     height: 100%;
     border-radius: 0;
+    animation: 0.2s ease-in-out show;
 
     .content {
       margin-top: 0;

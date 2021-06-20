@@ -221,5 +221,6 @@ const SUBox = styled.div`
   100% {
     opacity: 100%;
   }
+}
   
 `;
