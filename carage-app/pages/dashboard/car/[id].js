@@ -83,6 +83,7 @@ Home.getInitialProps = async ({ req, reduxStore, query }) => {
     }
   );
 
+
   if (result) {
     result.user = user;
     return result;

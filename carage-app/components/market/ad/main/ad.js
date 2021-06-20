@@ -9,7 +9,7 @@ export const Ad = ({ ad, car }) => {
   return (
     <AdComponent>
       <div className="top">
-        <Preview ad={ad} />
+        <Preview ad={ad} car={car}/>
         <Details ad={ad} car={car} />
       </div>
       <ContactBox email={ad.ad.owner} phone={ad.user.phone}/>

@@ -93,7 +93,15 @@ const UpdateUserComponent = styled.div`
     text-align: center;
   }
 
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px){
+    .form {
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    width: 100%;
+    column-gap: 20px;
+    row-gap: 50px;
+  }
   }
 `;
 

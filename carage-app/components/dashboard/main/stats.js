@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import { Stat } from "./stats/stat";
@@ -5,10 +6,10 @@ import { Stat } from "./stats/stat";
 export const Stats = ({ title, cars, shared_cars, ads, fav_ads }) => {
   return (
     <StatsSections>
-        <Stat title="Cars" value={cars} icon="Car"/>
-        <Stat title="Ads" value={ads} icon="Ads"/>
-        <Stat title="Favourite Ads" value={fav_ads} icon="Favourite"/>
-        <Stat title="Shared Cars" value={shared_cars} icon="Car" />
+        <Stat title="Cars" value={cars} icon="Car" menu="cars"/>
+        <Stat title="Ads" value={ads} icon="Ads" menu="market"/>
+        <Stat title="Favourite Ads" value={fav_ads} icon="Favourite" menu="market/favorite"/>
+        <Stat title="Shared Cars" value={shared_cars} icon="Car" menu="cars"/>
     </StatsSections>
   );
 };

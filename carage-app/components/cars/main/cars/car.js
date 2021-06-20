@@ -5,11 +5,11 @@ export const Car = ({ car, model, km, year, id }) => {
   return (
     <Link href={`/dashboard/car/${id}`} passHref>
       <CarBox>
-        <div>
+        <div className="details">
           <div className="text-subhead">{`${car} ${model}`}</div>
           <div className="text-footnote">{`${year} • ${km} km`}</div>
         </div>
-        <svg>
+        <svg className="icon">
           <use href="#Car" />
         </svg>
         <SVGs />
@@ -34,12 +34,15 @@ const CarBox = styled.div`
     background-color: var(--LEI2-2);
   }
 
+.details {
+  width: 70%;
+}
+
   svg {
     width: 80px;
     height: 60px;
     fill: var(--LEI5);
     transition: 0.2s ease;
-    margin-right: 10px;
     fill: ${(props) => (props.focused ? "var(--LEI3)" : "var(--LEI5)")};
   }
 

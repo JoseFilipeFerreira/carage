@@ -38,4 +38,10 @@ export const FooterSocials = styled.div`
     fill: var(--LEI3);
     transition: 0.2s ease;
   }
+  
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
 `;

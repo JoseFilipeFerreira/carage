@@ -16,10 +16,10 @@ export const Details = ({ ad, car }) => {
 
   let appraisal = parseInt(ad.appraisal);
   let appraisal_text, appraisal_color;
-  if (appraisal > appraisal * 1.05) {
+  if (ad.ad.price < appraisal * 1.05) {
     appraisal_color = "#6FCF97"
     appraisal_text = "This car is cheaper than normal";
-  } else if (appraisal < appraisal * 1.05) {
+  } else if (ad.ad.price > appraisal * 1.05) {
     appraisal_color = "#ff3333"
     appraisal_text = "This car is more expensive than normal";
   } else {

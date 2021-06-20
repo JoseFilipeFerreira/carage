@@ -1,16 +1,29 @@
 import styled from "styled-components";
 
-export const Preview = ({}) => {
+const axios = require("axios");
+
+export const Preview = ({ car }) => {
+  console.log(car);
+  function handleInput(e) {
+    document.getElementById("big").src = e.target.src;
+  }
+
+  let imgDefault;
+  if (car.imgs[0]) imgDefault = `http://localhost:8000/img/${car.imgs[0].id}`;
+  else imgDefault = "/assets/noPhotoAd.png";
+
   return (
     <PreviewComponent>
       <div className="big">
-        <img src="../../../assets/noPhotoAd.png" />
+        <img id="big" src={imgDefault} />
       </div>
       <div className="images">
-        <img src="../../../assets/noPhotoAd.png" />
-        <img src="../../../assets/noPhotoAd.png" />
-        <img src="../../../assets/noPhotoAd.png" />
-        <img src="../../../assets/noPhotoAd.png" />
+        {car.imgs.map((img) => (
+          <img
+            src={`http://localhost:8000/img/${img.id}`}
+            onClick={(e) => handleInput(e, "src")}
+          />
+        ))}
       </div>
     </PreviewComponent>
   );
@@ -24,31 +37,44 @@ const PreviewComponent = styled.div`
   flex-direction: column;
   justify-content: start;
 
-  .big,
-  .big img {
-    width: 100%;
-    object-fit: contain;
+  .big {
+    max-width: 30vw;
+    max-height: 40vh;
+    margin-bottom: 10px;
+    border-radius: 40px;
+    overflow: hidden;
 
     img {
-      margin-bottom: 10px;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
     }
   }
 
   .images {
-    display: grid;
-    grid-template-columns: auto auto auto auto;
+    display: flex;
+    flex-direction: row;
     gap: 10px;
-    width: 100%;
-    height: 100%;
-    align-items: start;
+    max-width: 30vw;
+    height: 100px;
+    overflow: scroll;
   }
 
   .images img {
-    width: 100%;
+    height: 75px;
     object-fit: contain;
+    border-radius: 15px;
   }
 
   /* Portrait and Landscape */
   @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+    .big {
+      max-width: 100%;
+      max-height: 40vh;
+    }
+
+    .images {
+    max-width: 100%;
+  }
   }
 `;

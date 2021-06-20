@@ -102,7 +102,7 @@ const SIBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  animation: 0.2s ease-in-out show;
+  animation: 0.2s ease-in-out showOpacity;
 
   svg {
     width: 25px;
@@ -182,10 +182,12 @@ const SIBox = styled.div`
   }
 
   /* Portrait and Landscape */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+      margin-left: 10px;
+      margin-right: 10px;
   }
 
-  @keyframes show {
+  @keyframes showOpacity {
     0% {
       opacity: 0%;
     }

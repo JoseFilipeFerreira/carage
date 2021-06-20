@@ -1,19 +1,22 @@
 import styled from "styled-components";
+import Link from "next/link";
 
-export const Stat = ({ title, value, icon }) => {
+export const Stat = ({ title, value, icon, menu }) => {
   return (
-    <StatBox>
-      <div className="top">
-        <svg>
-          <use href={"#" + icon} />
-        </svg>
-        <div className="text-value">{value}</div>
-      </div>
-      <div>
-        <div className="text-footnote">{title}</div>
-      </div>
-      <SVGs />
-    </StatBox>
+    <Link href={`/dashboard/${menu}`} passHref>
+      <StatBox>
+        <div className="top">
+          <svg>
+            <use href={"#" + icon} />
+          </svg>
+          <div className="text-value">{value}</div>
+        </div>
+        <div>
+          <div className="text-footnote">{title}</div>
+        </div>
+        <SVGs />
+      </StatBox>
+    </Link>
   );
 };
 

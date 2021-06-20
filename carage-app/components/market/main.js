@@ -7,6 +7,7 @@ import { Ads } from "./main/ads";
 import { Filters } from "./main/filters";
 
 export const Main = ({ ads, page, brands, query, models }) => {
+  console.log(ads)
   const router = useRouter();
   let totalPages = Math.ceil(ads[0] / 10);
   let currentPage = page;

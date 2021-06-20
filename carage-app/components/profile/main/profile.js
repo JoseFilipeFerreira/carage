@@ -50,6 +50,26 @@ const ProfileComponent = styled.div`
 
 
   /* Portrait and Landscape */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+
+    margin-top: 35px;
+    
+
+    .image {
+    img {
+      height: 100px;
+      border-radius: 20px;
+    }
+  }
+
+  .detail {
+    display: flex;
+    flex-direction: row;
+    margin-left: 15px;
+
+    div + div {
+        margin-left: 10px;
+    }
+  }
   }
 `;

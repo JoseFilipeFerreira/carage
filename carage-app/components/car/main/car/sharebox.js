@@ -200,10 +200,10 @@ const ShareBoxContainer = styled.div`
 
   @keyframes show {
     0% {
-      opacity: 0%;
+      left: 100vw;
     }
     100% {
-      opacity: 100%;
+      left: 0;
     }
   }
 `;

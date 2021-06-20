@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Main = () => {
   return (
     <MainContent>
-      <div className="text-title mobile-title">LoremWhat is Lorem Ipsum?</div>
+      <div className="text-title mobile-title">Your Virtual Garage And Car Market In One Place</div>
       <img src="assets/homepage_image.svg" className="content-img"></img>
       <div className="homepage-text">
         <div className="text-title desktop-title">Your Virtual Garage And Car Market In One Place</div>
@@ -30,6 +30,14 @@ const MainContent = styled.div`
 
   .homepage-body {
     margin-top: 5%;
+  }
+
+  svg {
+    width: 25px;
+    height: 25px;
+    fill: var(--LEI5);
+    margin-right: 10px;
+    fill: ${(props) => (props.focused ? "var(--LEI3)" : "var(--LEI5)")};
   }
 
   .mobile-title {

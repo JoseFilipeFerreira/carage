@@ -88,8 +88,9 @@ Home.getInitialProps = async ({ req, reduxStore, query }) => {
     }
   );
 
-  const appraisal = await axios.post(`http://localhost:8000/car/predict/${ad.car.vin}`).then(
+  const appraisal = await axios.get(`http://localhost:8000/car/predict/${ad.car.vin}`).then(
     (response) => {
+      console.log(response.data)
       return response.data.price;
     },
     (error) => {
@@ -97,6 +98,7 @@ Home.getInitialProps = async ({ req, reduxStore, query }) => {
     }
   );
   
+  console.log(appraisal)
 
   if (result) {
     ad.appraisal = appraisal;
