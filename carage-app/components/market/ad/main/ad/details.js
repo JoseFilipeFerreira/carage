@@ -16,15 +16,15 @@ export const Details = ({ ad, car }) => {
 
   let appraisal = parseInt(ad.appraisal);
   let appraisal_text, appraisal_color;
-  if (ad.ad.price < appraisal * 1.05) {
-    appraisal_color = "#6FCF97"
+  if (ad.ad.price > appraisal * 1.05 && ad.ad.price < appraisal * 1.05) {
+    appraisal_color = "#6188ed";
+    appraisal_text = "This car is fairly priced";
+  } else if (ad.ad.price < appraisal * 1.05) {
+    appraisal_color = "#6FCF97";
     appraisal_text = "This car is cheaper than normal";
   } else if (ad.ad.price > appraisal * 1.05) {
-    appraisal_color = "#ff3333"
+    appraisal_color = "#ff3333";
     appraisal_text = "This car is more expensive than normal";
-  } else {
-    appraisal_color = "#6188ed"
-    appraisal_text = "This car is fairly priced";
   }
 
   return (
@@ -68,7 +68,9 @@ export const Details = ({ ad, car }) => {
         </div>
       </div>
       <div className="price">{ad.ad.price} EUR</div>
-      <div className="appraisal" color={appraisal_color}>{appraisal_text}</div>
+      <div className="appraisal" color={appraisal_color}>
+        {appraisal_text}
+      </div>
       <div className="contacts text-headline">
         <div
           className="phone"
@@ -115,7 +117,7 @@ const DetailsComponent = styled.div`
 
   .appraisal {
     text-align: right;
-    color: ${props => props.appraisal_color}
+    color: ${(props) => props.appraisal_color};
   }
 
   .contacts {
