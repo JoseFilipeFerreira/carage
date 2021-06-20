@@ -15,9 +15,9 @@ export const PriceBox = ({ car }) => {
         console.log(response.data);
         let price = response.data.price;
         let error = response.data.error;
-        document.getElementById("price").innerHTML = `${parseInt(
+        document.getElementById("price").innerHTML = `${Math.max(0, parseInt(
           price - error
-        )} - ${parseInt(price + error)} EUR`;
+        ))} - ${parseInt(price + error)} EUR`;
         document.getElementById("price").style.display = "initial";
       },
       (error) => {
