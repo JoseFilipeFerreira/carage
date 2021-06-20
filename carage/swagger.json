@@ -1,0 +1,1649 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Carage API documentation",
+    "version": "1.0.0",
+    "title": "Carage"
+  },
+  "tags": [
+    {
+      "name": "user",
+      "description": "Operations about user"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/user": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get the logged in user",
+        "description": "",
+        "operationId": "getUser",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UserCreds"
+            }
+          },
+          "404": {
+            "description": "Invalid email"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/user/smol": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get Small user info",
+        "operationId": "getSmallUser",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UserCreds"
+            }
+          },
+          "404": {
+            "description": "Invalid email"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/user/login": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs In User",
+        "operationId": "loginUser",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "creds",
+            "description": "Login Credentials",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserCreds"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Invalid Credentials"
+          }
+        }
+      }
+    },
+    "/user/create": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Registers an User on the System",
+        "description": "",
+        "operationId": "createUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "details",
+            "description": "User Credentials",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DbUser"
+            }
+          },
+          "404": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/user/remove": {
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "uploads an image",
+        "description": "",
+        "operationId": "removeUser",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DbUser"
+            }
+          },
+          "404": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/user/update": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Updates User Info",
+        "operationId": "updateUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "details",
+            "description": "User Details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DbUser"
+            }
+          },
+          "404": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/ad": {
+      "post": {
+        "tags": [
+          "ads"
+        ],
+        "summary": "Gets an Ad",
+        "operationId": "getAd",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "id",
+            "description": "Ad Id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/FullAd"
+            }
+          },
+          "404": {
+            "description": "Invalid Id"
+          }
+        }
+      }
+    },
+    "/ad/all": {
+      "post": {
+        "tags": [
+          "ads"
+        ],
+        "summary": "Gets All ads on a page",
+        "operationId": "getAdList",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "page",
+            "description": "Page Info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Page"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FullAd"
+              }
+            }
+          },
+          "404": {
+            "description": "Page Not found"
+          }
+        }
+      }
+    },
+    "/ad/create": {
+      "post": {
+        "tags": [
+          "ads"
+        ],
+        "summary": "Create Ad",
+        "operationId": "createAd",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Info",
+            "description": "Ad Info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiAd"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Page"
+            }
+          },
+          "404": {
+            "description": "Invalid info"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/ad/search": {
+      "post": {
+        "tags": [
+          "ads"
+        ],
+        "summary": "Searches for ads matching the given filters",
+        "description": "",
+        "operationId": "adSearch",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "search filters",
+            "description": "Search Filters",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AdSearch"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FullAd"
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid Filters"
+          }
+        }
+      }
+    },
+    "/ad/update": {
+      "post": {
+        "tags": [
+          "ads"
+        ],
+        "summary": "Update Given Ad",
+        "description": "",
+        "operationId": "updateAd",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "info",
+            "description": "Info to update ad",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiAd"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApiAd"
+            }
+          },
+          "404": {
+            "description": "Invalid ad"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/ad/remove/{ad_id}": {
+      "post": {
+        "tags": [
+          "ads"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "adRemove",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "ad_id",
+            "in": "path",
+            "description": "The ad id to remove",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Ad"
+            }
+          },
+          "404": {
+            "description": "Invalid ad"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/ad/favorite": {
+      "post": {
+        "tags": [
+          "ads"
+        ],
+        "summary": "Add favorite Ad",
+        "description": "",
+        "operationId": "createFavoriteAd",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "favorite ad",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FavAd"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/FavAd"
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/ad/favorite/{ad_id}": {
+      "delete": {
+        "tags": [
+          "ads"
+        ],
+        "summary": "Remove a favorite ad",
+        "description": "",
+        "operationId": "ad_fav_Remove",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "ad_id",
+            "in": "path",
+            "description": "Ad id to remove favorite",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/FavAd"
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/car": {
+      "post": {
+        "tags": [
+          "car"
+        ],
+        "summary": "Gets a car",
+        "description": "",
+        "operationId": "getCar",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "vin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/SendCar"
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        }
+      }
+    },
+    "/car/remove": {
+      "delete": {
+        "tags": [
+          "car"
+        ],
+        "summary": "Removes a car",
+        "description": "",
+        "operationId": "removeCar",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "vin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Car"
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/car/create": {
+      "post": {
+        "tags": [
+          "car"
+        ],
+        "summary": "Creates a Car",
+        "description": "",
+        "operationId": "createCar",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "car info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiCar"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Car"
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/car/update": {
+      "post": {
+        "tags": [
+          "car"
+        ],
+        "summary": "Updates a Car",
+        "description": "",
+        "operationId": "updateCar",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "car info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiCar"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Car"
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/car/share": {
+      "post": {
+        "tags": [
+          "car"
+        ],
+        "summary": "Shares a Car",
+        "description": "",
+        "operationId": "shareCar",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Share Car info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ShareCar"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ShareCar"
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "car"
+        ],
+        "summary": "Deletes a Shared Car",
+        "description": "",
+        "operationId": "deleteShareCar",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Share Car info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ShareCar"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ShareCar"
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/car/model/make": {
+      "get": {
+        "tags": [
+          "car/model"
+        ],
+        "summary": "Gets a list of makes present in the system",
+        "description": "",
+        "operationId": "getMakes",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        }
+      }
+    },
+    "/car/model/{id}": {
+      "post": {
+        "tags": [
+          "car/model"
+        ],
+        "summary": "Get a model",
+        "description": "",
+        "operationId": "getCarModel",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Model"
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        }
+      }
+    },
+    "/car/model/models": {
+      "post": {
+        "tags": [
+          "car/model"
+        ],
+        "summary": "List all models from a certain make",
+        "description": "",
+        "operationId": "getMakeModels",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "make",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        }
+      }
+    },
+    "/car/model/variant": {
+      "post": {
+        "tags": [
+          "car/model"
+        ],
+        "summary": "Get all engines matching a model",
+        "description": "",
+        "operationId": "getModelVariants",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModelDetails"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Model"
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        }
+      }
+    },
+    "/car/maintenance/create": {
+      "post": {
+        "tags": [
+          "car/maintenance"
+        ],
+        "summary": "Creates a car expense",
+        "description": "",
+        "operationId": "createMaintenance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "maint",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiMaintenance"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DbMaintenance"
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/car/maintenance/update": {
+      "post": {
+        "tags": [
+          "car/maintenance"
+        ],
+        "summary": "Updates a car expense",
+        "description": "",
+        "operationId": "updateMaintenance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "maint",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiMaintenance"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DbMaintenance"
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/car/maintenance/{maint}": {
+      "get": {
+        "tags": [
+          "car/maintenance"
+        ],
+        "summary": "Gets a car expense",
+        "description": "",
+        "operationId": "getMaintenance",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "maint",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DbMaintenance"
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        }
+      }
+    },
+    "/car/maintenance/remove/{maint}": {
+      "delete": {
+        "tags": [
+          "car/maintenance"
+        ],
+        "summary": "Removes a car expense",
+        "description": "",
+        "operationId": "removeMaintenance",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "maint",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DbMaintenance"
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/car/predict/{car_id}": {
+      "get": {
+        "tags": [
+          "car"
+        ],
+        "summary": "Predict a car price",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "car_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Prediction"
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        }
+      }
+    },
+    "/img/{id}": {
+      "get": {
+        "tags": [
+          "img"
+        ],
+        "summary": "Gets an image",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        }
+      }
+    },
+    "/img/create": {
+      "post": {
+        "tags": [
+          "img"
+        ],
+        "summary": "Uploads an image",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "img",
+            "schema": {
+              "$ref": "#/definitions/FileApi"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/File"
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/img/remove/{img}": {
+      "delete": {
+        "tags": [
+          "img"
+        ],
+        "summary": "Removes an Image",
+        "description": "",
+        "operationId": "removeImg",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "img",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/File"
+            }
+          },
+          "404": {
+            "description": "Invalid Request"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "auth": {
+      "type": "apiKey",
+      "name": "jwt",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "UserCreds": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "Antonio Jose"
+        },
+        "passwd": {
+          "type": "string",
+          "example": "AguinhaUniverse"
+        }
+      }
+    },
+    "DbUser": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "passwd": {
+          "type": "string"
+        },
+        "create_date": {
+          "type": "string"
+        },
+        "update_date": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "ApiUser": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "passwd": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "Ad": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "car": {
+          "type": "string"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "create_date": {
+          "type": "string"
+        },
+        "update_date": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiAd": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "car": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "promo_price": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "AdSearch": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/Page"
+        },
+        "make": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "fuel": {
+          "$ref": "#/definitions/Fuel"
+        },
+        "body_type": {
+          "$ref": "#/definitions/BodyType"
+        },
+        "gearbox": {
+          "$ref": "#/definitions/Gearbox"
+        },
+        "max_price": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "min_price": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "max_date": {
+          "type": "string"
+        },
+        "min_date": {
+          "type": "string"
+        },
+        "max_kms": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "min_kms": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "FullAd": {
+      "type": "object",
+      "properties": {
+        "ad": {
+          "$ref": "#/definitions/Ad"
+        },
+        "user": {
+          "$ref": "#/definitions/DbUser"
+        },
+        "model": {
+          "$ref": "#/definitions/Model"
+        },
+        "car": {
+          "$ref": "#/definitions/Car"
+        }
+      }
+    },
+    "FavAd": {
+      "type": "object",
+      "properties": {
+        "ad_id": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string"
+        }
+      }
+    },
+    "Model": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "make": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "power": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "engine_size": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "fuel": {
+          "$ref": "#/definitions/Fuel"
+        }
+      }
+    },
+    "ModelDetails": {
+      "type": "object",
+      "properties": {
+        "make": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        }
+      }
+    },
+    "Car": {
+      "type": "object",
+      "properties": {
+        "vin": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "number_plate": {
+          "type": "string"
+        },
+        "kms": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "model": {
+          "type": "string"
+        },
+        "gearbox": {
+          "$ref": "#/definitions/Gearbox"
+        },
+        "car_date": {
+          "type": "string"
+        },
+        "add_date": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "body_type": {
+          "$ref": "#/definitions/BodyType"
+        }
+      }
+    },
+    "ApiCar": {
+      "type": "object",
+      "properties": {
+        "vin": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "number_plate": {
+          "type": "string"
+        },
+        "kms": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "model": {
+          "type": "string"
+        },
+        "gearbox": {
+          "$ref": "#/definitions/Gearbox"
+        },
+        "car_date": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "body_type": {
+          "$ref": "#/definitions/BodyType"
+        }
+      }
+    },
+    "SendCar": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "$ref": "#/definitions/Model"
+        },
+        "car": {
+          "$ref": "#/definitions/Car"
+        }
+      }
+    },
+    "ShareCar": {
+      "type": "object",
+      "properties": {
+        "car": {
+          "type": "string"
+        },
+        "share_user": {
+          "type": "string"
+        }
+      }
+    },
+    "DbMaintenance": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kms": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type_": {
+          "$ref": "#/definitions/Type"
+        },
+        "description": {
+          "type": "string"
+        },
+        "car": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "created_date": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiMaintenance": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kms": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type_": {
+          "$ref": "#/definitions/Type"
+        },
+        "description": {
+          "type": "string"
+        },
+        "car": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        }
+      }
+    },
+    "Prediction": {
+      "type": "object",
+      "properties": {
+        "price": {
+          "type": "number",
+          "format": "float64"
+        },
+        "error": {
+          "type": "number",
+          "format": "float64"
+        }
+      }
+    },
+    "File": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "filename": {
+          "type": "string"
+        },
+        "car_id": {
+          "type": "string"
+        }
+      }
+    },
+    "FileApi": {
+      "type": "object",
+      "properties": {
+        "filename": {
+          "type": "string"
+        },
+        "car_id": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        }
+      }
+    },
+    "Page": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "Fuel": {
+      "type": "string",
+      "enum": [
+        "Diesel",
+        "Petrol",
+        "HybridDiesel",
+        "HybridPetrol",
+        "Electric",
+        "Hydrogen"
+      ]
+    },
+    "BodyType": {
+      "type": "string",
+      "enum": [
+        "Wagon",
+        "Sedan",
+        "Minivan",
+        "Convertible",
+        "Coupe",
+        "Hatchback",
+        "Suv"
+      ]
+    },
+    "Gearbox": {
+      "type": "string",
+      "enum": [
+        "Automatic",
+        "Manual"
+      ]
+    },
+    "Type": {
+      "type": "string",
+      "enum": [
+        "Fuel",
+        "Scheduled",
+        "Preventive",
+        "Tires",
+        "BreakDown"
+      ]
+    }
+  }
+}
