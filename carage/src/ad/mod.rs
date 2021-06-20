@@ -68,12 +68,12 @@ impl Ad {
             .select((
                 crate::schema::ads::all_columns,
                 crate::schema::cars::all_columns,
-                crate::schema::models::all_columns,
                 crate::schema::users::all_columns,
             ))
-            .first::<(Ad, Car, Model, DbUser)>(conn)
+            .first::<(Ad, Car, DbUser)>(conn)
             .map(|x| {
-                let mut z = FullAd::new(&x);
+                let car = crate::car::SendCar::from_car(x.1.clone(), conn).unwrap();
+                let mut z = FullAd::new(&(x.0, x.1, car.model, x.2, car.imgs));
                 z.user.passwd = "[REDACTED]".to_owned();
                 z
             })
@@ -151,15 +151,19 @@ pub struct FullAd {
     pub car: Car,
     pub model: Model,
     pub user: DbUser,
+    pub imgs: Vec<crate::img::File>,
 }
 
 impl FullAd {
-    pub fn new((ad, car, model, user): &(Ad, Car, Model, DbUser)) -> Self {
+    pub fn new(
+        (ad, car, model, user, imgs): &(Ad, Car, Model, DbUser, Vec<crate::img::File>),
+    ) -> Self {
         Self {
             ad: ad.clone(),
             car: car.clone(),
             model: model.clone(),
             user: user.clone(),
+            imgs: imgs.clone(),
         }
     }
 }
