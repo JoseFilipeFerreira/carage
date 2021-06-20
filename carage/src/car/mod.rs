@@ -2,14 +2,15 @@ pub mod api;
 pub mod maintenance;
 pub mod model;
 pub mod share;
-use crate::{schema::cars, user::DbUser};
+use self::maintenance::DbMaintenance;
+use crate::{img::File, schema::cars, user::DbUser};
 use chrono::{NaiveDate, NaiveDateTime};
 use diesel::{
-    associations::HasTable, pg::PgConnection, AsExpression, Associations, Identifiable, Insertable,
-    QueryDsl, Queryable, RunQueryDsl,
+    associations::HasTable, pg::PgConnection, AsExpression, Associations, BelongingToDsl,
+    Identifiable, Insertable, QueryDsl, QueryResult, Queryable, RunQueryDsl,
 };
 use diesel_derive_enum::DbEnum;
-use model::Model;
+use model::{Bodytype, Model};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -36,31 +37,66 @@ pub struct Car {
     vin: String,
     name: Option<String>,
     number_plate: Option<String>,
-    kms: i32,
+    pub kms: i32,
     model: Uuid,
-    gearbox: Gearbox,
-    car_date: NaiveDate,
+    pub gearbox: Gearbox,
+    pub car_date: NaiveDate,
     add_date: NaiveDateTime,
-    owner: String,
+    pub owner: String,
+    body_type: Bodytype,
 }
 
 impl Car {
-    pub fn from_api(car: ApiCar, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
+    pub fn from_api(car: ApiCar, conn: &PgConnection) -> QueryResult<Self> {
         diesel::insert_into(Self::table())
             .values(Self::from(car))
             .get_result(conn)
     }
 
-    pub fn update(&self, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
+    pub fn update(&self, conn: &PgConnection) -> QueryResult<Self> {
         diesel::update(Self::table()).set(self).get_result(conn)
     }
 
-    pub fn delete(car: String, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
+    pub fn delete(car: &str, conn: &PgConnection) -> QueryResult<Self> {
         diesel::delete(Self::table().find(car)).get_result(conn)
     }
 
-    pub fn get(car: String, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
+    pub fn get(car: &str, conn: &PgConnection) -> QueryResult<Self> {
         Self::table().find(car).first(conn)
+    }
+}
+
+#[derive(Serialize, Clone, Deserialize, Eq, PartialEq, Debug)]
+pub struct SendCar {
+    pub car: Car,
+    pub model: Model,
+    pub imgs: Vec<File>,
+    pub maintenances: Vec<DbMaintenance>,
+}
+
+impl SendCar {
+    pub fn get(car: &str, conn: &PgConnection) -> QueryResult<Self> {
+        let car = Car::get(car, conn)?;
+        let model = Model::get(&car.model, conn)?;
+        let maintenances = DbMaintenance::belonging_to(&car).load(conn)?;
+        let imgs = File::belonging_to(&car).load(conn)?;
+        Ok(Self {
+            car,
+            model,
+            imgs,
+            maintenances,
+        })
+    }
+    pub fn from_car(car: Car, conn: &PgConnection) -> QueryResult<Self> {
+        let model = Model::get(&car.model, conn)?;
+        let maintenances = DbMaintenance::belonging_to(&car).load(conn)?;
+        let imgs = File::belonging_to(&car).load(conn)?;
+        Ok(Self {
+            car,
+            model,
+            imgs,
+            maintenances,
+        })
     }
 }
 
@@ -69,11 +105,29 @@ pub struct ApiCar {
     vin: String,
     name: Option<String>,
     number_plate: Option<String>,
-    kms: i32,
-    model: Uuid,
-    gearbox: Gearbox,
-    car_date: NaiveDate,
-    owner: String,
+    kms: Option<i32>,
+    model: Option<Uuid>,
+    gearbox: Option<Gearbox>,
+    car_date: Option<NaiveDate>,
+    owner: Option<String>,
+    body_type: Option<Bodytype>,
+}
+
+impl ApiCar {
+    pub fn merge(&self, other: Car) -> Car {
+        Car {
+            vin: other.vin,
+            name: self.name.clone().or(other.name),
+            number_plate: self.number_plate.clone().or(other.number_plate),
+            kms: self.kms.unwrap_or(other.kms),
+            model: other.model,
+            gearbox: self.gearbox.unwrap_or(other.gearbox),
+            car_date: self.car_date.unwrap_or(other.car_date),
+            add_date: other.add_date,
+            owner: other.owner,
+            body_type: self.body_type.unwrap_or(other.body_type),
+        }
+    }
 }
 
 impl From<ApiCar> for Car {
@@ -82,12 +136,13 @@ impl From<ApiCar> for Car {
             vin: other.vin,
             name: other.name,
             number_plate: other.number_plate,
-            kms: other.kms,
-            model: other.model,
-            gearbox: other.gearbox,
-            car_date: other.car_date,
+            kms: other.kms.unwrap(),
+            model: other.model.unwrap(),
+            gearbox: other.gearbox.unwrap(),
+            car_date: other.car_date.unwrap(),
             add_date: chrono::Utc::now().naive_utc(),
-            owner: other.owner,
+            owner: other.owner.unwrap(),
+            body_type: other.body_type.unwrap(),
         }
     }
 }
