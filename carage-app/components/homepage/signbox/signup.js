@@ -7,55 +7,128 @@ export const SignUp = () => {
 
   const value = useSelector(showRegister);
 
-  if (value) return <SUBox>
-    <form>
-          <div>
-          <div className="box-header">
-              <div className="text-title">Create an account</div>
-              <svg onClick={() => dispatch({ type: "sign/hideSign" })}>
-                <use href="#close"/>
-              </svg>
-            </div>
-            <div className="text-footnote">
-              Already have an account?
-              <span className="clickable" onClick={() => dispatch({ type: 'sign/showLogin' })}> Log In</span>
-            </div>
-          </div>
-          <div>
-            <div className="text-subhead">Email address</div>
-            <input
-              type="email"
-              placeholder="Enter your email address..."
-              className="signin-input"
-            ></input>
-          </div>
-          <div>
-            <div className="text-subhead">Password</div>
-            <input
-              type="password"
-              placeholder="Enter your password..."
-              className="signin-input"
-            ></input>
-            <div className="text-footnote">Password should contain both letter and number, with minimum length of 8 characters</div>
-          </div>
-          <div className="login-button">
-            <button className="text-button">Create an account</button>
-          </div>
-        </form>
-  </SUBox>;
+  if (value)
+    return (
+      <SUBox>
+        <Form />
+      </SUBox>
+    );
   else return null;
 };
 
+function Form() {
+  const showRegister = (state) => state.sign.showRegister;
+  const dispatch = useDispatch();
+  const registerUser = async (event) => {
+    event.preventDefault();
+
+    const res = await fetch("http://localhost:8000/user/create", {
+      body: JSON.stringify({
+        email: event.target.email.value,
+        passwd: event.target.passwd.value,
+        name: event.target.name.value,
+        phone: parseInt(event.target.phone.value),
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    }).then(function (response) {
+        switch (response.status) {
+          case 404:
+            alert('User already registered')
+            break;
+          default:
+            alert('User registered')
+            break;
+        }
+    }).catch(function (error) {
+        alert('User already exists')
+    });
+
+  };
+
+  return (
+    <form onSubmit={registerUser}>
+      <div>
+        <div className="box-header">
+          <div className="text-title">Create an account</div>
+          <svg onClick={() => dispatch({ type: "sign/hideSign" })}>
+            <use href="#close" />
+          </svg>
+        </div>
+        <div className="text-footnote">
+          Already have an account?
+          <span
+            className="clickable"
+            onClick={() => dispatch({ type: "sign/showLogin" })}
+          >
+            {" "}
+            Log In
+          </span>
+        </div>
+      </div>
+      <div>
+        <div className="text-subhead">Email address</div>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Enter your email address..."
+          className="signin-input"
+        ></input>
+      </div>
+      <div>
+        <div className="text-subhead">Name</div>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Enter your name..."
+          className="signin-input"
+        ></input>
+      </div>
+      <div>
+        <div className="text-subhead">Phone</div>
+        <input
+          type="text"
+          id="phone"
+          name="phone"
+          placeholder="Enter your phone..."
+          className="signin-input"
+        ></input>
+      </div>
+      <div>
+        <div className="text-subhead">Password</div>
+        <input
+          type="password"
+          id="passwd"
+          name="passwd"
+          placeholder="Enter your password..."
+          className="signin-input"
+        ></input>
+        <div className="text-footnote">
+          Password should contain both letter and number, with minimum length of
+          8 characters
+        </div>
+      </div>
+      <div className="login-button">
+        <button className="text-button">Create an account</button>
+      </div>
+    </form>
+  );
+}
+
 const SUBox = styled.div`
   width: 496px;
-  height: 440px;
+  max-height: 100%;
   background-color: var(--LEI2);
   border-radius: 25px;
   padding: 35px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  animation: 0.2s ease-in-out show;
+  animation: 0.2s ease-in-out showOpacity;
 
   form {
     display: flex;
@@ -136,15 +209,18 @@ const SUBox = styled.div`
   }
 
   /* Portrait and Landscape */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+      margin-left: 10px;
+      margin-right: 10px;
   }
 
-  @keyframes show {
+  @keyframes showOpacity {
   0% {
     opacity: 0%;
   }
   100% {
     opacity: 100%;
   }
+}
   
 `;
