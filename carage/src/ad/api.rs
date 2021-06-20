@@ -1,6 +1,6 @@
 use super::{Ad, AdSearch, ApiAd, FullAd};
 use crate::{
-    car::{model::Model, Car},
+    car::{model::Model, Car, SendCar},
     fairings::{Claims, Db, Page},
     user::DbUser,
 };
@@ -46,23 +46,34 @@ pub async fn get(conn: Db, ad: String) -> Option<Json<FullAd>> {
 
 #[post("/all", data = "<page>")]
 pub async fn all(conn: Db, page: Json<Page>) -> Option<Json<(i64, Vec<FullAd>)>> {
-    match conn
+    let query: diesel::QueryResult<Vec<(Ad, Car, Model, DbUser, Vec<crate::img::File>)>> = conn
         .run(move |c| {
-            Ad::table()
+            let p = Ad::table()
                 .inner_join(DbUser::table())
                 .inner_join(Car::table().inner_join(Model::table()))
                 .select((
                     crate::schema::ads::all_columns,
                     crate::schema::cars::all_columns,
-                    crate::schema::models::all_columns,
                     crate::schema::users::all_columns,
                 ))
                 .offset(page.size * page.page)
                 .limit(page.size)
-                .get_results::<(Ad, Car, Model, DbUser)>(c)
+                .get_results::<(Ad, Car, DbUser)>(c)?
+                .iter()
+                .map(|x| {
+                    let car = SendCar::from_car(x.1.clone(), c)?;
+                    Ok((x.0.clone(), x.1.clone(), car.model, x.2.clone(), car.imgs))
+                })
+                .filter_map(
+                    |x: diesel::QueryResult<(Ad, Car, Model, DbUser, Vec<crate::img::File>)>| {
+                        x.ok()
+                    },
+                )
+                .collect::<Vec<(Ad, Car, Model, DbUser, Vec<crate::img::File>)>>();
+            Ok(p)
         })
-        .await
-    {
+        .await;
+    match query {
         Ok(a) => Some(Json((
             conn.run(|c| Ad::table().count().get_result(c).unwrap())
                 .await,
@@ -125,7 +136,7 @@ pub async fn update(conn: Db, claims: Claims, ad: Json<ApiAd>) -> Option<Json<Ap
 
 #[post("/search", data = "<filters>")]
 pub async fn search(conn: Db, filters: Json<AdSearch>) -> Option<Json<(i64, Vec<FullAd>)>> {
-    match conn
+    let tou: diesel::QueryResult<Vec<(Ad, Car, Model, DbUser, Vec<crate::img::File>)>> = conn
         .run(move |c| {
             let mut query = Ad::table()
                 .inner_join(DbUser::table())
@@ -164,19 +175,30 @@ pub async fn search(conn: Db, filters: Json<AdSearch>) -> Option<Json<(i64, Vec<
             if let Some(max_kms) = filters.max_kms {
                 query = query.filter(crate::schema::cars::kms.le(max_kms));
             };
-            query
+            let p = query
                 .select((
                     crate::schema::ads::all_columns,
                     crate::schema::cars::all_columns,
-                    crate::schema::models::all_columns,
                     crate::schema::users::all_columns,
                 ))
                 .offset(filters.page.size * filters.page.page)
                 .limit(filters.page.size)
-                .get_results::<(Ad, Car, Model, DbUser)>(c)
+                .get_results::<(Ad, Car, DbUser)>(c)?
+                .iter()
+                .map(|x| {
+                    let car = SendCar::from_car(x.1.clone(), c)?;
+                    Ok((x.0.clone(), x.1.clone(), car.model, x.2.clone(), car.imgs))
+                })
+                .filter_map(
+                    |x: diesel::QueryResult<(Ad, Car, Model, DbUser, Vec<crate::img::File>)>| {
+                        x.ok()
+                    },
+                )
+                .collect::<Vec<(Ad, Car, Model, DbUser, Vec<crate::img::File>)>>();
+            Ok(p)
         })
-        .await
-    {
+        .await;
+    match tou {
         Ok(a) => Some(Json((
             conn.run(|c| Ad::table().count().get_result(c).unwrap())
                 .await,
