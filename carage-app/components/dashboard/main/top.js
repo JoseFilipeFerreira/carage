@@ -23,7 +23,7 @@ export const Top = ({ title }) => {
           Sign Out
         </div>
         <svg className="option mobile-off">
-          <use href="#bell" />
+          {/* <use href="#bell" /> */}
         </svg>
         <svg
           className="option mobile"

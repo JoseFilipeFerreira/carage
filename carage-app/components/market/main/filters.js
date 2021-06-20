@@ -152,7 +152,7 @@ const FiltersBox = styled.div`
 
   form {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 137px);
+    grid-template-columns: repeat(auto-fill, 136px);
     grid-template-rows: repeat(auto-fill, 50px);
     background-color: var(--LEI2);
     border-radius: 15px;

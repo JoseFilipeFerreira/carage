@@ -57,6 +57,7 @@ const Dash = styled.div`
   padding-left: 144px;
   display: grid;
   grid-template-rows: 130px min-content min-content auto min-content;
+  overflow-y: scroll;
 
   .divisor {
     width: 100%;

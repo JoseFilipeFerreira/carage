@@ -5,6 +5,13 @@ import { Ad } from "./ads/ad";
 const date = require('date-fns')
 
 export const Ads = ({ ads }) => {
+
+  function getImageDefault(car) {
+    console.log(car)
+    if (car.imgs[0]) return `http://localhost:8000/img/${car.imgs[0].id}`;
+    else return "/assets/noPhotoAd.png";
+  }
+
   return (
     <AdsSections>
       {ads[1].map(function (x) {
@@ -25,7 +32,7 @@ export const Ads = ({ ads }) => {
             power={x.model.power}
             fuel={x.model.fuel}
             price={x.ad.price}
-            image="/assets/noPhotoAd.png"
+            image={getImageDefault(x)}
             key={x.ad.id}
           />
         );
