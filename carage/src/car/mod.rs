@@ -7,7 +7,7 @@ use crate::{img::File, schema::cars, user::DbUser};
 use chrono::{NaiveDate, NaiveDateTime};
 use diesel::{
     associations::HasTable, pg::PgConnection, AsExpression, Associations, BelongingToDsl,
-    Identifiable, Insertable, QueryDsl, QueryResult, Queryable, RunQueryDsl,
+    ExpressionMethods, Identifiable, Insertable, QueryDsl, QueryResult, Queryable, RunQueryDsl,
 };
 use diesel_derive_enum::DbEnum;
 use model::{Bodytype, Model};
@@ -54,7 +54,10 @@ impl Car {
     }
 
     pub fn update(&self, conn: &PgConnection) -> QueryResult<Self> {
-        diesel::update(Self::table()).set(self).get_result(conn)
+        diesel::update(Self::table())
+            .set(self)
+            .filter(cars::vin.eq(self.vin.clone()))
+            .get_result(conn)
     }
 
     pub fn delete(car: &str, conn: &PgConnection) -> QueryResult<Self> {

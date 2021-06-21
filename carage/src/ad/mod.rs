@@ -8,8 +8,8 @@ use crate::{
 };
 use chrono::NaiveDateTime;
 use diesel::{
-    associations::HasTable, pg::PgConnection, AsExpression, Associations, Identifiable, Insertable,
-    QueryDsl, Queryable, RunQueryDsl,
+    associations::HasTable, pg::PgConnection, AsExpression, Associations, ExpressionMethods,
+    Identifiable, Insertable, QueryDsl, Queryable, RunQueryDsl,
 };
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -50,7 +50,10 @@ impl Ad {
     }
 
     pub fn update(&self, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
-        diesel::update(Self::table()).set(self).get_result(conn)
+        diesel::update(Self::table())
+            .set(self)
+            .filter(ads::id.eq(self.id))
+            .get_result(conn)
     }
 
     pub fn delete(id: Uuid, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
