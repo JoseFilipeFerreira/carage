@@ -6,7 +6,8 @@ use crate::{
 };
 use chrono::NaiveDateTime;
 use diesel::{
-    associations::HasTable, BelongingToDsl, PgConnection, QueryDsl, Queryable, RunQueryDsl,
+    associations::HasTable, BelongingToDsl, ExpressionMethods, PgConnection, QueryDsl, Queryable,
+    RunQueryDsl,
 };
 use serde::{Deserialize, Serialize};
 
@@ -78,7 +79,10 @@ impl DbUser {
     }
 
     pub fn update(&self, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
-        diesel::update(DbUser::table()).set(self).get_result(conn)
+        diesel::update(DbUser::table())
+            .set(self)
+            .filter(users::email.eq(self.email.clone()))
+            .get_result(conn)
     }
 
     pub fn delete(user: String, conn: &PgConnection) -> Result<Self, diesel::result::Error> {

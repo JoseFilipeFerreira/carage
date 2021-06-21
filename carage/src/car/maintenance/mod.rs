@@ -3,8 +3,8 @@ use super::Car;
 use crate::{schema::maintenance, user::DbUser};
 use chrono::{NaiveDate, NaiveDateTime};
 use diesel::{
-    associations::HasTable, pg::PgConnection, AsExpression, Associations, Identifiable, Insertable,
-    QueryDsl, Queryable, RunQueryDsl,
+    associations::HasTable, pg::PgConnection, AsExpression, Associations, ExpressionMethods,
+    Identifiable, Insertable, QueryDsl, Queryable, RunQueryDsl,
 };
 use diesel_derive_enum::DbEnum;
 use serde::{Deserialize, Serialize};
@@ -64,7 +64,10 @@ impl DbMaintenance {
     }
 
     pub fn update(&self, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
-        diesel::update(Self::table()).set(self).get_result(conn)
+        diesel::update(Self::table())
+            .set(self)
+            .filter(maintenance::id.eq(self.id))
+            .get_result(conn)
     }
 
     pub fn delete(id: &Uuid, conn: &PgConnection) -> Result<Self, diesel::result::Error> {
